@@ -1,0 +1,100 @@
+// ============================================
+// FILE: src/components/home/Newsletter.jsx
+// ============================================
+import { useState } from 'react';
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
+import { Mail, CheckCircle } from 'lucide-react';
+
+const Newsletter = () => {
+  const [email, setEmail] = useState('');
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    // TODO: Implement newsletter subscription with Resend
+    setTimeout(() => {
+      setIsSubscribed(true);
+      setIsLoading(false);
+      setEmail('');
+    }, 1500);
+  };
+
+  return (
+    <section className="py-20 md:py-12 bg-gradient-to-br from-primary-600 to-secondary-600">
+      <div className="container-custom">
+        <div className="max-w-4xl mx-auto text-center space-y-4">
+          {/* Icon */}
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm">
+            <Mail className="w-8 h-8 text-white" />
+          </div>
+
+          {/* Heading */}
+          <div className="space-y-4">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-white">
+              Stay Updated with TechAge
+            </h2>
+            <p className="text-lg text-white/90 max-w-2xl mx-auto">
+              Get the latest tech insights, course updates, and exclusive opportunities delivered to your inbox. Join 5000+ subscribers!
+            </p>
+          </div>
+
+          {/* Newsletter Form */}
+          {!isSubscribed ? (
+            <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:bg-white/20"
+                />
+                <Button 
+                  type="submit" 
+                  size="lg"
+                  disabled={isLoading}
+                  className="bg-white text-primary-600 hover:bg-white/90"
+                >
+                  {isLoading ? 'Subscribing...' : 'Subscribe'}
+                </Button>
+              </div>
+              <p className="text-sm text-white/70 mt-3">
+                We respect your privacy. Unsubscribe at any time.
+              </p>
+            </form>
+          ) : (
+            <div className="max-w-md mx-auto p-6 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+              <div className="flex items-center justify-center gap-3 text-white">
+                <CheckCircle className="w-6 h-6" />
+                <p className="font-medium">Thanks for subscribing! Check your email.</p>
+              </div>
+            </div>
+          )}
+
+          {/* Trust Badges */}
+          <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-white/80">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5" />
+              <span className="text-sm">No spam, ever</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5" />
+              <span className="text-sm">Unsubscribe anytime</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5" />
+              <span className="text-sm">Weekly updates</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Newsletter;
