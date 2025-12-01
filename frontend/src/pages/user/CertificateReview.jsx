@@ -1,5 +1,5 @@
 // ============================================
-// FILE: src/pages/user/CertificateReview.jsx - FIXED & CLEAN
+// FILE: src/pages/user/CertificateReview.jsx - COMPLETE
 // ============================================
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -10,21 +10,18 @@ import DashboardLayout from '../../components/layout/DashboardLayout';
 import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Textarea } from '../../components/ui/textarea';
-
 import { Badge } from '../../components/ui/badge';
 import api from '../../services/api';
 import { toast } from 'react-toastify';
-import jsPDF from 'jspdf';
+import CertificateGenerator from '../../components/CertificateGenerator';
 import {
   Award,
-  Download,
   Star,
   Send,
   CheckCircle,
   Calendar,
   Clock,
   Trophy,
-  Share2,
   Loader2,
   BookOpen,
 } from 'lucide-react';
@@ -38,7 +35,6 @@ const CertificateReview = () => {
   const [hoveredRating, setHoveredRating] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
-  const [downloading, setDownloading] = useState(false);
 
   const reviewSchema = z.object({
     review: z.string().min(10, 'Review must be at least 10 characters'),
@@ -73,136 +69,6 @@ const CertificateReview = () => {
     fetchCertificateData();
   }, [id, navigate]);
 
-  // ✅ Generate and download PDF certificate
-  const handleDownloadCertificate = async () => {
-    if (!courseData || downloading) return;
-
-    try {
-      setDownloading(true);
-      toast.info('Generating your certificate...');
-
-      // Create PDF
-      const pdf = new jsPDF({
-        orientation: 'landscape',
-        unit: 'mm',
-        format: 'a4',
-      });
-
-      // Load the admin's certificate template as background
-      if (courseData.certificatePreview && !courseData.certificatePreview.includes('placeholder')) {
-        try {
-          // Load image
-          const img = new Image();
-          img.crossOrigin = 'anonymous';
-          img.src = courseData.certificatePreview;
-          
-          await new Promise((resolve, reject) => {
-            img.onload = resolve;
-            img.onerror = reject;
-          });
-
-          // Add template as background
-          pdf.addImage(img, 'JPEG', 0, 0, 297, 210);
-        } catch (imgError) {
-          console.error('Failed to load template:', imgError);
-          // Fallback to default design
-          addDefaultCertificateDesign(pdf);
-        }
-      } else {
-        // No template, use default design
-        addDefaultCertificateDesign(pdf);
-      }
-
-      // ✅ Add user's name and details on top of template
-      pdf.setFontSize(32);
-      pdf.setFont('helvetica', 'bold');
-      pdf.setTextColor(0, 0, 0);
-      
-      // Center the name
-      const userName = courseData.userName || 'Student';
-      const textWidth = pdf.getTextWidth(userName);
-      const centerX = (297 - textWidth) / 2;
-      pdf.text(userName, centerX, 105);
-
-      // Add course title
-      pdf.setFontSize(18);
-      pdf.setFont('helvetica', 'normal');
-      const courseTitle = courseData.title;
-      const titleWidth = pdf.getTextWidth(courseTitle);
-      const titleX = (297 - titleWidth) / 2;
-      pdf.text(courseTitle, titleX, 125);
-
-      // Add date
-      pdf.setFontSize(12);
-      const dateText = `Completed on ${courseData.completedDate}`;
-      const dateWidth = pdf.getTextWidth(dateText);
-      const dateX = (297 - dateWidth) / 2;
-      pdf.text(dateText, dateX, 140);
-
-      // Save PDF
-      const fileName = `Certificate-${courseData.title.replace(/\s+/g, '-')}-${Date.now()}.pdf`;
-      pdf.save(fileName);
-
-      toast.success('Certificate downloaded successfully! 🎉');
-    } catch (error) {
-      console.error('Download error:', error);
-      toast.error('Failed to generate certificate');
-    } finally {
-      setDownloading(false);
-    }
-  };
-
-  // Default certificate design (fallback)
-  const addDefaultCertificateDesign = (pdf) => {
-    // Background
-    pdf.setFillColor(255, 255, 255);
-    pdf.rect(0, 0, 297, 210, 'F');
-
-    // Border
-    pdf.setDrawColor(41, 128, 185);
-    pdf.setLineWidth(2);
-    pdf.rect(10, 10, 277, 190);
-
-    // Inner border
-    pdf.setLineWidth(0.5);
-    pdf.rect(15, 15, 267, 180);
-
-    // Header
-    pdf.setFontSize(36);
-    pdf.setFont('helvetica', 'bold');
-    pdf.setTextColor(41, 128, 185);
-    const headerText = 'CERTIFICATE OF COMPLETION';
-    const headerWidth = pdf.getTextWidth(headerText);
-    pdf.text(headerText, (297 - headerWidth) / 2, 40);
-
-    // Decorative line
-    pdf.setDrawColor(231, 76, 60);
-    pdf.setLineWidth(1);
-    pdf.line(80, 50, 217, 50);
-
-    // "This certifies that"
-    pdf.setFontSize(14);
-    pdf.setFont('helvetica', 'normal');
-    pdf.setTextColor(100, 100, 100);
-    const certText = 'This certifies that';
-    const certWidth = pdf.getTextWidth(certText);
-    pdf.text(certText, (297 - certWidth) / 2, 75);
-
-    // "has successfully completed"
-    pdf.setFontSize(12);
-    const completedText = 'has successfully completed';
-    const completedWidth = pdf.getTextWidth(completedText);
-    pdf.text(completedText, (297 - completedWidth) / 2, 135);
-
-    // Footer
-    pdf.setFontSize(10);
-    pdf.setTextColor(150, 150, 150);
-    const footerText = 'TechAge Africa - Empowering Africa through Technology';
-    const footerWidth = pdf.getTextWidth(footerText);
-    pdf.text(footerText, (297 - footerWidth) / 2, 185);
-  };
-
-  // Submit review
   const onSubmitReview = async (data) => {
     if (rating === 0) {
       toast.error('Please select a rating!');
@@ -257,7 +123,7 @@ const CertificateReview = () => {
   return (
     <DashboardLayout>
       <div className="space-y-8 max-w-6xl mx-auto">
-        {/* ✅ CLEANER Header */}
+        {/* Header */}
         <div className="text-center space-y-3">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-primary-100 dark:bg-primary-900 rounded-full mb-4">
             <Trophy className="w-10 h-10 text-primary-600" />
@@ -270,7 +136,7 @@ const CertificateReview = () => {
           </p>
         </div>
 
-        {/* ✅ CLEANER Stats */}
+        {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { icon: BookOpen, label: 'Modules', value: courseData.modules, color: 'primary' },
@@ -289,7 +155,7 @@ const CertificateReview = () => {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* ✅ CLEANER Certificate Section */}
+          {/* Certificate Section */}
           <Card>
             <CardContent className="p-6 space-y-6">
               <div className="flex items-center gap-3">
@@ -300,56 +166,8 @@ const CertificateReview = () => {
                 </div>
               </div>
 
-              {/* ✅ Certificate Preview - Using Admin's Template */}
-              <div className="relative aspect-[16/11] border-2 border-border rounded-lg overflow-hidden bg-white dark:bg-gray-900">
-                {courseData.certificatePreview && !courseData.certificatePreview.includes('placeholder') ? (
-                  <img
-                    src={courseData.certificatePreview}
-                    alt="Certificate Template"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  // Fallback preview
-                  <div className="w-full h-full flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-                    <Award className="w-16 h-16 text-primary-600 mb-4" />
-                    <h3 className="text-xl font-bold text-center mb-2">
-                      Certificate of Completion
-                    </h3>
-                    <p className="text-sm text-muted-foreground mb-2">This certifies that</p>
-                    <p className="text-2xl font-bold mb-2">{courseData.userName}</p>
-                    <p className="text-sm text-muted-foreground mb-2">has completed</p>
-                    <p className="text-lg font-semibold text-center text-primary-600">
-                      {courseData.title}
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Download Buttons */}
-              <div className="space-y-3">
-                <Button
-                  size="lg"
-                  onClick={handleDownloadCertificate}
-                  disabled={downloading}
-                  className="w-full"
-                >
-                  {downloading ? (
-                    <>
-                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                      Generating PDF...
-                    </>
-                  ) : (
-                    <>
-                      <Download className="w-5 h-5 mr-2" />
-                      Download Certificate (PDF)
-                    </>
-                  )}
-                </Button>
-                <Button variant="outline" size="lg" className="w-full">
-                  <Share2 className="w-4 h-4 mr-2" />
-                  Share on LinkedIn
-                </Button>
-              </div>
+              {/* Auto-Generated Certificate */}
+              <CertificateGenerator certificateData={courseData} />
 
               {/* Course Info */}
               <div className="flex items-center gap-3 pt-4 border-t">
@@ -359,7 +177,7 @@ const CertificateReview = () => {
             </CardContent>
           </Card>
 
-          {/* Review Section - Keep as is */}
+          {/* Review Section */}
           <Card>
             <CardContent className="p-6 space-y-6">
               <div className="flex items-center gap-3">
