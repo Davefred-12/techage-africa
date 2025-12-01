@@ -463,6 +463,7 @@ const CertificateReview = () => {
       </div>
     </DashboardLayout>
   );
+  
 };
 
 export default CertificateReview;
