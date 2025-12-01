@@ -8,6 +8,8 @@ import Enrollment from "../models/Enrollment.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import { memoryUpload } from "../middleware/multer.js";
+import Review from '../models/Review.js';
+
 
 const router = express.Router();
 
@@ -376,11 +378,14 @@ router.get("/courses/:id/reviews", async (req, res) => {
   try {
     console.log("⭐ Fetching reviews for course:", req.params.id);
 
-    // TODO: Create Review model and implement this
-    // For now, return empty array
+    const reviews = await Review.find({ course: req.params.id })
+      .sort({ createdAt: -1 })
+      .populate('user', 'name avatar');
+
     res.status(200).json({
       success: true,
-      data: [],
+      count: reviews.length,
+      data: reviews,
     });
   } catch (error) {
     console.error("❌ Get reviews error:", error);
@@ -400,6 +405,21 @@ router.post("/courses/:id/review", protect, async (req, res) => {
 
     const { rating, comment } = req.body;
 
+    // Validate input
+    if (!rating || !comment) {
+      return res.status(400).json({
+        success: false,
+        message: "Rating and comment are required",
+      });
+    }
+
+    if (rating < 1 || rating > 5) {
+      return res.status(400).json({
+        success: false,
+        message: "Rating must be between 1 and 5",
+      });
+    }
+
     // Check if user completed the course
     const enrollment = await Enrollment.findOne({
       user: req.user._id,
@@ -414,27 +434,85 @@ router.post("/courses/:id/review", protect, async (req, res) => {
       });
     }
 
-    // TODO: Create Review model and save review
-    // For now, just return success
-    console.log("Review data:", {
-      rating,
-      comment,
+    // Check if user already reviewed this course
+    const existingReview = await Review.findOne({
       user: req.user._id,
       course: req.params.id,
     });
 
+    if (existingReview) {
+      // Update existing review
+      existingReview.rating = rating;
+      existingReview.comment = comment;
+      await existingReview.save();
+
+      // Recalculate course rating
+      await updateCourseRating(req.params.id);
+
+      console.log("✅ Review updated successfully");
+
+      return res.status(200).json({
+        success: true,
+        message: "Review updated successfully",
+        data: existingReview,
+      });
+    }
+
+    // Create new review
+    const review = await Review.create({
+      user: req.user._id,
+      course: req.params.id,
+      rating,
+      comment,
+    });
+
+    // Update course rating
+    await updateCourseRating(req.params.id);
+
+    console.log("✅ Review submitted successfully");
+
     res.status(201).json({
       success: true,
-      message: "Review submitted successfully",
+      message: "Review submitted successfully! 🎉",
+      data: review,
     });
   } catch (error) {
     console.error("❌ Submit review error:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to submit review",
+      message: error.message || "Failed to submit review",
     });
   }
 });
+
+// Helper function to update course rating
+async function updateCourseRating(courseId) {
+  try {
+    const reviews = await Review.find({ course: courseId });
+    
+    if (reviews.length === 0) {
+      await Course.findByIdAndUpdate(courseId, {
+        'rating.average': 0,
+        'rating.count': 0,
+        totalReviews: 0,
+      });
+      return;
+    }
+
+    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    const averageRating = totalRating / reviews.length;
+
+    await Course.findByIdAndUpdate(courseId, {
+      'rating.average': parseFloat(averageRating.toFixed(1)),
+      'rating.count': reviews.length,
+      totalReviews: reviews.length,
+    });
+
+    console.log(`✅ Course rating updated: ${averageRating.toFixed(1)} (${reviews.length} reviews)`);
+  } catch (error) {
+    console.error("❌ Update course rating error:", error);
+  }
+}
 
 
 // ============================================

@@ -1,17 +1,22 @@
 // ============================================
 // FILE: src/pages/CourseDetail.jsx - COMPLETE WITH VIDEO PLAYER
 // ============================================
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/authContext';
-import api from '../services/api';
-import { toast } from 'react-toastify';
-import { Button } from '../components/ui/button';
-import { Badge } from '../components/ui/badge';
-import { Card, CardContent } from '../components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
-import { Separator } from '../components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authContext";
+import api from "../services/api";
+import { toast } from "react-toastify";
+import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge";
+import { Card, CardContent } from "../components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import { Separator } from "../components/ui/separator";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
 import {
   Clock,
   Users,
@@ -23,21 +28,23 @@ import {
   ArrowLeft,
   Loader2,
   XCircle,
-} from 'lucide-react';
+} from "lucide-react";
 
 const CourseDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState("overview");
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [checkingEnrollment, setCheckingEnrollment] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
   const [showPreview, setShowPreview] = useState(false); // ✅ NEW
-  
+
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
 
   // ✅ Fetch course data from API
   useEffect(() => {
@@ -45,14 +52,14 @@ const CourseDetail = () => {
       try {
         setLoading(true);
         const response = await api.get(`/api/courses/${id}`);
-        
+
         if (response.data.success) {
           setCourse(response.data.data);
         }
       } catch (error) {
-        console.error('Error fetching course:', error);
-        setError('Failed to load course. Please try again.');
-        toast.error('Failed to load course details');
+        console.error("Error fetching course:", error);
+        setError("Failed to load course. Please try again.");
+        toast.error("Failed to load course details");
       } finally {
         setLoading(false);
       }
@@ -73,7 +80,7 @@ const CourseDetail = () => {
         const response = await api.get(`/api/enrollments/check/${course._id}`);
         setIsEnrolled(response.data.isEnrolled);
       } catch (error) {
-        console.error('Error checking enrollment:', error);
+        console.error("Error checking enrollment:", error);
       } finally {
         setCheckingEnrollment(false);
       }
@@ -82,26 +89,49 @@ const CourseDetail = () => {
     checkEnrollment();
   }, [course, isAuthenticated]);
 
+  useEffect(() => {
+    const fetchReviews = async () => {
+      if (!course) return;
+
+      try {
+        setReviewsLoading(true);
+        const response = await api.get(
+          `/api/user/courses/${course._id}/reviews`
+        );
+
+        if (response.data.success) {
+          setReviews(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      } finally {
+        setReviewsLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [course]);
+
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
+    return new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
     }).format(amount);
   };
 
   const getInitials = (name) => {
-    if (!name) return 'U';
+    if (!name) return "U";
     return name
-      .split(' ')
+      .split(" ")
       .map((word) => word[0])
-      .join('')
+      .join("")
       .toUpperCase()
       .slice(0, 2);
   };
 
   const handleEnroll = async () => {
     if (!isAuthenticated) {
-      navigate('/login', { state: { from: `/courses/${id}` } });
+      navigate("/login", { state: { from: `/courses/${id}` } });
       return;
     }
 
@@ -112,19 +142,20 @@ const CourseDetail = () => {
 
     setEnrolling(true);
     try {
-      const response = await api.post('/api/enrollments/initiate', {
+      const response = await api.post("/api/enrollments/initiate", {
         courseId: course._id,
       });
 
       if (response.data.success) {
         const { authorization_url, reference } = response.data.data;
-        localStorage.setItem('payment_reference', reference);
+        localStorage.setItem("payment_reference", reference);
         window.location.href = authorization_url;
       }
     } catch (error) {
-      console.error('Enrollment error:', error);
+      console.error("Enrollment error:", error);
       toast.error(
-        error.response?.data?.message || 'Failed to initiate payment. Please try again.'
+        error.response?.data?.message ||
+          "Failed to initiate payment. Please try again."
       );
       setEnrolling(false);
     }
@@ -141,7 +172,7 @@ const CourseDetail = () => {
     }
 
     if (!isAuthenticated) {
-      return 'Login to Enroll';
+      return "Login to Enroll";
     }
 
     if (isEnrolled) {
@@ -162,7 +193,7 @@ const CourseDetail = () => {
       );
     }
 
-    return `Enroll Now - ${course ? formatCurrency(course.price) : '...'}`;
+    return `Enroll Now - ${course ? formatCurrency(course.price) : "..."}`;
   };
 
   if (loading) {
@@ -186,9 +217,9 @@ const CourseDetail = () => {
             </div>
             <h2 className="text-2xl font-bold">Course Not Found</h2>
             <p className="text-muted-foreground">
-              {error || 'The course you are looking for does not exist.'}
+              {error || "The course you are looking for does not exist."}
             </p>
-            <Button onClick={() => navigate('/courses')}>
+            <Button onClick={() => navigate("/courses")}>
               Browse All Courses
             </Button>
           </CardContent>
@@ -204,7 +235,7 @@ const CourseDetail = () => {
         <div className="container-custom py-4">
           <Button
             variant="ghost"
-            onClick={() => navigate('/courses')}
+            onClick={() => navigate("/courses")}
             className="gap-2"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -233,8 +264,10 @@ const CourseDetail = () => {
               <div className="flex flex-wrap items-center gap-6 text-sm">
                 <div className="flex items-center gap-2">
                   <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                  <span>{course.rating?.average?.toFixed(1) || '0.0'}</span>
-                  <span className="text-muted-foreground">({course.totalReviews || 0} reviews)</span>
+                  <span>{course.rating?.average?.toFixed(1) || "0.0"}</span>
+                  <span className="text-muted-foreground">
+                    ({course.totalReviews || 0} reviews)
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="w-5 h-5 text-muted-foreground" />
@@ -282,7 +315,7 @@ const CourseDetail = () => {
                           controls
                           autoPlay
                           className="w-full h-full"
-                          style={{ objectFit: 'contain' }}
+                          style={{ objectFit: "contain" }}
                         >
                           <source src={course.previewVideo} type="video/mp4" />
                           Your browser does not support the video tag.
@@ -305,7 +338,7 @@ const CourseDetail = () => {
                           className="w-full h-full object-cover"
                         />
                         {course.previewVideo && (
-                          <div 
+                          <div
                             className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center"
                             onClick={() => setShowPreview(true)}
                           >
@@ -313,7 +346,7 @@ const CourseDetail = () => {
                             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-2xl">
                               <Play className="w-10 h-10 text-primary-600 ml-1.5 fill-primary-600" />
                             </div>
-                            
+
                             {/* Preview Badge */}
                             <div className="absolute top-4 left-4">
                               <Badge className="bg-white/55 text-foreground gap-1.5 px-3 py-1.5 text-xs font-semibold">
@@ -391,10 +424,13 @@ const CourseDetail = () => {
       {/* Course Content Tabs */}
       <div className="container-custom py-12">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3 mb-8">
+          <TabsList className="grid w-full grid-cols-4 mb-8">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
             <TabsTrigger value="instructor">Instructor</TabsTrigger>
+            <TabsTrigger value="reviews">
+              Reviews ({reviews.length})
+            </TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -474,7 +510,8 @@ const CourseDetail = () => {
                                 className="text-sm text-muted-foreground flex items-center gap-2"
                               >
                                 <Play className="w-4 h-4" />
-                                {lesson.title} {lesson.duration && `(${lesson.duration})`}
+                                {lesson.title}{" "}
+                                {lesson.duration && `(${lesson.duration})`}
                               </li>
                             ))}
                           </ul>
@@ -486,6 +523,77 @@ const CourseDetail = () => {
                   <p className="text-center text-muted-foreground py-8">
                     Curriculum coming soon...
                   </p>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Reviews Tab */}
+          <TabsContent value="reviews">
+            <Card>
+              <CardContent className="p-6">
+                <h2 className="text-2xl font-bold mb-6">Student Reviews</h2>
+
+                {reviewsLoading ? (
+                  <div className="text-center py-8">
+                    <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2" />
+                    <p className="text-muted-foreground">Loading reviews...</p>
+                  </div>
+                ) : reviews.length > 0 ? (
+                  <div className="space-y-6">
+                    {reviews.map((review) => (
+                      <div
+                        key={review._id}
+                        className="border-b pb-6 last:border-0"
+                      >
+                        <div className="flex items-start gap-4">
+                          <Avatar className="h-10 w-10">
+                            <AvatarImage src={review.user?.avatar} />
+                            <AvatarFallback className="bg-primary-100 text-primary-700">
+                              {review.user?.name?.charAt(0) || "U"}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-2">
+                              <div>
+                                <p className="font-semibold">
+                                  {review.user?.name || "Anonymous"}
+                                </p>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <div className="flex">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                      <Star
+                                        key={star}
+                                        className={`w-4 h-4 ${
+                                          star <= review.rating
+                                            ? "fill-yellow-400 text-yellow-400"
+                                            : "text-muted-foreground"
+                                        }`}
+                                      />
+                                    ))}
+                                  </div>
+                                  <span className="text-xs text-muted-foreground">
+                                    {new Date(
+                                      review.createdAt
+                                    ).toLocaleDateString()}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <p className="text-muted-foreground mt-2">
+                              {review.comment}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground">
+                      No reviews yet. Be the first to review this course!
+                    </p>
+                  </div>
                 )}
               </CardContent>
             </Card>
@@ -510,7 +618,9 @@ const CourseDetail = () => {
                       <p className="text-muted-foreground mb-4">
                         Course Instructor
                       </p>
-                      <p className="leading-relaxed">{course.instructor.email}</p>
+                      <p className="leading-relaxed">
+                        {course.instructor.email}
+                      </p>
                     </div>
                   </div>
                 ) : (
