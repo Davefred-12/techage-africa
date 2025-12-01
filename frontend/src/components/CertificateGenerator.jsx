@@ -47,11 +47,11 @@ const CertificateGenerator = ({ certificateData }) => {
         </div>
 
         {/* Main Content */}
-        <div className="relative h-full flex flex-col items-center justify-center px-20 py-16">
+        <div className="relative h-full flex flex-col items-center justify-center px-12 py-14">
           
           {/* Title */}
           <h1 
-            className="text-3xl mt-100 font-bold text-black mb-8"
+            className="text-3xl font-bold text-black mb-8"
             style={{ fontFamily: 'Old Standard TT, serif', letterSpacing: '0.05em' }}
           >
             Certificate of Completion
@@ -101,7 +101,7 @@ const CertificateGenerator = ({ certificateData }) => {
 
             {/* Right: Signature */}
             <div className="text-center">
-              <div className="mb-1">
+              <div className="mb-2">
                 <p 
                   className="text-xl text-black"
                   style={{ 
