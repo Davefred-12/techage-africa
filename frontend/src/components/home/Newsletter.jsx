@@ -1,10 +1,12 @@
 // ============================================
-// FILE: src/components/home/Newsletter.jsx
+// FILE: src/components/home/Newsletter.jsx - CONNECTED
 // ============================================
 import { useState } from 'react';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Mail, CheckCircle } from 'lucide-react';
+import api from '../../services/api';
+import { toast } from 'react-toastify';
 
 const Newsletter = () => {
   const [email, setEmail] = useState('');
@@ -13,14 +15,32 @@ const Newsletter = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!email || !email.includes('@')) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+    
     setIsLoading(true);
 
-    // TODO: Implement newsletter subscription with Resend
-    setTimeout(() => {
-      setIsSubscribed(true);
+    try {
+      const response = await api.post('/api/public/subscribe', { email });
+      
+      if (response.data.success) {
+        setIsSubscribed(true);
+        setEmail('');
+        toast.success('Successfully subscribed! Check your email for confirmation.');
+        
+        // Reset after 10 seconds
+        setTimeout(() => setIsSubscribed(false), 10000);
+      }
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      const errorMessage = error.response?.data?.message || 'Failed to subscribe. Please try again.';
+      toast.error(errorMessage);
+    } finally {
       setIsLoading(false);
-      setEmail('');
-    }, 1500);
+    }
   };
 
   return (
@@ -68,7 +88,7 @@ const Newsletter = () => {
               </p>
             </form>
           ) : (
-            <div className="max-w-md mx-auto p-6 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+            <div className="max-w-md mx-auto p-6 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 animate-fade-in">
               <div className="flex items-center justify-center gap-3 text-white">
                 <CheckCircle className="w-6 h-6" />
                 <p className="font-medium">Thanks for subscribing! Check your email.</p>
@@ -93,6 +113,17 @@ const Newsletter = () => {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes fade-in {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        
+        .animate-fade-in {
+          animation: fade-in 0.3s ease-out;
+        }
+      `}</style>
     </section>
   );
 };

@@ -10,7 +10,9 @@ import authRoutes from './routes/authRoutes.js';
 import courseRoutes from './routes/courseRoutes.js';
 import enrollmentRoutes from './routes/enrollmentRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
-import userRoutes from './routes/userRoutes.js'; // ✅ NEW
+import userRoutes from './routes/userRoutes.js';
+import publicRoutes from './routes/PublicRoutes.js';
+
 import passport from './config/passport.js';
 
 // Load environment variables
@@ -48,7 +50,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/user', userRoutes); // ✅ NEW - User routes
+app.use('/api/user', userRoutes);
+app.use('/api/public', publicRoutes);
+
 
 // Health check route
 app.get('/', (req, res) => {
@@ -137,5 +141,7 @@ app.listen(PORT, () => {
   console.log(`✅ Course routes initialized`);
   console.log(`✅ Enrollment routes initialized`);
   console.log(`✅ Admin routes initialized`);
-  console.log(`✅ User routes initialized\n`); // ✅ NEW
+  console.log(`✅ User routes initialized\n`);
+  console.log('✅ Public routes initialized');
+
 });

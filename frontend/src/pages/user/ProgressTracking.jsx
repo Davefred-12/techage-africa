@@ -141,9 +141,7 @@ const ProgressTracking = () => {
                 <Clock className="h-5 w-5 text-primary-600" />
               </div>
               <p className="text-2xl font-bold">
-                {overallStats.totalHours < 1
-                  ? `${overallStats.totalHours} min`
-                  : `${overallStats.totalHours}h`}
+                {overallStats.timeSpent || `${overallStats.totalHours}h`}
               </p>
               <p className="text-xs text-muted-foreground mt-1">Time Spent</p>
             </CardContent>

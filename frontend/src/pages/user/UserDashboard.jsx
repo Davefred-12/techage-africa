@@ -1,16 +1,21 @@
 // ============================================
 // FILE: src/pages/user/UserDashboard.jsx - REAL DATA ONLY
 // ============================================
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import DashboardLayout from '../../components/layout/DashboardLayout';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
-import { Badge } from '../../components/ui/badge';
-import { Progress } from '../../components/ui/progress';
-import { useAuth } from '../../context/authContext';
-import api from '../../services/api';
-import { toast } from 'react-toastify';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import DashboardLayout from "../../components/layout/DashboardLayout";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import { Badge } from "../../components/ui/badge";
+import { Progress } from "../../components/ui/progress";
+import { useAuth } from "../../context/authContext";
+import api from "../../services/api";
+import { toast } from "react-toastify";
 import {
   BookOpen,
   Clock,
@@ -20,7 +25,7 @@ import {
   CheckCircle,
   PlayCircle,
   Loader2,
-} from 'lucide-react';
+} from "lucide-react";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -33,15 +38,15 @@ const UserDashboard = () => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
-        const response = await api.get('/api/user/dashboard/stats');
-        
+        const response = await api.get("/api/user/dashboard/stats");
+
         if (response.data.success) {
-          console.log('📊 Dashboard data received:', response.data.data);
+          console.log("📊 Dashboard data received:", response.data.data);
           setDashboardData(response.data.data);
         }
       } catch (error) {
-        console.error('Dashboard fetch error:', error);
-        toast.error('Failed to load dashboard data');
+        console.error("Dashboard fetch error:", error);
+        toast.error("Failed to load dashboard data");
       } finally {
         setLoading(false);
       }
@@ -78,35 +83,42 @@ const UserDashboard = () => {
   const statsDisplay = [
     {
       icon: BookOpen,
-      label: 'Enrolled Courses',
+      label: "Enrolled Courses",
       value: stats.totalCourses.toString(),
-      change: stats.inProgress > 0 ? `${stats.inProgress} in progress` : 'No courses yet',
-      color: 'text-primary-600',
-      bgColor: 'bg-primary-100 dark:bg-primary-900/30',
+      change:
+        stats.inProgress > 0
+          ? `${stats.inProgress} in progress`
+          : "No courses yet",
+      color: "text-primary-600",
+      bgColor: "bg-primary-100 dark:bg-primary-900/30",
     },
     {
       icon: Clock,
-      label: 'Hours Learned',
-      value: stats.totalHours.toString(),
-      change: stats.totalHours > 0 ? 'Total learning time' : 'Start learning now',
-      color: 'text-secondary-600',
-      bgColor: 'bg-secondary-100 dark:bg-secondary-900/30',
+      label: "Time Spent",
+      value: stats.timeSpent || `${stats.totalHours}h`,
+      change:
+        stats.totalHours > 0 ? "Total learning time" : "Start learning now",
+      color: "text-secondary-600",
+      bgColor: "bg-secondary-100 dark:bg-secondary-900/30",
     },
     {
       icon: Award,
-      label: 'Completed Courses',
+      label: "Completed Courses",
       value: stats.completed.toString(),
-      change: stats.completed > 0 ? `${stats.inProgress} in progress` : 'Complete your first course',
-      color: 'text-accent-600',
-      bgColor: 'bg-accent-100 dark:bg-accent-900/30',
+      change:
+        stats.completed > 0
+          ? `${stats.inProgress} in progress`
+          : "Complete your first course",
+      color: "text-accent-600",
+      bgColor: "bg-accent-100 dark:bg-accent-900/30",
     },
     {
       icon: TrendingUp,
-      label: 'Overall Progress',
+      label: "Overall Progress",
       value: `${stats.avgProgress}%`,
-      change: stats.avgProgress > 0 ? 'Average completion' : 'Enroll to start',
-      color: 'text-primary-600',
-      bgColor: 'bg-primary-100 dark:bg-primary-900/30',
+      change: stats.avgProgress > 0 ? "Average completion" : "Enroll to start",
+      color: "text-primary-600",
+      bgColor: "bg-primary-100 dark:bg-primary-900/30",
     },
   ];
 
@@ -116,10 +128,10 @@ const UserDashboard = () => {
         {/* Header */}
         <div className="animate-fade-in-up">
           <h1 className="text-3xl md:text-4xl font-heading font-bold mb-2">
-            Welcome back, {user?.name || 'User'}! 👋
+            Welcome back, {user?.name || "User"}! 👋
           </h1>
           <p className="text-muted-foreground">
-            {stats.totalCourses > 0 
+            {stats.totalCourses > 0
               ? "Here's what's happening with your learning journey today."
               : "Start your learning journey by enrolling in a course!"}
           </p>
@@ -135,7 +147,9 @@ const UserDashboard = () => {
             >
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <div className={`w-12 h-12 rounded-xl ${stat.bgColor} flex items-center justify-center`}>
+                  <div
+                    className={`w-12 h-12 rounded-xl ${stat.bgColor} flex items-center justify-center`}
+                  >
                     <stat.icon className={`h-6 w-6 ${stat.color}`} />
                   </div>
                 </div>
@@ -163,7 +177,7 @@ const UserDashboard = () => {
               </div>
               <Button
                 variant="outline"
-                onClick={() => navigate('/user/my-courses')}
+                onClick={() => navigate("/user/my-courses")}
               >
                 View All
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -210,17 +224,22 @@ const UserDashboard = () => {
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">Progress</span>
-                        <span className="font-semibold">{course.progress}%</span>
+                        <span className="font-semibold">
+                          {course.progress}%
+                        </span>
                       </div>
                       <Progress value={course.progress} className="h-2" />
                       <p className="text-xs text-muted-foreground">
-                        {course.completedLessons} of {course.totalLessons} lessons completed
+                        {course.completedLessons} of {course.totalLessons}{" "}
+                        lessons completed
                       </p>
                     </div>
 
                     {/* Next Lesson */}
                     <div className="pt-3 border-t">
-                      <p className="text-xs text-muted-foreground mb-1">Next up:</p>
+                      <p className="text-xs text-muted-foreground mb-1">
+                        Next up:
+                      </p>
                       <p className="text-sm font-medium">{course.nextLesson}</p>
                     </div>
                   </CardContent>
@@ -238,14 +257,16 @@ const UserDashboard = () => {
                 <BookOpen className="h-8 w-8 text-muted-foreground" />
               </div>
               <h3 className="text-xl font-semibold mb-2">
-                {stats.totalCourses === 0 ? 'No courses yet' : 'All courses completed!'}
+                {stats.totalCourses === 0
+                  ? "No courses yet"
+                  : "All courses completed!"}
               </h3>
               <p className="text-muted-foreground mb-6">
-                {stats.totalCourses === 0 
-                  ? 'Start your learning journey today!' 
-                  : 'Browse more courses to continue learning.'}
+                {stats.totalCourses === 0
+                  ? "Start your learning journey today!"
+                  : "Browse more courses to continue learning."}
               </p>
-              <Button onClick={() => navigate('/courses')}>
+              <Button onClick={() => navigate("/courses")}>
                 Browse Courses
               </Button>
             </CardContent>
@@ -271,19 +292,35 @@ const UserDashboard = () => {
                       className="flex items-start gap-4 p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors animate-fade-in-left"
                       style={{ animationDelay: `${index * 100 + 800}ms` }}
                     >
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                        activity.type === 'completed' ? 'bg-accent-100 dark:bg-accent-900/30' :
-                        activity.type === 'enrolled' ? 'bg-primary-100 dark:bg-primary-900/30' :
-                        'bg-secondary-100 dark:bg-secondary-900/30'
-                      }`}>
-                        {activity.type === 'completed' && <CheckCircle className="h-5 w-5 text-accent-600" />}
-                        {activity.type === 'enrolled' && <BookOpen className="h-5 w-5 text-primary-600" />}
-                        {activity.type === 'certificate' && <Award className="h-5 w-5 text-secondary-600" />}
+                      <div
+                        className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          activity.type === "completed"
+                            ? "bg-accent-100 dark:bg-accent-900/30"
+                            : activity.type === "enrolled"
+                            ? "bg-primary-100 dark:bg-primary-900/30"
+                            : "bg-secondary-100 dark:bg-secondary-900/30"
+                        }`}
+                      >
+                        {activity.type === "completed" && (
+                          <CheckCircle className="h-5 w-5 text-accent-600" />
+                        )}
+                        {activity.type === "enrolled" && (
+                          <BookOpen className="h-5 w-5 text-primary-600" />
+                        )}
+                        {activity.type === "certificate" && (
+                          <Award className="h-5 w-5 text-secondary-600" />
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm mb-1">{activity.title}</p>
-                        <p className="text-sm text-muted-foreground truncate">{activity.course}</p>
-                        <p className="text-xs text-muted-foreground mt-1">{activity.time}</p>
+                        <p className="font-medium text-sm mb-1">
+                          {activity.title}
+                        </p>
+                        <p className="text-sm text-muted-foreground truncate">
+                          {activity.course}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {activity.time}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -301,7 +338,7 @@ const UserDashboard = () => {
               <Button
                 variant="outline"
                 className="w-full justify-start"
-                onClick={() => navigate('/courses')}
+                onClick={() => navigate("/courses")}
               >
                 <BookOpen className="mr-2 h-4 w-4" />
                 Browse Courses
@@ -311,7 +348,7 @@ const UserDashboard = () => {
                   <Button
                     variant="outline"
                     className="w-full justify-start"
-                    onClick={() => navigate('/user/progress')}
+                    onClick={() => navigate("/user/progress")}
                   >
                     <TrendingUp className="mr-2 h-4 w-4" />
                     View Progress
@@ -319,7 +356,7 @@ const UserDashboard = () => {
                   <Button
                     variant="outline"
                     className="w-full justify-start"
-                    onClick={() => navigate('/user/orders')}
+                    onClick={() => navigate("/user/orders")}
                   >
                     <Award className="mr-2 h-4 w-4" />
                     My Orders
@@ -329,7 +366,7 @@ const UserDashboard = () => {
               <Button
                 variant="outline"
                 className="w-full justify-start"
-                onClick={() => navigate('/user/settings')}
+                onClick={() => navigate("/user/settings")}
               >
                 <Award className="mr-2 h-4 w-4" />
                 Update Profile

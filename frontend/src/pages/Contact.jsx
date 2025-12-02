@@ -1,39 +1,45 @@
 // ============================================
 // FILE: src/pages/Contact.jsx
 // ============================================
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Textarea } from '../components/ui/textarea';
-import { Card, CardContent } from '../components/ui/card';
-import { Badge } from '../components/ui/badge';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
+import { Card, CardContent } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '../components/ui/accordion';
+} from "../components/ui/accordion";
+import api from "../services/api";
+import { toast } from "react-toastify";
 import {
   Mail,
   Phone,
   MapPin,
   Clock,
   Send,
-  
   CheckCircle,
   MessageSquare,
-} from 'lucide-react';
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+} from "lucide-react";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedinIn,
+} from "react-icons/fa";
 
 // Form validation schema
 const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email'),
-  subject: z.string().min(5, 'Subject must be at least 5 characters'),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email"),
+  subject: z.string().min(5, "Subject must be at least 5 characters"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
 const Contact = () => {
@@ -51,87 +57,124 @@ const Contact = () => {
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
-    
-    // TODO: Implement Resend email integration
-    console.log('Form data:', data);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      reset();
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => setIsSubmitted(false), 5000);
-    }, 2000);
-  };
 
+    try {
+      const response = await api.post("/api/public/contact", data);
+
+      if (response.data.success) {
+        setIsSubmitted(true);
+        reset();
+        toast.success(
+          "Message sent successfully! We'll respond within 24 hours."
+        );
+
+        // Reset success message after 5 seconds
+        setTimeout(() => setIsSubmitted(false), 5000);
+      }
+    } catch (error) {
+      console.error("Contact form error:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to send message. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   const contactInfo = [
     {
       icon: Mail,
-      title: 'Email',
-      details: 'clinton@techageafrica.com',
-      link: 'mailto:clinton@techageafrica.com',
+      title: "Email",
+      details: "clinton@techageafrica.com",
+      link: "mailto:clinton@techageafrica.com",
     },
     {
       icon: Phone,
-      title: 'Phone',
-      details: '+234-XXX-XXX-XXXX',
-      link: 'tel:+234XXXXXXXXXX',
+      title: "Phone",
+      details: "+234-XXX-XXX-XXXX",
+      link: "tel:+234XXXXXXXXXX",
     },
     {
       icon: MapPin,
-      title: 'Location',
-      details: 'Lagos, Nigeria',
+      title: "Location",
+      details: "Lagos, Nigeria",
       link: null,
     },
     {
       icon: Clock,
-      title: 'Office Hours',
-      details: 'Mon - Fri: 9AM - 5PM WAT',
+      title: "Office Hours",
+      details: "Mon - Fri: 9AM - 5PM WAT",
       link: null,
     },
   ];
 
   const socialLinks = [
-    { icon: FaFacebookF, href: 'https://facebook.com', label: 'Facebook', color: 'hover:text-blue-600 hover:bg-blue-50' },
-    { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter', color: 'hover:text-sky-500 hover:bg-sky-50' },
-    { icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram', color: 'hover:text-pink-600 hover:bg-pink-50' },
-    { icon: FaLinkedinIn, href: 'https://linkedin.com', label: 'LinkedIn', color: 'hover:text-blue-700 hover:bg-blue-50' },
+    {
+      icon: FaFacebookF,
+      href: "https://facebook.com",
+      label: "Facebook",
+      color: "hover:text-blue-600 hover:bg-blue-50",
+    },
+    {
+      icon: FaTwitter,
+      href: "https://twitter.com",
+      label: "Twitter",
+      color: "hover:text-sky-500 hover:bg-sky-50",
+    },
+    {
+      icon: FaInstagram,
+      href: "https://instagram.com",
+      label: "Instagram",
+      color: "hover:text-pink-600 hover:bg-pink-50",
+    },
+    {
+      icon: FaLinkedinIn,
+      href: "https://linkedin.com",
+      label: "LinkedIn",
+      color: "hover:text-blue-700 hover:bg-blue-50",
+    },
   ];
 
   const faqs = [
     {
-      question: 'How do I enroll in a course?',
-      answer: 'Simply browse our courses page, select the course you want, and click "Enroll Now". You\'ll need to create an account or login, then proceed to payment via Paystack.',
+      question: "How do I enroll in a course?",
+      answer:
+        'Simply browse our courses page, select the course you want, and click "Enroll Now". You\'ll need to create an account or login, then proceed to payment via Paystack.',
     },
     {
-      question: 'What payment methods do you accept?',
-      answer: 'We accept all major payment methods through Paystack, including debit cards, bank transfers, and mobile money. All payments are secure and processed instantly.',
+      question: "What payment methods do you accept?",
+      answer:
+        "We accept all major payment methods through Paystack, including debit cards, bank transfers, and mobile money. All payments are secure and processed instantly.",
     },
     {
-      question: 'Do I get a certificate after completing a course?',
-      answer: 'Yes! Upon successful completion of a course, you\'ll receive a digital certificate that you can download and share on LinkedIn or your portfolio.',
+      question: "Do I get a certificate after completing a course?",
+      answer:
+        "Yes! Upon successful completion of a course, you'll receive a digital certificate that you can download and share on LinkedIn or your portfolio.",
     },
     {
-      question: 'Can I access courses on mobile devices?',
-      answer: 'Absolutely! Our platform is fully mobile-responsive. You can learn on any device - smartphone, tablet, or computer.',
+      question: "Can I access courses on mobile devices?",
+      answer:
+        "Absolutely! Our platform is fully mobile-responsive. You can learn on any device - smartphone, tablet, or computer.",
     },
     {
-      question: 'What if I need help during a course?',
-      answer: 'We have a dedicated support team and community forum where you can ask questions. You can also reach out via email or our contact form.',
+      question: "What if I need help during a course?",
+      answer:
+        "We have a dedicated support team and community forum where you can ask questions. You can also reach out via email or our contact form.",
     },
     {
-      question: 'Are there any prerequisites for the courses?',
-      answer: 'Most of our beginner courses require no prerequisites. For intermediate and advanced courses, we\'ll list any requirements on the course page.',
+      question: "Are there any prerequisites for the courses?",
+      answer:
+        "Most of our beginner courses require no prerequisites. For intermediate and advanced courses, we'll list any requirements on the course page.",
     },
     {
-      question: 'Can I get a refund?',
-      answer: 'We offer a 7-day money-back guarantee if you\'re not satisfied with a course. Contact us within 7 days of purchase for a full refund.',
+      question: "Can I get a refund?",
+      answer:
+        "We offer a 7-day money-back guarantee if you're not satisfied with a course. Contact us within 7 days of purchase for a full refund.",
     },
     {
-      question: 'Do you offer corporate training?',
-      answer: 'Yes! We provide customized corporate training solutions. Please contact us directly to discuss your organization\'s needs.',
+      question: "Do you offer corporate training?",
+      answer:
+        "Yes! We provide customized corporate training solutions. Please contact us directly to discuss your organization's needs.",
     },
   ];
 
@@ -147,14 +190,14 @@ const Contact = () => {
           <div className="max-w-3xl mx-auto text-center space-y-6 animate-fade-in-up">
             <Badge className="text-sm px-4 py-2">Get In Touch</Badge>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold animate-fade-in-up animation-delay-200">
-              We'd Love to{' '}
+              We'd Love to{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-600">
                 Hear From You
               </span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground animate-fade-in-up animation-delay-400">
-              Have questions? Need support? Want to partner with us? 
-              Drop us a message and we'll get back to you as soon as possible.
+              Have questions? Need support? Want to partner with us? Drop us a
+              message and we'll get back to you as soon as possible.
             </p>
           </div>
         </div>
@@ -173,7 +216,9 @@ const Contact = () => {
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold">Send Us a Message</h2>
-                    <p className="text-sm text-muted-foreground">We'll respond within 24 hours</p>
+                    <p className="text-sm text-muted-foreground">
+                      We'll respond within 24 hours
+                    </p>
                   </div>
                 </div>
 
@@ -194,9 +239,9 @@ const Contact = () => {
                         Full Name *
                       </label>
                       <Input
-                        {...register('name')}
+                        {...register("name")}
                         placeholder="John Doe"
-                        className={errors.name ? 'border-danger-500' : ''}
+                        className={errors.name ? "border-danger-500" : ""}
                       />
                       {errors.name && (
                         <p className="text-sm text-danger-600 mt-1">
@@ -211,10 +256,10 @@ const Contact = () => {
                         Email Address *
                       </label>
                       <Input
-                        {...register('email')}
+                        {...register("email")}
                         type="email"
                         placeholder="john@example.com"
-                        className={errors.email ? 'border-danger-500' : ''}
+                        className={errors.email ? "border-danger-500" : ""}
                       />
                       {errors.email && (
                         <p className="text-sm text-danger-600 mt-1">
@@ -230,9 +275,9 @@ const Contact = () => {
                       Subject *
                     </label>
                     <Input
-                      {...register('subject')}
+                      {...register("subject")}
                       placeholder="How can we help you?"
-                      className={errors.subject ? 'border-danger-500' : ''}
+                      className={errors.subject ? "border-danger-500" : ""}
                     />
                     {errors.subject && (
                       <p className="text-sm text-danger-600 mt-1">
@@ -247,10 +292,10 @@ const Contact = () => {
                       Message *
                     </label>
                     <Textarea
-                      {...register('message')}
+                      {...register("message")}
                       rows={6}
                       placeholder="Tell us more about your inquiry..."
-                      className={errors.message ? 'border-danger-500' : ''}
+                      className={errors.message ? "border-danger-500" : ""}
                     />
                     {errors.message && (
                       <p className="text-sm text-danger-600 mt-1">
@@ -266,7 +311,7 @@ const Contact = () => {
                     className="w-full md:w-auto animate-fade-in-up animation-delay-600 hover:scale-105 transition-transform"
                   >
                     {isSubmitting ? (
-                      'Sending...'
+                      "Sending..."
                     ) : (
                       <>
                         Send Message
@@ -289,10 +334,14 @@ const Contact = () => {
                     </div>
                     Contact Information
                   </h3>
-                  
+
                   <div className="space-y-5">
                     {contactInfo.map((info, index) => (
-                      <div key={index} className="flex items-start gap-4 group animate-fade-in-up" style={{ animationDelay: `${index * 100 + 200}ms` }}>
+                      <div
+                        key={index}
+                        className="flex items-start gap-4 group animate-fade-in-up"
+                        style={{ animationDelay: `${index * 100 + 200}ms` }}
+                      >
                         <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all">
                           <info.icon className="w-6 h-6 text-primary-600" />
                         </div>
@@ -308,7 +357,9 @@ const Contact = () => {
                               {info.details}
                             </a>
                           ) : (
-                            <p className="text-base font-semibold">{info.details}</p>
+                            <p className="text-base font-semibold">
+                              {info.details}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -341,13 +392,22 @@ const Contact = () => {
                 <CardContent className="p-6 space-y-4">
                   <h3 className="text-lg font-bold">Need Quick Help?</h3>
                   <div className="space-y-2 text-sm">
-                    <a href="/courses" className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200">
+                    <a
+                      href="/courses"
+                      className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200"
+                    >
                       → Browse Our Courses
                     </a>
-                    <a href="/about" className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200">
+                    <a
+                      href="/about"
+                      className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200"
+                    >
                       → Learn About Us
                     </a>
-                    <a href="#faq" className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200">
+                    <a
+                      href="#faq"
+                      className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200"
+                    >
                       → Check FAQs Below
                     </a>
                   </div>
@@ -374,7 +434,12 @@ const Contact = () => {
             <CardContent className="p-8">
               <Accordion type="single" collapsible className="w-full">
                 {faqs.map((faq, index) => (
-                  <AccordionItem key={index} value={`item-${index}`} className="animate-fade-in-up" style={{ animationDelay: `${index * 50}ms` }}>
+                  <AccordionItem
+                    key={index}
+                    value={`item-${index}`}
+                    className="animate-fade-in-up"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
                     <AccordionTrigger className="text-left hover:text-primary-600 text-base font-semibold py-4 hover:no-underline">
                       {faq.question}
                     </AccordionTrigger>
@@ -404,12 +469,13 @@ const Contact = () => {
                 Still have questions?
               </h2>
               <p className="text-lg text-white/90 max-w-2xl mx-auto">
-                Can't find the answer you're looking for? Our support team is here to help!
+                Can't find the answer you're looking for? Our support team is
+                here to help!
               </p>
               <Button
                 size="lg"
                 variant="secondary"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                 className="hover:scale-110 transition-transform shadow-xl"
               >
                 Send Us a Message

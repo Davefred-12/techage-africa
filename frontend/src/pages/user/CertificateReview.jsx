@@ -137,22 +137,22 @@ const CertificateReview = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { icon: BookOpen, label: 'Modules', value: courseData.modules, color: 'primary' },
-            { icon: Award, label: 'Lessons', value: courseData.lessons, color: 'secondary' },
-            { icon: Clock, label: 'Hours', value: `${courseData.hoursLearned}h`, color: 'accent' },
-            { icon: CheckCircle, label: 'Progress', value: '100%', color: 'green' },
-          ].map((stat, index) => (
-            <Card key={index}>
-              <CardContent className="p-4 text-center">
-                <stat.icon className={`w-8 h-8 mx-auto mb-2 text-${stat.color}-600`} />
-                <div className="text-2xl font-bold mb-1">{stat.value}</div>
-                <p className="text-xs text-muted-foreground">{stat.label}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+  {[
+    { icon: BookOpen, label: 'Modules', value: courseData.modules, color: 'primary' },
+    { icon: Award, label: 'Lessons', value: courseData.lessons, color: 'secondary' },
+    { icon: Clock, label: 'Time Spent', value: courseData.timeSpent || `${courseData.hoursLearned}h`, color: 'accent' },  // ✅ FIXED
+    { icon: CheckCircle, label: 'Progress', value: '100%', color: 'green' },
+  ].map((stat, index) => (
+    <Card key={index}>
+      <CardContent className="p-4 text-center">
+        <stat.icon className={`w-8 h-8 mx-auto mb-2 text-${stat.color}-600`} />
+        <div className="text-2xl font-bold mb-1">{stat.value}</div>
+        <p className="text-xs text-muted-foreground">{stat.label}</p>
+      </CardContent>
+    </Card>
+  ))}
+</div>
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Certificate Section */}

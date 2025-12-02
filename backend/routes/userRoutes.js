@@ -28,110 +28,148 @@ router.get('/dashboard/stats', protect, async (req, res) => {
 
     const userId = req.user._id;
 
+    // ✅ First, get enrollments
     const enrollments = await Enrollment.find({ 
       user: userId,
       paymentStatus: 'completed'
-    }).populate('course', 'title thumbnail duration modules');
+    });
 
-    // ✅ REAL DATA - No fake numbers
     const totalCourses = enrollments.length;
     const completedCourses = enrollments.filter(e => e.progress === 100).length;
     const inProgress = totalCourses - completedCourses;
 
-    // ✅ Calculate REAL total hours from actual completed lessons
-    let totalHours = 0;
+    // ✅ Calculate REAL time from completed lessons' video durations
+    let totalSeconds = 0;
+    
     if (totalCourses > 0) {
-      enrollments.forEach(enrollment => {
-        const course = enrollment.course;
-        if (!course || !course.modules) return;
+      // ✅ Manually fetch each course with full data
+      for (const enrollment of enrollments) {
+        const course = await Course.findById(enrollment.course).lean();
+        
+        if (!course || !course.modules) {
+          console.log('⚠️ Course missing modules:', course?.title);
+          continue;
+        }
         
         // Get completed lesson IDs for this enrollment
         const completedLessonIds = enrollment.completedLessons.map(id => id.toString());
         
-        // Calculate hours from ONLY completed lessons
+        console.log(`📚 Processing course: ${course.title}`);
+        console.log(`   Completed lessons: ${completedLessonIds.length}`);
+        console.log(`   Total modules: ${course.modules.length}`);
+        
+        // Calculate seconds from ONLY completed lessons using actual video duration
         course.modules.forEach(module => {
+          console.log(`   Module: ${module.title}, Lessons: ${module.lessons?.length || 0}`);
+          
           (module.lessons || []).forEach(lesson => {
             // Only count if lesson is completed
             if (completedLessonIds.includes(lesson._id.toString())) {
               if (lesson.duration && lesson.duration !== '00:00') {
-                const [mins, secs] = lesson.duration.split(':').map(Number);
-                const minutes = (mins || 0) + ((secs || 0) / 60);
-                totalHours += minutes / 60; // Convert to hours
+                const parts = lesson.duration.split(":");
+                const mins = parseInt(parts[0]) || 0;
+                const secs = parseInt(parts[1]) || 0;
+                const lessonTotalSeconds = (mins * 60) + secs;
+                
+                console.log(`      ✅ Lesson "${lesson.title}": ${lesson.duration} = ${lessonTotalSeconds}s`);
+                totalSeconds += lessonTotalSeconds;
               }
             }
           });
         });
-      });
-      
-      totalHours = Math.round(totalHours); // Round to nearest hour
+      }
     }
 
-    // ✅ If no lessons completed, hours should be 0
-    if (totalHours < 1 && enrollments.some(e => e.completedLessons.length > 0)) {
-      totalHours = 1; // Show at least 1 hour if there are some completed lessons
+    console.log(`⏱️ Total learning time: ${totalSeconds} seconds`);
+
+    // ✅ Convert to appropriate format
+    let displayHours;
+    let timeSpent;
+    
+    if (totalSeconds === 0) {
+      displayHours = 0;
+      timeSpent = '0s';
+    } else if (totalSeconds < 60) {
+      displayHours = 0;
+      timeSpent = `${totalSeconds}s`;
+    } else if (totalSeconds < 3600) {
+      const totalMinutes = Math.round(totalSeconds / 60);
+      displayHours = totalMinutes;
+      timeSpent = `${totalMinutes} min`;
+    } else {
+      const hours = (totalSeconds / 3600).toFixed(1);
+      displayHours = Math.round(totalSeconds / 3600);
+      timeSpent = `${hours}h`;
     }
 
     const avgProgress = enrollments.length > 0
       ? Math.round(enrollments.reduce((sum, e) => sum + e.progress, 0) / enrollments.length)
       : 0;
 
-    // Get current courses (in progress only)
-    const currentCourses = enrollments
-      .filter(e => e.progress > 0 && e.progress < 100) // ✅ Only show courses with actual progress
-      .slice(0, 2)
-      .map(enrollment => {
-        const course = enrollment.course;
+    // ✅ Get current courses (in progress only) - fetch course data
+    const currentCoursesData = [];
+    for (const enrollment of enrollments) {
+      if (enrollment.progress > 0 && enrollment.progress < 100) {
+        const course = await Course.findById(enrollment.course)
+          .select('title thumbnail modules')
+          .lean();
         
-        // ✅ Calculate total lessons correctly
-        const totalLessons = (course.modules || []).reduce((sum, module) => 
-          sum + ((module.lessons || []).length), 0);
-        
-        const completedLessons = enrollment.completedLessons.length;
+        if (course) {
+          const totalLessons = (course.modules || []).reduce((sum, module) => 
+            sum + ((module.lessons || []).length), 0);
+          
+          const completedLessons = enrollment.completedLessons.length;
 
-        return {
-          id: course._id,
-          title: course.title,
-          thumbnail: course.thumbnail,
-          progress: enrollment.progress,
-          lastAccessed: getTimeAgo(enrollment.lastAccessedAt),
-          nextLesson: 'Continue learning',
-          totalLessons,
-          completedLessons,
-        };
-      });
+          currentCoursesData.push({
+            id: course._id,
+            title: course.title,
+            thumbnail: course.thumbnail,
+            progress: enrollment.progress,
+            lastAccessed: getTimeAgo(enrollment.lastAccessedAt),
+            nextLesson: 'Continue learning',
+            totalLessons,
+            completedLessons,
+          });
+        }
+      }
+    }
+    const currentCourses = currentCoursesData.slice(0, 2);
 
-    // Recent activity - only if there are enrollments
+    // ✅ Recent activity - fetch course titles
     const recentActivity = [];
     
     if (enrollments.length > 0) {
-      enrollments
+      const sortedEnrollments = enrollments
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-        .slice(0, 3)
-        .forEach(enrollment => {
-          if (enrollment.progress === 100) {
-            recentActivity.push({
-              type: 'completed',
-              title: 'Completed course',
-              course: enrollment.course?.title,
-              time: getTimeAgo(enrollment.updatedAt),
-            });
-          } else {
-            recentActivity.push({
-              type: 'enrolled',
-              title: 'Enrolled in course',
-              course: enrollment.course?.title,
-              time: getTimeAgo(enrollment.createdAt),
-            });
-          }
-        });
+        .slice(0, 3);
+      
+      for (const enrollment of sortedEnrollments) {
+        const course = await Course.findById(enrollment.course).select('title').lean();
+        
+        if (enrollment.progress === 100) {
+          recentActivity.push({
+            type: 'completed',
+            title: 'Completed course',
+            course: course?.title,
+            time: getTimeAgo(enrollment.updatedAt),
+          });
+        } else {
+          recentActivity.push({
+            type: 'enrolled',
+            title: 'Enrolled in course',
+            course: course?.title,
+            time: getTimeAgo(enrollment.createdAt),
+          });
+        }
+      }
 
-      // Add certificate activity
       const certificatesEarned = enrollments.filter(e => e.certificateIssued);
       if (certificatesEarned.length > 0) {
+        const certCourse = await Course.findById(certificatesEarned[0].course).select('title').lean();
         recentActivity.unshift({
           type: 'certificate',
           title: 'Earned certificate',
-          course: certificatesEarned[0].course?.title,
+          course: certCourse?.title,
           time: getTimeAgo(certificatesEarned[0].certificateIssuedAt),
         });
       }
@@ -141,7 +179,9 @@ router.get('/dashboard/stats', protect, async (req, res) => {
       totalCourses,
       completedCourses,
       inProgress,
-      totalHours,
+      totalSeconds,
+      displayHours,
+      timeSpent,
       avgProgress,
       currentCoursesCount: currentCourses.length,
       recentActivityCount: recentActivity.length,
@@ -154,7 +194,8 @@ router.get('/dashboard/stats', protect, async (req, res) => {
           totalCourses,
           completed: completedCourses,
           inProgress,
-          totalHours, // ✅ REAL hours from completed lessons only
+          totalHours: displayHours,
+          timeSpent: timeSpent,
           avgProgress,
           certificates: enrollments.filter(e => e.certificateIssued).length,
         },
@@ -522,14 +563,18 @@ async function updateCourseRating(courseId) {
 // @desc    Get progress overview
 // @route   GET /api/user/progress/overview
 // @access  Private
+// @desc    Get progress overview
+// @route   GET /api/user/progress/overview
+// @access  Private
 router.get("/progress/overview", protect, async (req, res) => {
   try {
     console.log("📈 Fetching progress overview for user:", req.user._id);
 
+    // ✅ First, get enrollments without populate
     const enrollments = await Enrollment.find({
       user: req.user._id,
       paymentStatus: "completed",
-    }).populate("course");
+    });
 
     const totalCourses = enrollments.length;
     const completedCourses = enrollments.filter(
@@ -537,41 +582,65 @@ router.get("/progress/overview", protect, async (req, res) => {
     ).length;
     const inProgress = totalCourses - completedCourses;
 
-    // ✅ FIX: Calculate REAL total hours from actual completed lessons' video durations
-    let totalMinutes = 0;
+    // ✅ FIX: Calculate REAL time from completed lessons' video durations
+    let totalSeconds = 0;
     
-    enrollments.forEach((enrollment) => {
-      const course = enrollment.course;
-      if (!course || !course.modules) return;
-      
-      // Get completed lesson IDs for this enrollment
-      const completedLessonIds = enrollment.completedLessons.map(id => id.toString());
-      
-      // Calculate minutes from ONLY completed lessons using actual video duration
-      course.modules.forEach((module) => {
-        (module.lessons || []).forEach((lesson) => {
-          // Only count if lesson is completed
-          if (completedLessonIds.includes(lesson._id.toString())) {
-            if (lesson.duration && lesson.duration !== '00:00') {
-              const [mins, secs] = lesson.duration.split(':').map(Number);
-              totalMinutes += (mins || 0) + ((secs || 0) / 60);
+    if (totalCourses > 0) {
+      // ✅ Manually fetch each course with full data
+      for (const enrollment of enrollments) {
+        const course = await Course.findById(enrollment.course).lean();
+        
+        if (!course || !course.modules) {
+          console.log('⚠️ Course missing modules:', course?.title);
+          continue;
+        }
+        
+        // Get completed lesson IDs for this enrollment
+        const completedLessonIds = enrollment.completedLessons.map(id => id.toString());
+        
+        console.log(`📚 Processing course: ${course.title}`);
+        console.log(`   Completed lessons: ${completedLessonIds.length}`);
+        
+        // Calculate seconds from ONLY completed lessons using actual video duration
+        course.modules.forEach((module) => {
+          (module.lessons || []).forEach((lesson) => {
+            // Only count if lesson is completed
+            if (completedLessonIds.includes(lesson._id.toString())) {
+              if (lesson.duration && lesson.duration !== '00:00') {
+                const parts = lesson.duration.split(":");
+                const mins = parseInt(parts[0]) || 0;
+                const secs = parseInt(parts[1]) || 0;
+                const lessonTotalSeconds = (mins * 60) + secs;
+                
+                console.log(`      ✅ Lesson "${lesson.title}": ${lesson.duration} = ${lessonTotalSeconds}s`);
+                totalSeconds += lessonTotalSeconds;
+              }
             }
-          }
+          });
         });
-      });
-    });
+      }
+    }
     
-    // Convert minutes to hours
-    const totalHours = totalMinutes / 60;
+    console.log(`⏱️ Total learning time: ${totalSeconds} seconds`);
     
-    // Format hours for display
+    // ✅ Convert to appropriate format
     let displayHours;
-    if (totalHours < 1) {
-      // If less than 1 hour, show minutes
-      displayHours = Math.round(totalMinutes);
+    let timeSpent;
+    
+    if (totalSeconds === 0) {
+      displayHours = 0;
+      timeSpent = '0s';
+    } else if (totalSeconds < 60) {
+      displayHours = 0;
+      timeSpent = `${totalSeconds}s`;
+    } else if (totalSeconds < 3600) {
+      const totalMinutes = Math.round(totalSeconds / 60);
+      displayHours = totalMinutes;
+      timeSpent = `${totalMinutes} min`;
     } else {
-      // If 1 hour or more, round to nearest hour
-      displayHours = Math.round(totalHours);
+      const hours = (totalSeconds / 3600).toFixed(1);
+      displayHours = Math.round(totalSeconds / 3600);
+      timeSpent = `${hours}h`;
     }
 
     // ✅ Accurate average progress
@@ -583,8 +652,13 @@ router.get("/progress/overview", protect, async (req, res) => {
           )
         : 0;
 
-    const courseProgress = enrollments.map((enrollment) => {
-      const course = enrollment.course;
+    // ✅ Build course progress with manual course fetching
+    const courseProgress = [];
+    
+    for (const enrollment of enrollments) {
+      const course = await Course.findById(enrollment.course).lean();
+      
+      if (!course) continue;
       
       // ✅ FIX: Calculate total lessons correctly
       const totalLessons = (course.modules || []).reduce(
@@ -595,32 +669,37 @@ router.get("/progress/overview", protect, async (req, res) => {
       const completedLessons = enrollment.completedLessons.length;
 
       // ✅ FIX: Calculate REAL time spent per course from actual video durations
-      let courseMinutes = 0;
+      let courseSeconds = 0;
       const completedLessonIds = enrollment.completedLessons.map(id => id.toString());
       
       (course.modules || []).forEach((module) => {
         (module.lessons || []).forEach((lesson) => {
           if (completedLessonIds.includes(lesson._id.toString())) {
             if (lesson.duration && lesson.duration !== '00:00') {
-              const [mins, secs] = lesson.duration.split(':').map(Number);
-              courseMinutes += (mins || 0) + ((secs || 0) / 60);
+              const parts = lesson.duration.split(":");
+              const mins = parseInt(parts[0]) || 0;
+              const secs = parseInt(parts[1]) || 0;
+              courseSeconds += (mins * 60) + secs;
             }
           }
         });
       });
       
       // Format time spent for this course
-      let timeSpent;
-      if (courseMinutes < 1) {
-        timeSpent = `${Math.round(courseMinutes)} min`;
-      } else if (courseMinutes < 60) {
-        timeSpent = `${Math.round(courseMinutes)} min`;
+      let courseTimeSpent;
+      if (courseSeconds === 0) {
+        courseTimeSpent = '0s';
+      } else if (courseSeconds < 60) {
+        courseTimeSpent = `${courseSeconds}s`;
+      } else if (courseSeconds < 3600) {
+        const mins = Math.round(courseSeconds / 60);
+        courseTimeSpent = `${mins} min`;
       } else {
-        const hours = Math.round(courseMinutes / 60);
-        timeSpent = `${hours}h`;
+        const hours = (courseSeconds / 3600).toFixed(1);
+        courseTimeSpent = `${hours}h`;
       }
 
-      return {
+      courseProgress.push({
         id: course._id,
         title: course.title,
         thumbnail: course.thumbnail,
@@ -628,7 +707,7 @@ router.get("/progress/overview", protect, async (req, res) => {
         status: enrollment.progress === 100 ? "completed" : "in-progress",
         totalLessons, // ✅ Now accurate!
         completedLessons,
-        timeSpent, // ✅ Real time from video durations!
+        timeSpent: courseTimeSpent, // ✅ Real time from video durations!
         lastActivity: getTimeAgo(enrollment.lastAccessedAt),
         ...(enrollment.progress === 100 && {
           completedDate: formatDate(enrollment.updatedAt),
@@ -637,15 +716,16 @@ router.get("/progress/overview", protect, async (req, res) => {
         ...(enrollment.progress < 100 && {
           nextLesson: "Continue where you left off",
         }),
-      };
-    });
+      });
+    }
 
     console.log('✅ Progress calculated:', {
       totalCourses,
       completedCourses,
       inProgress,
-      totalMinutes: Math.round(totalMinutes),
+      totalSeconds,
       displayHours,
+      timeSpent,
       avgProgress,
     });
 
@@ -656,7 +736,8 @@ router.get("/progress/overview", protect, async (req, res) => {
           totalCourses,
           completed: completedCourses,
           inProgress,
-          totalHours: displayHours, // ✅ Real hours from actual video durations!
+          totalHours: displayHours, // Number for display
+          timeSpent: timeSpent, // ✅ Human-readable string
           avgProgress,
           certificates: completedCourses,
         },
@@ -820,11 +901,6 @@ router.get("/orders/:id/invoice", protect, async (req, res) => {
   }
 });
 
-// ============================================
-// FIXED: Certificate Routes in userRoutes.js
-// Replace the existing certificate routes with these
-// ============================================
-
 // @desc    Get certificate for completed course
 // @route   GET /api/user/certificates/:courseId
 // @access  Private
@@ -837,10 +913,7 @@ router.get("/certificates/:courseId", protect, async (req, res) => {
       course: req.params.courseId,
       progress: 100,
       certificateIssued: true,
-    }).populate(
-      "course",
-      "title instructor duration modules certificateTemplate"
-    );
+    });
 
     if (!enrollment) {
       return res.status(404).json({
@@ -849,27 +922,77 @@ router.get("/certificates/:courseId", protect, async (req, res) => {
       });
     }
 
-    const course = enrollment.course;
+    // ✅ FIX: Manually fetch the full course with modules
+    const course = await Course.findById(req.params.courseId)
+      .select('title instructor duration modules certificateTemplate')
+      .lean();
 
-    // ✅ Calculate accurate stats
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        message: "Course not found",
+      });
+    }
+
+    // ✅ Debug: Log the course structure
+    console.log('📚 Course structure:', {
+      hasModules: !!course.modules,
+      modulesCount: course.modules?.length || 0,
+      firstModule: course.modules?.[0] ? {
+        title: course.modules[0].title,
+        lessonsCount: course.modules[0].lessons?.length || 0
+      } : 'No modules',
+    });
+
+    // ✅ Calculate accurate stats from full course data
     const modules = course.modules || [];
     const totalModules = modules.length;
+    
+    // ✅ Count total lessons
     const totalLessons = modules.reduce((sum, module) => {
-      return sum + (module.lessons?.length || 0);
+      const lessonCount = (module.lessons || []).length;
+      console.log(`Module "${module.title}": ${lessonCount} lessons`);
+      return sum + lessonCount;
     }, 0);
 
-    // ✅ Calculate hours from lesson durations
-    let totalMinutes = 0;
+    // ✅ FIX: Calculate TOTAL SECONDS first, then convert to minutes/hours
+    let totalSeconds = 0;
+    
     modules.forEach((module) => {
-      module.lessons?.forEach((lesson) => {
-        if (lesson.duration) {
-          // Parse duration like "10:30" or "05:45"
-          const [mins, secs] = lesson.duration.split(":").map(Number);
-          totalMinutes += (mins || 0) + (secs || 0) / 60;
+      (module.lessons || []).forEach((lesson) => {
+        if (lesson.duration && lesson.duration !== '00:00') {
+          const parts = lesson.duration.split(":");
+          const mins = parseInt(parts[0]) || 0;
+          const secs = parseInt(parts[1]) || 0;
+          const lessonTotalSeconds = (mins * 60) + secs;
+          
+          console.log(`  Lesson "${lesson.title}": ${lesson.duration} = ${lessonTotalSeconds}s`);
+          totalSeconds += lessonTotalSeconds;
         }
       });
     });
-    const totalHours = Math.ceil(totalMinutes / 60) || 1; // At least 1 hour
+
+    console.log(`📊 Total time: ${totalSeconds} seconds`);
+
+    // ✅ Convert to appropriate unit
+    let timeSpent;
+    let hoursLearned;
+    
+    if (totalSeconds < 60) {
+      // Less than 1 minute - show seconds
+      timeSpent = `${totalSeconds}s`;
+      hoursLearned = 0;
+    } else if (totalSeconds < 3600) {
+      // Less than 1 hour - show minutes
+      const totalMinutes = Math.round(totalSeconds / 60);
+      timeSpent = `${totalMinutes} min`;
+      hoursLearned = 0;
+    } else {
+      // 1 hour or more - show hours
+      const hours = (totalSeconds / 3600).toFixed(1);
+      timeSpent = `${hours}h`;
+      hoursLearned = Math.round(totalSeconds / 3600);
+    }
 
     const certificateData = {
       id: req.params.courseId,
@@ -881,7 +1004,8 @@ router.get("/certificates/:courseId", protect, async (req, res) => {
       duration: course.duration,
       modules: totalModules,
       lessons: totalLessons,
-      hoursLearned: totalHours,
+      hoursLearned: hoursLearned,  // For stats display
+      timeSpent: timeSpent,  // Human-readable time
       userName: req.user.name,
       certificatePreview: course.certificateTemplate || null,
     };
@@ -889,6 +1013,11 @@ router.get("/certificates/:courseId", protect, async (req, res) => {
     console.log("✅ Certificate data prepared:", {
       userName: certificateData.userName,
       courseTitle: certificateData.title,
+      modules: certificateData.modules,
+      lessons: certificateData.lessons,
+      totalSeconds: totalSeconds,
+      timeSpent: certificateData.timeSpent,
+      hoursLearned: certificateData.hoursLearned,
       hasTemplate: !!certificateData.certificatePreview,
     });
 
@@ -949,6 +1078,7 @@ router.get("/certificates/:courseId/download", protect, async (req, res) => {
     });
   }
 });
+
 // ============================================
 // 👤 PROFILE & SETTINGS
 // ============================================
