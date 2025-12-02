@@ -51,21 +51,21 @@ const CertificateGenerator = ({ certificateData }) => {
           
           {/* Title */}
           <h1 
-            className="text-3xl font-bold text-black mb-8"
-            style={{ fontFamily: 'Old Standard TT, serif', letterSpacing: '0.05em' }}
+            className="text-2xl font-bold text-black"
+            style={{ fontFamily: 'Old Standard TT, serif', letterSpacing: '0.01em' }}
           >
             Certificate of Completion
           </h1>
 
           {/* Body Text */}
-          <p className="text-base text-gray-700 mb-4">
+          <p className="text-sm text-gray-700 mt-2 mb-2">
             This certificate is hereby bestowed upon
           </p>
 
           {/* Recipient Name */}
-          <div className="mb-4">
+          <div className="mb-2">
             <h2 
-              className="text-3xl text-black mb-2"
+              className="text-xl text-black mb-1"
               style={{ 
                 fontFamily: 'Brush Script MT, cursive',
                 fontStyle: 'italic'
@@ -80,21 +80,21 @@ const CertificateGenerator = ({ certificateData }) => {
           <p className="text-sm text-gray-700 text-center max-w-3xl mb-2">
             for the exceptional performance that led to the successful completion of
           </p>
-          <p className="text-base text-gray-700 text-center max-w-3xl mb-1">
-            TechAge Africa's <span className="font-semibold">{certificateData.title}</span>
+          <p className="text-xs text-gray-700 text-center max-w-3xl mb-1">
+            TechAge Africa's <span className="font-bold text-sm">{certificateData.title}</span>
           </p>
 
           {/* Footer */}
           <div className="w-full flex justify-between items-end mt-auto">
             {/* Left: Logo & Institute Info */}
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center">
-                <span className="text-white text-4xl font-bold">T</span>
+              <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
+                <span className="text-white text-xl font-bold">T</span>
               </div>
               <div className="text-left">
-                <h3 className="text-sm font-bold text-black">TechAge Africa</h3>
+                <h3 className="text-xs font-bold text-black">TechAge Africa</h3>
                 <p className="text-xs text-gray-600 max-w-[200px] leading-tight mt-1">
-                  Empowering Africa through technology education and innovation
+                  Empowering Africa through technology
                 </p>
               </div>
             </div>
@@ -103,7 +103,7 @@ const CertificateGenerator = ({ certificateData }) => {
             <div className="text-center">
               <div className="mb-2">
                 <p 
-                  className="text-xl text-black"
+                  className="text-base text-black"
                   style={{ 
                     fontFamily: 'Brush Script MT, cursive',
                     fontStyle: 'italic'
@@ -112,7 +112,7 @@ const CertificateGenerator = ({ certificateData }) => {
                   {certificateData.instructor || 'Admin'}
                 </p>
               </div>
-              <div className="border-t-2 border-black pt-1 min-w-[150px]">
+              <div className="border-t-2 border-black pt-1 min-w-[100px]">
                 <p className=" text-gray-700 text-xs">Course Instructor</p>
               </div>
             </div>
