@@ -1,5 +1,5 @@
 // ============================================
-// FILE: src/pages/user/CoursePlayer.jsx - FIXED
+// FILE: src/pages/user/CoursePlayer.jsx - UPDATED (No Lesson Description)
 // ============================================
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -57,7 +57,6 @@ const CoursePlayer = () => {
   const handleMarkComplete = async () => {
     if (!allLessons[currentLessonIndex]) return;
 
-    // ✅ FIX: Use _id instead of id
     const lessonId = allLessons[currentLessonIndex]._id;
     const isCompleted = courseData.completedLessonIds?.includes(lessonId);
 
@@ -146,7 +145,6 @@ const CoursePlayer = () => {
   ) || [];
 
   const currentLesson = allLessons[currentLessonIndex];
-  // ✅ FIX: Use _id instead of id
   const isLessonCompleted = courseData.completedLessonIds?.includes(currentLesson?._id);
 
   return (
@@ -164,7 +162,7 @@ const CoursePlayer = () => {
               Exit Course
             </Button>
             <div className="hidden md:block border-l pl-4">
-              <h1 className="font-bold">{courseData.title}</h1>
+              <h1 className="font-semibold text-xl text-center">{courseData.title}</h1>
               <p className="text-xs text-muted-foreground">
                 Lesson {currentLessonIndex + 1} of {allLessons.length}
               </p>
@@ -248,9 +246,7 @@ const CoursePlayer = () => {
                       <h2 className="text-xl font-bold mb-2">
                         {currentLesson.title}
                       </h2>
-                      <p className="text-muted-foreground text-sm leading-relaxed">
-                        {currentLesson.description || 'No description available'}
-                      </p>
+                      {/* ✅ REMOVED: No description shown anymore */}
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">

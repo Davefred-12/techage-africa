@@ -20,7 +20,6 @@ import {
   Clock,
   PlayCircle,
   CheckCircle,
-  Download,
   Calendar,
   Filter,
   Loader2,
@@ -65,11 +64,7 @@ const MyCourses = () => {
     navigate(`/user/courses/${course.id}/learn`);
   };
 
-  const handleDownloadCertificate = (e, courseId) => {
-    e.stopPropagation();
-    // TODO: Implement certificate download
-    toast.info("Certificate download coming soon!");
-  };
+
 
   if (loading) {
     return (
@@ -275,18 +270,18 @@ const MyCourses = () => {
                       )}
 
                       {/* Actions */}
-                      <div className="flex gap-2 pt-2">
+                      <div className="pt-2">
                         <Button
                           size="sm"
-                          className="flex-1"
+                          className="w-full"
                           onClick={(e) => {
-                            e.stopPropagation(); // ✅ Prevent card click
+                            e.stopPropagation();
                             if (course.status === "completed") {
                               navigate(
                                 `/user/courses/${course.id}/certificate`
-                              ); // ✅ Go to certificate
+                              );
                             } else {
-                              navigate(`/user/courses/${course.id}/learn`); // ✅ Go to player
+                              navigate(`/user/courses/${course.id}/learn`);
                             }
                           }}
                         >
@@ -294,18 +289,6 @@ const MyCourses = () => {
                             ? "View Certificate"
                             : "Continue Learning"}
                         </Button>
-                        {course.status === "completed" &&
-                          course.certificate && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={(e) =>
-                                handleDownloadCertificate(e, course.id)
-                              }
-                            >
-                              <Download className="h-4 w-4" />
-                            </Button>
-                          )}
                       </div>
                     </CardContent>
                   </Card>

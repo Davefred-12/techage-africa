@@ -862,67 +862,7 @@ const getVideoDuration = (file) => {
                 </div>
               </div>
 
-              {/* Certificate Template */}
-              <div>
-                <Label>Certificate Template (Optional)</Label>
-                <div className="border-2 border-dashed rounded-lg p-6 text-center mt-2">
-                  {certificate ? (
-                    <div className="space-y-3">
-                      <div className="p-4 bg-accent-50 dark:bg-accent-900/20 rounded-lg">
-                        {/* Show preview if it's an image */}
-                        {certificate.file.type.startsWith("image/") && (
-                          <img
-                            src={certificate.base64}
-                            alt="Certificate Preview"
-                            className="w-full max-h-48 object-contain rounded mb-3"
-                          />
-                        )}
-                        <div className="flex items-center justify-center gap-2 mb-2">
-                          <FileText className="h-5 w-5 text-accent-600" />
-                          <p className="text-sm font-medium">
-                            {certificate.name}
-                          </p>
-                        </div>
-                        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-                          <Badge variant="outline">
-                            {(certificate.file.size / 1024).toFixed(0)} KB
-                          </Badge>
-                          <Badge variant="outline">
-                            {certificate.file.type.split("/")[1].toUpperCase()}
-                          </Badge>
-                          <CheckCircle className="h-4 w-4 text-accent-600" />
-                        </div>
-                      </div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setCertificate(null)}
-                      >
-                        <X className="h-4 w-4 mr-2" />
-                        Remove & Upload New
-                      </Button>
-                    </div>
-                  ) : (
-                    <label className="cursor-pointer">
-                      <input
-                        type="file"
-                        accept="image/*,.pdf"
-                        className="hidden"
-                        onChange={handleCertificateUpload}
-                      />
-                      <FileText className="w-12 h-12 mx-auto text-muted-foreground mb-2" />
-                      <p className="text-sm font-medium">
-                        Click to upload certificate template
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        PNG, JPG, PDF up to 5MB • Students' names will be added
-                        automatically
-                      </p>
-                    </label>
-                  )}
-                </div>
-              </div>
+              
             </CardContent>
           </Card>
 

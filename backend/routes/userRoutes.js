@@ -212,25 +212,20 @@ router.get('/dashboard/stats', protect, async (req, res) => {
   }
 });
 
-// ============================================
-// 📚 MY COURSES
-// ============================================
-
 // @desc    Get user's enrolled courses
 // @route   GET /api/user/courses/enrolled
 // @access  Private
-// FIND THIS SECTION (around line 150-200) and REPLACE with:
-
 router.get('/courses/enrolled', protect, async (req, res) => {
   try {
     console.log('📚 Fetching enrolled courses for user:', req.user._id);
 
     const { status } = req.query;
 
+    // ✅ Get enrollments without populating
     const enrollments = await Enrollment.find({ 
       user: req.user._id,
       paymentStatus: 'completed'
-    }).populate('course');
+    });
 
     let filteredEnrollments = enrollments;
 
@@ -240,17 +235,27 @@ router.get('/courses/enrolled', protect, async (req, res) => {
       filteredEnrollments = enrollments.filter(e => e.progress === 100);
     }
 
-    const courses = filteredEnrollments.map(enrollment => {
-      const course = enrollment.course;
+    // ✅ FIX: Manually fetch each course with full data
+    const courses = [];
+    
+    for (const enrollment of filteredEnrollments) {
+      const course = await Course.findById(enrollment.course).lean();
       
-      // ✅ FIX: Calculate total lessons correctly
+      if (!course) {
+        console.log('⚠️ Course not found:', enrollment.course);
+        continue;
+      }
+      
+      // ✅ Calculate total lessons correctly from modules
       const totalLessons = (course.modules || []).reduce((sum, module) => {
         return sum + ((module.lessons || []).length);
       }, 0);
       
       const completedLessons = enrollment.completedLessons.length;
 
-      return {
+      console.log(`📚 Course "${course.title}": ${completedLessons}/${totalLessons} lessons`);
+
+      courses.push({
         id: course._id,
         title: course.title,
         thumbnail: course.thumbnail,
@@ -261,12 +266,14 @@ router.get('/courses/enrolled', protect, async (req, res) => {
         ...(enrollment.progress === 100 && {
           completedDate: formatDate(enrollment.updatedAt),
         }),
-        totalLessons, // ✅ Now accurate
+        totalLessons, // ✅ Now accurate from course.modules
         completedLessons,
         duration: course.duration,
         certificate: enrollment.certificateIssued ? `certificate-${enrollment._id}.pdf` : null,
-      };
-    });
+      });
+    }
+
+    console.log(`✅ Fetched ${courses.length} enrolled courses`);
 
     res.status(200).json({
       success: true,

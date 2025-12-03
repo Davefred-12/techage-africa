@@ -55,10 +55,6 @@ const OrderHistory = () => {
     }).format(amount);
   };
 
-  const handleDownloadInvoice = (orderId) => {
-    toast.info('Invoice download coming soon!');
-  };
-
   if (loading) {
     return (
       <DashboardLayout>
@@ -188,14 +184,7 @@ const OrderHistory = () => {
                       </div>
 
                       <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleDownloadInvoice(order.id)}
-                        >
-                          <Download className="h-4 w-4 mr-2" />
-                          Invoice
-                        </Button>
+                       
                         <Button
                           size="sm"
                           onClick={() => navigate('/user/my-courses')}
