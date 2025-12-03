@@ -409,7 +409,7 @@ const CourseDetail = () => {
                         </div>
                         <div className="flex items-center gap-2">
                           <CheckCircle className="w-4 h-4 text-accent-600" />
-                          <span>Downloadable resources</span>
+                          <span>Downloadable Certificate</span>
                         </div>
                       </div>
                     </div>

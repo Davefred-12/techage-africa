@@ -1,5 +1,5 @@
 // ============================================
-// FILE: backend/routes/publicRoutes.js - NEW
+// FILE: backend/routes/publicRoutes.js - UPDATED
 // ============================================
 import express from 'express';
 import {
@@ -7,6 +7,7 @@ import {
   unsubscribeNewsletter,
   submitContactForm,
 } from '../controllers/publicController.js';
+import { getPlatformStats } from '../controllers/statsController.js'; // ✅ Add this
 
 const router = express.Router();
 
@@ -16,5 +17,8 @@ router.post('/unsubscribe', unsubscribeNewsletter);
 
 // Contact form route
 router.post('/contact', submitContactForm);
+
+// Stats route - ✅ NEW
+router.get('/stats', getPlatformStats);
 
 export default router;

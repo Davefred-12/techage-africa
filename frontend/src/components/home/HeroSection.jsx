@@ -1,12 +1,46 @@
 // ============================================
-// FILE: src/components/home/HeroSection.jsx
+// FILE: src/components/home/HeroSection.jsx - WITH REAL STATS
 // ============================================
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useCountUp } from '../../hooks/useCountUp';
+import api from '../../services/api';
 
 const HeroSection = () => {
   const navigate = useNavigate();
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // ✅ Fetch real stats from backend
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await api.get('/api/public/stats');
+        if (response.data.success) {
+          setStats(response.data.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch hero stats:', error);
+        // Fallback values
+        setStats({
+          students: 2000,
+          courses: 12,
+          successRate: 95,
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  // ✅ Animated counters (only animate when stats are loaded)
+  const studentsCount = useCountUp(stats?.students || 0, 2500);
+  const coursesCount = useCountUp(stats?.courses || 0, 2500);
+  const successRateCount = useCountUp(stats?.successRate || 95, 2500);
 
   return (
     <section className="relative py-20 md:py-32 overflow-hidden min-h-[600px] lg:min-h-[700px]">
@@ -33,7 +67,7 @@ const HeroSection = () => {
             <div className="inline-flex items-center space-x-2 bg-primary-100/90 dark:bg-primary-900/40 px-4 py-2 rounded-full backdrop-blur-sm border border-primary-200 dark:border-primary-800 animate-fade-in">
               <Sparkles className="w-4 h-4 text-primary-600 dark:text-primary-400" />
               <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
-                Empowering 2000+ Africans Since 2019
+                Empowering Young Africans Since 2019
               </span>
             </div>
 
@@ -73,20 +107,26 @@ const HeroSection = () => {
               </Button>
             </div>
 
-            {/* Trust Indicators */}
+            {/* Trust Indicators - WITH REAL STATS */}
             <div className="flex items-center space-x-8 pt-4 animate-slide-up animation-delay-400">
               <div className="backdrop-blur-sm bg-background/30 px-3 py-2 rounded-lg">
-                <p className="text-2xl font-bold text-foreground">2000+</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {loading ? '...' : `${studentsCount}+`}
+                </p>
                 <p className="text-sm text-muted-foreground">Students Trained</p>
               </div>
               <div className="h-12 w-px bg-border"></div>
               <div className="backdrop-blur-sm bg-background/30 px-3 py-2 rounded-lg">
-                <p className="text-2xl font-bold text-foreground">12+</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {loading ? '...' : `${coursesCount}+`}
+                </p>
                 <p className="text-sm text-muted-foreground">Expert Courses</p>
               </div>
               <div className="h-12 w-px bg-border"></div>
               <div className="backdrop-blur-sm bg-background/30 px-3 py-2 rounded-lg">
-                <p className="text-2xl font-bold text-foreground">95%</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {loading ? '...' : `${successRateCount}%`}
+                </p>
                 <p className="text-sm text-muted-foreground">Success Rate</p>
               </div>
             </div>
@@ -95,20 +135,22 @@ const HeroSection = () => {
           {/* Right Side - Animated Floating Cards */}
           <div className="relative hidden lg:block h-[500px]">
             {/* Active Learners Card - Top Right */}
-            <div className="absolute top-20 right-0 bg-card/95 backdrop-blur-md p-5 rounded-xl shadow-2xl border-2 border-accent-200 dark:border-accent-800 animate-float">
+            <div className="absolute top-25 right-5 bg-card/95 backdrop-blur-md p-5 rounded-xl shadow-2xl border-2 border-accent-200 dark:border-accent-800 animate-float">
               <div className="flex items-center space-x-4">
                 <div className="w-14 h-14 rounded-full bg-gradient-to-br from-accent-400 to-accent-600 flex items-center justify-center shadow-lg">
                   <span className="text-3xl">🎓</span>
                 </div>
                 <div>
                   <p className="font-bold text-base text-foreground">Active Learners</p>
-                  <p className="text-sm text-muted-foreground">2000+ enrolled</p>
+                  <p className="text-sm text-muted-foreground">
+                    {loading ? '...' : `${studentsCount}+ enrolled`}
+                  </p>
                 </div>
               </div>
             </div>
 
             {/* Rating Card - Bottom Left */}
-            <div className="absolute bottom-20 left-0 bg-card/95 backdrop-blur-md p-5 rounded-xl shadow-2xl border-2 border-primary-200 dark:border-primary-800 animate-float animation-delay-1000">
+            <div className="absolute bottom-80 right-50 bg-card/95 backdrop-blur-md p-5 rounded-xl shadow-2xl border-2 border-primary-200 dark:border-primary-800 animate-float animation-delay-1000">
               <div className="flex items-center space-x-4">
                 <div className="w-14 h-14 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg">
                   <span className="text-3xl">⭐</span>
@@ -121,7 +163,7 @@ const HeroSection = () => {
             </div>
 
             {/* Certificate Badge - Middle Right */}
-            <div className="absolute top-1/2 right-10 transform -translate-y-1/2 bg-card/95 backdrop-blur-md p-5 rounded-xl shadow-2xl border-2 border-secondary-200 dark:border-secondary-800 animate-float animation-delay-500">
+            <div className="absolute top-60 right-0 transform -translate-y-1/2 bg-card/95 backdrop-blur-md p-5 rounded-xl shadow-2xl border-2 border-secondary-200 dark:border-secondary-800 animate-float animation-delay-500">
               <div className="flex items-center space-x-4">
                 <div className="w-14 h-14 rounded-full bg-gradient-to-br from-secondary-400 to-secondary-600 flex items-center justify-center shadow-lg">
                   <span className="text-3xl">🏆</span>
