@@ -1,13 +1,15 @@
 // ============================================
 // FILE: src/pages/Register.jsx - UPDATED
 // ============================================
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "react-toastify";  // ✅ ADD THIS
 import { useAuth } from "../context/authContext";  // ✅ ADD THIS
+import api from '../services/api';
+import { useCountUp } from '../hooks/useCountUp';
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Card, CardContent } from "../components/ui/card";
@@ -41,6 +43,33 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [stats, setStats] = useState(null);
+  const [statsLoading, setStatsLoading] = useState(true);
+
+  // Fetch real stats from backend
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await api.get('/api/public/stats');
+        if (response.data.success) {
+          setStats(response.data.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch stats:', error);
+        // Fallback values
+        setStats({
+          students: 2000,
+          courses: 12,
+          successRate: 95,
+          jobPlacements: 500,
+        });
+      } finally {
+        setStatsLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   const {
     register,
@@ -105,6 +134,10 @@ const Register = () => {
     { icon: CheckCircle, text: "Lifetime course access" },
   ];
 
+  // Animated counters
+  const studentsCount = useCountUp(stats?.students || 0, 2500);
+  const coursesCount = useCountUp(stats?.courses || 0, 2500);
+
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* Left Side - Image/Brand Section */}
@@ -149,11 +182,11 @@ const Register = () => {
 
           <div className="grid grid-cols-3 gap-6 pt-4 animate-fade-in-up animation-delay-800">
             <div className="text-center backdrop-blur-sm bg-white/10 rounded-lg p-3">
-              <p className="text-3xl font-bold">2000+</p>
+              <p className="text-3xl font-bold">{statsLoading ? '...' : `${studentsCount}+`}</p>
               <p className="text-sm text-white/80 mt-1">Students</p>
             </div>
             <div className="text-center backdrop-blur-sm bg-white/10 rounded-lg p-3">
-              <p className="text-3xl font-bold">12+</p>
+              <p className="text-3xl font-bold">{statsLoading ? '...' : `${coursesCount}+`}</p>
               <p className="text-sm text-white/80 mt-1">Courses</p>
             </div>
             <div className="text-center backdrop-blur-sm bg-white/10 rounded-lg p-3">

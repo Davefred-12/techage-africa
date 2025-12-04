@@ -1,11 +1,28 @@
 // src/components/layout/Navbar.jsx
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Moon, Sun, Menu, X, User, LogOut, Settings, BookOpen, LayoutDashboard, ShoppingBag, TrendingUp, Shield } from 'lucide-react';
-import { toast } from 'react-toastify';
-import { useTheme } from '../ThemeProvider';
-import { Button } from '../../components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Moon,
+  Sun,
+  Menu,
+  X,
+  User,
+  LogOut,
+  Settings,
+  BookOpen,
+  LayoutDashboard,
+  ShoppingBag,
+  TrendingUp,
+  Shield,
+} from "lucide-react";
+import { toast } from "react-toastify";
+import { useTheme } from "../ThemeProvider";
+import { Button } from "../../components/ui/button";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +30,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../../components/ui/dropdown-menu';
+} from "../../components/ui/dropdown-menu";
 import {
   Dialog,
   DialogContent,
@@ -21,8 +38,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../../components/ui/dialog';
-import { useAuth } from '../../context/authContext';
+} from "../../components/ui/dialog";
+import { useAuth } from "../../context/authContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,9 +51,9 @@ const Navbar = () => {
 
   const getUserInitials = (name) => {
     return name
-      .split(' ')
+      .split(" ")
       .map((word) => word[0])
-      .join('')
+      .join("")
       .toUpperCase()
       .slice(0, 2);
   };
@@ -44,30 +61,30 @@ const Navbar = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Courses', path: '/courses' },
-    { name: 'About', path: '/about' },
-    { name: 'Contact', path: '/contact' },
+    { name: "Home", path: "/" },
+    { name: "Courses", path: "/courses" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
   ];
 
   const userMenuItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', path: '/user' },
-    { icon: BookOpen, label: 'My Courses', path: '/user/my-courses' },
-    { icon: ShoppingBag, label: 'Order History', path: '/user/orders' },
-    { icon: TrendingUp, label: 'Progress Tracking', path: '/user/progress' },
-    { icon: Settings, label: 'Profile & Settings', path: '/user/settings' },
+    { icon: LayoutDashboard, label: "Dashboard", path: "/user" },
+    { icon: BookOpen, label: "My Courses", path: "/user/my-courses" },
+    { icon: ShoppingBag, label: "Order History", path: "/user/orders" },
+    { icon: TrendingUp, label: "Progress Tracking", path: "/user/progress" },
+    { icon: Settings, label: "Profile & Settings", path: "/user/settings" },
   ];
 
-const handleLogoutClick = () => {
-  setShowLogoutDialog(true);
-};
+  const handleLogoutClick = () => {
+    setShowLogoutDialog(true);
+  };
 
-const handleConfirmLogout = () => {
-  logout();
-  setShowLogoutDialog(false);
-  toast.success("Logged out successfully!");
-  navigate('/');
-};
+  const handleConfirmLogout = () => {
+    logout();
+    setShowLogoutDialog(false);
+    toast.success("Logged out successfully!");
+    navigate("/");
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -102,9 +119,9 @@ const handleConfirmLogout = () => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
             >
-              {theme === 'light' ? (
+              {theme === "light" ? (
                 <Moon className="h-5 w-5" />
               ) : (
                 <Sun className="h-5 w-5" />
@@ -112,28 +129,32 @@ const handleConfirmLogout = () => {
             </Button>
 
             {/* Auth Buttons / User Menu */}
-          {isAuthenticated && user ? (
-  <DropdownMenu>
-    <DropdownMenuTrigger asChild>
-      <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-        <Avatar className="h-10 w-10 ring-2 ring-primary-500 ring-offset-2 ring-offset-background cursor-pointer hover:ring-primary-600 transition-all">
-          <AvatarImage src={user.avatar} alt={user.name} />
-          <AvatarFallback className="bg-gradient-to-br from-primary-500 to-primary-700 text-white font-semibold">
-            {getUserInitials(user.name)}  {/* ✅ Real initials */}
-          </AvatarFallback>
-        </Avatar>
-      </Button>
-    </DropdownMenuTrigger>
-  
+            {isAuthenticated && user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="relative h-10 w-10 rounded-full"
+                  >
+                    <Avatar className="h-10 w-10 ring-2 ring-primary-500 ring-offset-2 ring-offset-background cursor-pointer hover:ring-primary-600 transition-all">
+                      <AvatarImage src={user.avatar} alt={user.name} />
+                      <AvatarFallback className="bg-gradient-to-br from-primary-500 to-primary-700 text-white font-semibold">
+                        {getUserInitials(user.name)} {/* ✅ Real initials */}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
 
                 <DropdownMenuContent align="end" className="w-64">
                   <DropdownMenuLabel>
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{user.name}</p>
+                      <p className="text-sm font-medium leading-none">
+                        {user.name}
+                      </p>
                       <p className="text-xs leading-none text-muted-foreground">
                         {user.email}
                       </p>
-                      {user.role === 'admin' && (
+                      {user.role === "admin" && (
                         <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary-600 mt-1">
                           <Shield className="h-3 w-3" />
                           Admin
@@ -142,21 +163,23 @@ const handleConfirmLogout = () => {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  
+
                   {/* Show Admin Dashboard link ONLY if user is admin */}
-                  {user.role === 'admin' && (
+                  {user.role === "admin" && (
                     <>
                       <DropdownMenuItem
-                        onClick={() => navigate('/admin')}
+                        onClick={() => navigate("/admin")}
                         className="cursor-pointer bg-primary-50 dark:bg-primary-900/20"
                       >
                         <Shield className="mr-2 h-4 w-4 text-primary-600" />
-                        <span className="font-semibold text-primary-600">Admin Dashboard</span>
+                        <span className="font-semibold text-primary-600">
+                          Admin Dashboard
+                        </span>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                     </>
                   )}
-                  
+
                   {userMenuItems.map((item) => (
                     <DropdownMenuItem
                       key={item.path}
@@ -167,9 +190,12 @@ const handleConfirmLogout = () => {
                       {item.label}
                     </DropdownMenuItem>
                   ))}
-                  
+
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogoutClick} className="cursor-pointer text-destructive focus:text-destructive">
+                  <DropdownMenuItem
+                    onClick={handleLogoutClick}
+                    className="cursor-pointer text-destructive focus:text-destructive"
+                  >
                     <LogOut className="mr-2 h-4 w-4" />
                     Logout
                   </DropdownMenuItem>
@@ -177,12 +203,7 @@ const handleConfirmLogout = () => {
               </DropdownMenu>
             ) : (
               <div className="hidden md:flex items-center space-x-2">
-                <Button variant="ghost" onClick={() => navigate('/login')}>
-                  Login
-                </Button>
-                <Button onClick={() => navigate('/register')}>
-                  Get Started
-                </Button>
+                <Button onClick={() => navigate("/login")}>Login</Button>
               </div>
             )}
 
@@ -193,7 +214,11 @@ const handleConfirmLogout = () => {
               className="md:hidden"
               onClick={toggleMenu}
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </Button>
           </div>
         </div>
@@ -224,8 +249,10 @@ const handleConfirmLogout = () => {
                     </Avatar>
                     <div>
                       <p className="text-sm font-medium">{user.name}</p>
-                      <p className="text-xs text-muted-foreground">{user.email}</p>
-                      {user.role === 'admin' && (
+                      <p className="text-xs text-muted-foreground">
+                        {user.email}
+                      </p>
+                      {user.role === "admin" && (
                         <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary-600 mt-0.5">
                           <Shield className="h-3 w-3" />
                           Admin
@@ -235,13 +262,13 @@ const handleConfirmLogout = () => {
                   </div>
 
                   {/* Admin Dashboard Link - Mobile */}
-                  {user.role === 'admin' && (
+                  {user.role === "admin" && (
                     <>
                       <Button
                         variant="default"
                         className="w-full justify-start bg-primary-600 hover:bg-primary-700"
                         onClick={() => {
-                          navigate('/admin');
+                          navigate("/admin");
                           toggleMenu();
                         }}
                       >
@@ -280,23 +307,13 @@ const handleConfirmLogout = () => {
               ) : (
                 <>
                   <Button
-                    variant="ghost"
                     className="w-full"
                     onClick={() => {
-                      navigate('/login');
+                      navigate("/login");
                       toggleMenu();
                     }}
                   >
                     Login
-                  </Button>
-                  <Button
-                    className="w-full"
-                    onClick={() => {
-                      navigate('/register');
-                      toggleMenu();
-                    }}
-                  >
-                    Get Started
                   </Button>
                 </>
               )}
@@ -311,11 +328,15 @@ const handleConfirmLogout = () => {
           <DialogHeader>
             <DialogTitle>Confirm Logout</DialogTitle>
             <DialogDescription>
-              Are you sure you want to log out? You will need to log in again to access your account.
+              Are you sure you want to log out? You will need to log in again to
+              access your account.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowLogoutDialog(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setShowLogoutDialog(false)}
+            >
               Cancel
             </Button>
             <Button variant="destructive" onClick={handleConfirmLogout}>
