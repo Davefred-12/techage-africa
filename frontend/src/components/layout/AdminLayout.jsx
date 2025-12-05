@@ -53,6 +53,11 @@ const AdminLayout = ({ children }) => {
       path: '/admin/courses',
     },
     {
+      icon: BookOpen,
+      label: 'Blog Management',
+      path: '/admin/blog',
+    },
+    {
       icon: Users,
       label: 'Manage Users',
       path: '/admin/users',

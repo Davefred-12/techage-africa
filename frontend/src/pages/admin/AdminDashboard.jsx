@@ -316,6 +316,9 @@ const AdminDashboard = () => {
                 <Button onClick={() => navigate('/admin/upload')}>
                   Upload New Course
                 </Button>
+                <Button onClick={() => navigate('/admin/blog')}>
+                  Manage Blog
+                </Button>
                 <Button variant="outline" onClick={() => navigate('/admin/users')}>
                   Manage Users
                 </Button>

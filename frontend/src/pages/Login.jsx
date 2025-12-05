@@ -30,7 +30,7 @@ const Login = () => {
   const [stats, setStats] = useState(null);
   const [statsLoading, setStatsLoading] = useState(true);
   // Get the page user was trying to access before login
-  const from = location.state?.from || "/";
+  const from = location.state?.from || "/user"; // Default to dashboard for logged-in users
 
   // Fetch real stats from backend
   useEffect(() => {

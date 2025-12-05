@@ -139,7 +139,7 @@ const Navbar = () => {
                     <Avatar className="h-10 w-10 ring-2 ring-primary-500 ring-offset-2 ring-offset-background cursor-pointer hover:ring-primary-600 transition-all">
                       <AvatarImage src={user.avatar} alt={user.name} />
                       <AvatarFallback className="bg-gradient-to-br from-primary-500 to-primary-700 text-white font-semibold">
-                        {getUserInitials(user.name)} {/* ✅ Real initials */}
+                        {getUserInitials(user.name)}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
@@ -223,101 +223,35 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* ✅ FIXED: Mobile Menu - Only Navigation Links */}
         {isOpen && (
-          <div className="md:hidden py-4 space-y-3 animate-fade-in">
+          <div className="md:hidden py-4 space-y-3 animate-fade-in border-t">
+            {/* Navigation Links */}
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={toggleMenu}
-                className="block py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className="block py-2 px-3 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors"
               >
                 {link.name}
               </Link>
             ))}
-            <div className="pt-4 space-y-2">
-              {isAuthenticated ? (
-                <>
-                  {/* User Info */}
-                  <div className="flex items-center gap-3 px-2 py-3 bg-muted/50 rounded-lg mb-2">
-                    <Avatar className="h-10 w-10">
-                      <AvatarImage src={user.avatar} alt={user.name} />
-                      <AvatarFallback className="bg-gradient-to-br from-primary-500 to-primary-700 text-white font-semibold">
-                        {getUserInitials(user.name)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-sm font-medium">{user.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {user.email}
-                      </p>
-                      {user.role === "admin" && (
-                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary-600 mt-0.5">
-                          <Shield className="h-3 w-3" />
-                          Admin
-                        </span>
-                      )}
-                    </div>
-                  </div>
 
-                  {/* Admin Dashboard Link - Mobile */}
-                  {user.role === "admin" && (
-                    <>
-                      <Button
-                        variant="default"
-                        className="w-full justify-start bg-primary-600 hover:bg-primary-700"
-                        onClick={() => {
-                          navigate("/admin");
-                          toggleMenu();
-                        }}
-                      >
-                        <Shield className="mr-2 h-4 w-4" />
-                        Admin Dashboard
-                      </Button>
-                      <div className="border-t pt-2 mt-2" />
-                    </>
-                  )}
-
-                  {/* User Menu Items */}
-                  {userMenuItems.map((item) => (
-                    <Button
-                      key={item.path}
-                      variant="ghost"
-                      className="w-full justify-start"
-                      onClick={() => {
-                        navigate(item.path);
-                        toggleMenu();
-                      }}
-                    >
-                      <item.icon className="mr-2 h-4 w-4" />
-                      {item.label}
-                    </Button>
-                  ))}
-
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start text-destructive"
-                    onClick={handleLogoutClick}
-                  >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Logout
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button
-                    className="w-full"
-                    onClick={() => {
-                      navigate("/login");
-                      toggleMenu();
-                    }}
-                  >
-                    Login
-                  </Button>
-                </>
-              )}
-            </div>
+            {/* ✅ Login/Register Button for Non-Authenticated Users */}
+            {!isAuthenticated && (
+              <div className="pt-2 border-t">
+                <Button
+                  className="w-full"
+                  onClick={() => {
+                    navigate("/login");
+                    toggleMenu();
+                  }}
+                >
+                  Login
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>

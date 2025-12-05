@@ -12,6 +12,8 @@ import enrollmentRoutes from './routes/enrollmentRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import publicRoutes from './routes/PublicRoutes.js';
+import blogRoutes from './routes/blogRoutes.js';
+import adminBlogRoutes from './routes/adminBlogRoutes.js';
 
 import passport from './config/passport.js';
 
@@ -50,8 +52,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/admin/blog', adminBlogRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/public', publicRoutes);
+app.use('/api/blog', blogRoutes);
 
 
 // Health check route

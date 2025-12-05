@@ -1,59 +1,67 @@
 // ============================================
 // FILE: backend/models/User.js
 // ============================================
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Please provide your name'],
+      required: [true, "Please provide your name"],
       trim: true,
     },
     email: {
       type: String,
-      required: [true, 'Please provide your email'],
+      required: [true, "Please provide your email"],
       unique: true,
       lowercase: true,
       trim: true,
       match: [
         /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-        'Please provide a valid email',
+        "Please provide a valid email",
       ],
     },
     password: {
       type: String,
-      required: function() {
+      required: function () {
         // Password is only required if no OAuth provider
-        return !this.provider || this.provider === 'local';
+        return !this.provider || this.provider === "local";
       },
-      minlength: [6, 'Password must be at least 6 characters'],
+      minlength: [6, "Password must be at least 6 characters"],
       select: false, // Don't return password in queries by default
     },
     avatar: {
       type: String,
-      default: '', // User profile image URL (from Cloudinary)
+      default: "", // User profile image URL (from Cloudinary)
     },
     role: {
       type: String,
-      enum: ['user', 'admin'],
-      default: 'user',
+      enum: ["user", "admin"],
+      default: "user",
+    },
+    // Add these fields before timestamps
+    isFirstLogin: {
+      type: Boolean,
+      default: true,
+    },
+    lastLoginAt: {
+      type: Date,
     },
     provider: {
       type: String,
-      enum: ['local', 'google', 'apple'],
-      default: 'local',
+      enum: ["local", "google", "apple"],
+      default: "local",
     },
     providerId: {
       type: String, // OAuth user ID from Google/Apple
-      default: '',
+      default: "",
     },
     enrolledCourses: [
       {
         course: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Course',
+          ref: "Course",
         },
         enrolledAt: {
           type: Date,
@@ -66,7 +74,7 @@ const userSchema = new mongoose.Schema(
         completedLessons: [
           {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Lesson',
+            ref: "Lesson",
           },
         ],
       },
@@ -82,9 +90,9 @@ const userSchema = new mongoose.Schema(
 );
 
 // Encrypt password before saving (only for local auth)
-userSchema.pre('save', async function (next) {
+userSchema.pre("save", async function (next) {
   // Only hash password if it's modified and provider is local
-  if (!this.isModified('password') || this.provider !== 'local') {
+  if (!this.isModified("password") || this.provider !== "local") {
     return next();
   }
 
@@ -105,18 +113,19 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
 // Generate password reset token
 userSchema.methods.getResetPasswordToken = function () {
   // Generate random token
-  const resetToken = Math.random().toString(36).substring(2, 15) + 
-                     Math.random().toString(36).substring(2, 15);
+  const resetToken =
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15);
 
   // Hash token and save to database
   this.resetPasswordToken = bcrypt.hashSync(resetToken, 10);
-  
+
   // Set expire time (1 hour)
   this.resetPasswordExpire = Date.now() + 60 * 60 * 1000; // 1 hour
 
   return resetToken;
 };
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;

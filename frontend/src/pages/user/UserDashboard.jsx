@@ -13,6 +13,8 @@ import {
 import { Button } from "../../components/ui/button";
 import { Badge } from "../../components/ui/badge";
 import { Progress } from "../../components/ui/progress";
+import WelcomeModal from "../../components/modals/WelcomeModal";
+import ContinueLearningModal from "../../components/modals/ContinueLearningModal";
 import { useAuth } from "../../context/authContext";
 import api from "../../services/api";
 import { toast } from "react-toastify";
@@ -32,6 +34,28 @@ const UserDashboard = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState(null);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [showContinueModal, setShowContinueModal] = useState(false);
+  const [lastCourse, setLastCourse] = useState(null);
+
+  // ✅ NEW: Check for modals on mount
+  useEffect(() => {
+    // Check if we should show welcome modal
+    const shouldShowWelcome = sessionStorage.getItem("showWelcomeModal");
+    if (shouldShowWelcome === "true") {
+      setShowWelcomeModal(true);
+      sessionStorage.removeItem("showWelcomeModal");
+    }
+
+    // Check if we should show continue learning modal
+    const lastAccessedCourse = sessionStorage.getItem("lastAccessedCourse");
+    if (lastAccessedCourse && shouldShowWelcome !== "true") {
+      const course = JSON.parse(lastAccessedCourse);
+      setLastCourse(course);
+      setShowContinueModal(true);
+      sessionStorage.removeItem("lastAccessedCourse");
+    }
+  }, []);
 
   // ✅ Fetch dashboard data from API
   useEffect(() => {
@@ -375,6 +399,20 @@ const UserDashboard = () => {
           </Card>
         </div>
       </div>
+
+      {/* Modals */}
+      <WelcomeModal
+        isOpen={showWelcomeModal}
+        onClose={() => setShowWelcomeModal(false)}
+        userName={user?.name?.split(" ")[0] || "there"}
+      />
+
+      <ContinueLearningModal
+        isOpen={showContinueModal}
+        onClose={() => setShowContinueModal(false)}
+        course={lastCourse}
+        userName={user?.name?.split(" ")[0] || "there"}
+      />
 
       <style>{`
         @keyframes fade-in-up {

@@ -5,6 +5,7 @@ import User from '../models/User.js';
 import generateToken from '../utils/generateToken.js';
 import bcrypt from 'bcryptjs';
 import sendEmail from '../utils/sendEmail.js';
+import Enrollment from '../models/Enrollment.js';
 
 // @desc    Register new user
 // @route   POST /api/auth/register
@@ -162,6 +163,9 @@ export const register = async (req, res) => {
 // @desc    Login user
 // @route   POST /api/auth/login
 // @access  Public
+// @desc    Login user
+// @route   POST /api/auth/login
+// @access  Public
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -174,55 +178,94 @@ export const login = async (req, res) => {
       });
     }
 
-    // Check if user exists (include password field)
+    // Find user by email (include password for comparison)
     const user = await User.findOne({ email }).select('+password');
-    
+
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password',
+        message: 'Invalid credentials',
       });
     }
 
-    // Check if user registered with OAuth
+    // Check if user uses OAuth (Google/Apple)
     if (user.provider !== 'local') {
       return res.status(400).json({
         success: false,
-        message: `This account was created with ${user.provider}. Please login with ${user.provider}.`,
+        message: `Please login with ${user.provider}`,
       });
     }
 
-    // Verify password
-    const isPasswordValid = await user.comparePassword(password);
-    
-    if (!isPasswordValid) {
+    // Check password
+    const isPasswordMatch = await user.comparePassword(password);
+
+    if (!isPasswordMatch) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password',
+        message: 'Invalid credentials',
       });
     }
 
-    // Generate token
+    // ✅ NEW: Check if first login and get last accessed course
+    const isFirstLogin = user.isFirstLogin;
+    let lastAccessedCourse = null;
+
+    if (!isFirstLogin) {
+      // Get user's most recently accessed course
+      const lastEnrollment = await Enrollment.findOne({
+        user: user._id,
+        paymentStatus: 'completed',
+        progress: { $gt: 0, $lt: 100 }, // In progress courses only
+      })
+        .sort({ lastAccessedAt: -1 })
+        .populate('course', 'title thumbnail')
+        .limit(1);
+
+      if (lastEnrollment) {
+        lastAccessedCourse = {
+          id: lastEnrollment.course._id,
+          title: lastEnrollment.course.title,
+          thumbnail: lastEnrollment.course.thumbnail,
+          progress: lastEnrollment.progress,
+        };
+      }
+    }
+
+    // ✅ NEW: Update first login flag and last login time
+    if (isFirstLogin) {
+      user.isFirstLogin = false;
+    }
+    user.lastLoginAt = new Date();
+    await user.save();
+
+    // Generate JWT token
     const token = generateToken(user._id);
 
-    // Send response
+    // Remove password from response
+    const userResponse = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      role: user.role,
+      provider: user.provider,
+    };
+
+    console.log('✅ User logged in successfully:', user.email);
+
     res.status(200).json({
       success: true,
       message: 'Login successful',
       token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        avatar: user.avatar,
-        role: user.role,
-      },
+      user: userResponse,
+      isFirstLogin, // ✅ Send first login status
+      lastAccessedCourse, // ✅ Send last course for returning users
     });
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('❌ Login error:', error);
     res.status(500).json({
       success: false,
-      message: 'Server error. Please try again later.',
+      message: 'Login failed. Please try again.',
     });
   }
 };

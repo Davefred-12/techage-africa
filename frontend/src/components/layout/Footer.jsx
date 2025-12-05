@@ -23,10 +23,10 @@ const Footer = () => {
       { name: 'Startup Acceleration', path: '/startup' },
     ],
     support: [
-      { name: 'Help Center', path: '/help' },
-      { name: 'FAQs', path: '/faq' },
+      { name: 'Help Center', path: '/contact' },
+      { name: 'FAQs', path: '/contact' },
       { name: 'Privacy Policy', path: '/privacy' },
-      { name: 'Terms of Service', path: '/terms' },
+      { name: 'Terms of Service', path: '/privacy' },
     ],
   };
 

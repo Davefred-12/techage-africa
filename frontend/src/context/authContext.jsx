@@ -46,12 +46,22 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Login function
-  const login = async (credentials) => {
-    const response = await authService.login(credentials);
-    setUser(response.user);
-    setIsAuthenticated(true);
-    return response;
-  };
+ // Login function
+const login = async (credentials) => {
+  const response = await authService.login(credentials);
+  setUser(response.user);
+  setIsAuthenticated(true);
+  
+  // ✅ Store modal data in sessionStorage (clears on browser close)
+  if (response.isFirstLogin !== undefined) {
+    sessionStorage.setItem('showWelcomeModal', response.isFirstLogin.toString());
+  }
+  if (response.lastAccessedCourse) {
+    sessionStorage.setItem('lastAccessedCourse', JSON.stringify(response.lastAccessedCourse));
+  }
+  
+  return response;
+};
 
   // Register function
   const register = async (userData) => {
