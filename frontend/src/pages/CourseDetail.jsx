@@ -6,11 +6,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import api from "../services/api";
 import { toast } from "react-toastify";
+import { Helmet } from 'react-helmet-async';
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { Card, CardContent } from "../components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { Separator } from "../components/ui/separator";
+import { Skeleton } from "../components/ui/skeleton";
 import {
   Tabs,
   TabsContent,
@@ -31,7 +33,7 @@ import {
 } from "lucide-react";
 
 const CourseDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
@@ -51,7 +53,7 @@ const CourseDetail = () => {
     const fetchCourse = async () => {
       try {
         setLoading(true);
-        const response = await api.get(`/api/courses/${id}`);
+        const response = await api.get(`/api/courses/${slug}`);
 
         if (response.data.success) {
           setCourse(response.data.data);
@@ -66,7 +68,7 @@ const CourseDetail = () => {
     };
 
     fetchCourse();
-  }, [id]);
+  }, [slug]);
 
   // ✅ Check if user is enrolled
   useEffect(() => {
@@ -131,7 +133,7 @@ const CourseDetail = () => {
 
   const handleEnroll = async () => {
     if (!isAuthenticated) {
-      navigate("/login", { state: { from: `/courses/${id}` } });
+      navigate("/login", { state: { from: `/courses/${slug}` } });
       return;
     }
 
@@ -198,10 +200,93 @@ const CourseDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-muted/30 flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Loader2 className="w-12 h-12 text-primary-600 animate-spin mx-auto" />
-          <p className="text-muted-foreground">Loading course details...</p>
+      <div className="min-h-screen bg-muted/30">
+        {/* Back Button Skeleton */}
+        <div className="bg-background border-b">
+          <div className="container-custom py-4">
+            <Skeleton className="h-10 w-32" />
+          </div>
+        </div>
+
+        {/* Hero Section Skeleton */}
+        <div className="bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20">
+          <div className="container-custom py-12">
+            <div className="grid lg:grid-cols-3 gap-8">
+              {/* Left Content Skeleton */}
+              <div className="lg:col-span-2 space-y-6">
+                <div className="space-y-4">
+                  <Skeleton className="h-6 w-20" />
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-6 w-3/4" />
+                </div>
+
+                {/* Stats Skeleton */}
+                <div className="flex flex-wrap items-center gap-6">
+                  <Skeleton className="h-5 w-16" />
+                  <Skeleton className="h-5 w-20" />
+                  <Skeleton className="h-5 w-16" />
+                  <Skeleton className="h-5 w-18" />
+                </div>
+
+                {/* Instructor Skeleton */}
+                <div className="flex items-center gap-4 p-4 bg-card rounded-lg border">
+                  <Skeleton className="h-12 w-12 rounded-full" />
+                  <div>
+                    <Skeleton className="h-5 w-32" />
+                    <Skeleton className="h-4 w-24" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Sidebar Skeleton */}
+              <div className="lg:col-span-1">
+                <Card className="sticky top-4">
+                  <CardContent className="p-0">
+                    {/* Thumbnail Skeleton */}
+                    <Skeleton className="aspect-video w-full rounded-none" />
+
+                    <div className="p-6 space-y-4">
+                      {/* Price Skeleton */}
+                      <Skeleton className="h-8 w-24" />
+                      <Skeleton className="h-4 w-32" />
+
+                      {/* Enroll Button Skeleton */}
+                      <Skeleton className="h-12 w-full" />
+
+                      {/* What's Included Skeleton */}
+                      <div className="space-y-3">
+                        <Skeleton className="h-5 w-40" />
+                        <div className="space-y-2">
+                          <Skeleton className="h-4 w-full" />
+                          <Skeleton className="h-4 w-full" />
+                          <Skeleton className="h-4 w-full" />
+                          <Skeleton className="h-4 w-full" />
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Course Content Tabs Skeleton */}
+        <div className="container-custom py-12">
+          <div className="grid w-full grid-cols-4 mb-8 gap-2">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+
+          <Card>
+            <CardContent className="p-6 space-y-4">
+              <Skeleton className="h-8 w-48" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-5/6" />
+            </CardContent>
+          </Card>
         </div>
       </div>
     );
@@ -229,7 +314,22 @@ const CourseDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-muted/30">
+    <>
+      <Helmet>
+        <title>{course.title} - TechAge Africa</title>
+        <meta name="description" content={course.description} />
+        <meta name="keywords" content={`${course.category}, ${course.tags?.join(', ') || ''}, online course, TechAge Africa`} />
+        <meta property="og:title" content={`${course.title} - TechAge Africa`} />
+        <meta property="og:description" content={course.description} />
+        <meta property="og:image" content={course.thumbnail} />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${course.title} - TechAge Africa`} />
+        <meta name="twitter:description" content={course.description} />
+        <link rel="canonical" href={window.location.href} />
+      </Helmet>
+      <div className="min-h-screen bg-muted/30">
       {/* Back Button */}
       <div className="bg-background border-b">
         <div className="container-custom py-4">
@@ -634,6 +734,7 @@ const CourseDetail = () => {
         </Tabs>
       </div>
     </div>
+    </>
   );
 };
 

@@ -9,6 +9,7 @@ import { Card, CardContent, CardFooter } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { Skeleton } from '../components/ui/skeleton';
 import {
   Select,
   SelectContent,
@@ -94,17 +95,6 @@ const Courses = () => {
 
   const filteredCourses = getFilteredCourses();
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-muted/30 flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Loader2 className="w-12 h-12 text-primary-600 animate-spin mx-auto" />
-          <p className="text-muted-foreground">Loading courses...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen py-12 bg-muted/30">
       <div className="container-custom">
@@ -153,18 +143,42 @@ const Courses = () => {
         {/* Results count */}
         <div className="mb-6">
           <p className="text-sm text-muted-foreground">
-            Showing <span className="font-semibold text-foreground">{filteredCourses.length}</span> courses
+            {loading ? 'Loading courses...' : `Showing ${filteredCourses.length} courses`}
           </p>
         </div>
 
         {/* Courses Grid */}
-        {filteredCourses.length > 0 ? (
+        {loading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <Card key={`skeleton-${index}`} className="overflow-hidden">
+                <div className="relative h-48 bg-muted">
+                  <Skeleton className="w-full h-full rounded-none" />
+                </div>
+                <CardContent className="p-5 space-y-3">
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-6 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <div className="flex gap-4">
+                    <Skeleton className="h-4 w-12" />
+                    <Skeleton className="h-4 w-12" />
+                    <Skeleton className="h-4 w-12" />
+                  </div>
+                </CardContent>
+                <CardFooter className="p-5 pt-0 flex justify-between">
+                  <Skeleton className="h-6 w-20" />
+                  <Skeleton className="h-9 w-24" />
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        ) : filteredCourses.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCourses.map((course) => (
               <Card
                 key={course._id}
                 className="group hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden"
-                onClick={() => navigate(`/courses/${course._id}`)}
+                onClick={() => navigate(`/courses/${course.slug || course._id}`)}
               >
                 {/* Course Image */}
                 <div className="relative h-48 overflow-hidden bg-muted">

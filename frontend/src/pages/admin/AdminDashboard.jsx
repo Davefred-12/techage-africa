@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
+import { Skeleton } from '../../components/ui/skeleton';
 import { useAuth } from '../../context/authContext';
 import {
   Users,
@@ -103,11 +104,103 @@ const AdminDashboard = () => {
   if (loading) {
     return (
       <AdminLayout>
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center">
-            <Loader2 className="h-12 w-12 animate-spin mx-auto text-primary-600 mb-4" />
-            <p className="text-muted-foreground">Loading dashboard...</p>
+        <div className="space-y-8">
+          {/* Header Skeleton */}
+          <div>
+            <Skeleton className="h-10 w-80 mb-2" />
+            <Skeleton className="h-5 w-96" />
           </div>
+
+          {/* Stats Grid Skeleton */}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Card key={i}>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <Skeleton className="w-12 h-12 rounded-xl" />
+                    <Skeleton className="h-5 w-16" />
+                  </div>
+                  <Skeleton className="h-8 w-16 mb-2" />
+                  <Skeleton className="h-4 w-24" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Main Content Grid Skeleton */}
+          <div className="grid gap-6 lg:grid-cols-3">
+            <Card className="lg:col-span-2">
+              <CardHeader className="flex flex-row items-center justify-between">
+                <Skeleton className="h-6 w-40" />
+                <Skeleton className="h-9 w-20" />
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="flex items-center justify-between p-4 rounded-lg bg-muted/50">
+                      <div className="flex items-center gap-4 flex-1 min-w-0">
+                        <Skeleton className="h-12 w-12 rounded-full" />
+                        <div className="flex-1 min-w-0">
+                          <Skeleton className="h-4 w-32 mb-1" />
+                          <Skeleton className="h-3 w-24" />
+                          <Skeleton className="h-3 w-20" />
+                        </div>
+                      </div>
+                      <div className="text-right flex-shrink-0 ml-4">
+                        <Skeleton className="h-5 w-16 mb-1" />
+                        <Skeleton className="h-5 w-12" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <Skeleton className="h-6 w-32" />
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <div key={i} className="p-4 rounded-lg border">
+                      <div className="flex items-start justify-between mb-3">
+                        <Skeleton className="h-5 w-full flex-1" />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <Skeleton className="h-3 w-16" />
+                          <Skeleton className="h-3 w-8" />
+                        </div>
+                        <div className="flex justify-between">
+                          <Skeleton className="h-3 w-12" />
+                          <Skeleton className="h-3 w-16" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Quick Actions Skeleton */}
+          <Card className="bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20 border-2">
+            <CardContent className="p-6">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                  <Skeleton className="h-6 w-32 mb-1" />
+                  <Skeleton className="h-4 w-48" />
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <Skeleton className="h-10 w-32" />
+                  <Skeleton className="h-10 w-28" />
+                  <Skeleton className="h-10 w-28" />
+                  <Skeleton className="h-10 w-32" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </AdminLayout>
     );

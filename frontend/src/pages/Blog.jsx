@@ -8,6 +8,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
 import { Separator } from '../components/ui/separator';
+import { Skeleton } from '../components/ui/skeleton';
 import {
   Search,
   Calendar,
@@ -337,9 +338,54 @@ const Blog = () => {
 
             {/* Blog Posts */}
             {loading ? (
-              <div className="flex items-center justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
-                <span className="ml-2">Loading articles...</span>
+              <div className="space-y-6">
+                {Array.from({ length: 3 }).map((_, index) => (
+                  <Card key={`skeleton-${index}`} className="overflow-hidden">
+                    <div className="md:flex">
+                      <div className="md:w-1/3">
+                        <Skeleton className="w-full h-48 md:h-full rounded-none" />
+                      </div>
+                      <div className="flex-1 md:w-2/3">
+                        <CardContent className="p-6">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Skeleton className="h-5 w-16" />
+                            <Skeleton className="h-5 w-20" />
+                          </div>
+
+                          <Skeleton className="h-8 w-full mb-3" />
+
+                          <Skeleton className="h-4 w-full mb-2" />
+                          <Skeleton className="h-4 w-3/4 mb-4" />
+
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4 text-sm">
+                              <Skeleton className="h-4 w-16" />
+                              <Skeleton className="h-4 w-20" />
+                              <Skeleton className="h-4 w-16" />
+                            </div>
+
+                            <div className="flex items-center gap-3 text-sm">
+                              <Skeleton className="h-4 w-8" />
+                              <Skeleton className="h-4 w-8" />
+                              <Skeleton className="h-4 w-8" />
+                            </div>
+                          </div>
+
+                          <Separator className="my-4" />
+
+                          <div className="flex items-center justify-between">
+                            <div className="flex flex-wrap gap-1">
+                              <Skeleton className="h-5 w-12" />
+                              <Skeleton className="h-5 w-16" />
+                            </div>
+
+                            <Skeleton className="h-9 w-24" />
+                          </div>
+                        </CardContent>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
               </div>
             ) : blogs.length === 0 ? (
               <Card>
