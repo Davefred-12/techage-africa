@@ -1,12 +1,12 @@
 // ============================================
 // FILE: src/components/home/HeroSection.jsx - WITH REAL STATS
 // ============================================
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { useCountUp } from '../../hooks/useCountUp';
-import api from '../../services/api';
+import { useCountUp } from "../../hooks/useCountUp";
+import api from "../../services/api";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -17,12 +17,12 @@ const HeroSection = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await api.get('/api/public/stats');
+        const response = await api.get("/api/public/stats");
         if (response.data.success) {
           setStats(response.data.data);
         }
       } catch (error) {
-        console.error('Failed to fetch hero stats:', error);
+        console.error("Failed to fetch hero stats:", error);
         // Fallback values
         setStats({
           students: 2000,
@@ -46,8 +46,8 @@ const HeroSection = () => {
     <section className="relative py-20 md:py-32 overflow-hidden min-h-[600px] lg:min-h-[700px]">
       {/* Background Image with Better Visibility */}
       <div className="absolute inset-0">
-        <img 
-          src="/images/her.jpg" 
+        <img
+          src="/images/her.jpg"
           alt="Hero background"
           className="w-full h-full object-cover"
         />
@@ -102,7 +102,7 @@ const HeroSection = () => {
                 className="text-base group backdrop-blur-sm bg-background/50 hover:bg-background/70 shadow-md"
                 onClick={() => navigate("/about")}
               >
-                Learn More About Us
+                Read Our Latest Articles{" "}
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
@@ -111,21 +111,23 @@ const HeroSection = () => {
             <div className="flex items-center space-x-8 pt-4 animate-slide-up animation-delay-400">
               <div className="backdrop-blur-sm bg-background/30 px-3 py-2 rounded-lg">
                 <p className="text-2xl font-bold text-foreground">
-                  {loading ? '...' : `${studentsCount}+`}
+                  {loading ? "..." : `${studentsCount}+`}
                 </p>
-                <p className="text-sm text-muted-foreground">Students Trained</p>
+                <p className="text-sm text-muted-foreground">
+                  Students Trained
+                </p>
               </div>
               <div className="h-12 w-px bg-border"></div>
               <div className="backdrop-blur-sm bg-background/30 px-3 py-2 rounded-lg">
                 <p className="text-2xl font-bold text-foreground">
-                  {loading ? '...' : `${coursesCount}+`}
+                  {loading ? "..." : `${coursesCount}+`}
                 </p>
                 <p className="text-sm text-muted-foreground">Expert Courses</p>
               </div>
               <div className="h-12 w-px bg-border"></div>
               <div className="backdrop-blur-sm bg-background/30 px-3 py-2 rounded-lg">
                 <p className="text-2xl font-bold text-foreground">
-                  {loading ? '...' : `${successRateCount}%`}
+                  {loading ? "..." : `${successRateCount}%`}
                 </p>
                 <p className="text-sm text-muted-foreground">Success Rate</p>
               </div>
@@ -141,9 +143,11 @@ const HeroSection = () => {
                   <span className="text-3xl">🎓</span>
                 </div>
                 <div>
-                  <p className="font-bold text-base text-foreground">Active Learners</p>
+                  <p className="font-bold text-base text-foreground">
+                    Active Learners
+                  </p>
                   <p className="text-sm text-muted-foreground">
-                    {loading ? '...' : `${studentsCount}+ enrolled`}
+                    {loading ? "..." : `${studentsCount}+ enrolled`}
                   </p>
                 </div>
               </div>
@@ -156,8 +160,12 @@ const HeroSection = () => {
                   <span className="text-3xl">⭐</span>
                 </div>
                 <div>
-                  <p className="font-bold text-base text-foreground">4.9/5 Rating</p>
-                  <p className="text-sm text-muted-foreground">From our students</p>
+                  <p className="font-bold text-base text-foreground">
+                    4.9/5 Rating
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    From our students
+                  </p>
                 </div>
               </div>
             </div>
@@ -169,8 +177,12 @@ const HeroSection = () => {
                   <span className="text-3xl">🏆</span>
                 </div>
                 <div>
-                  <p className="font-bold text-base text-foreground">Get Certified</p>
-                  <p className="text-sm text-muted-foreground">Download on completion</p>
+                  <p className="font-bold text-base text-foreground">
+                    Get Certified
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Download on completion
+                  </p>
                 </div>
               </div>
             </div>
