@@ -177,7 +177,7 @@ const Courses = () => {
             {filteredCourses.map((course) => (
               <Card
                 key={course._id}
-                className="group hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden"
+                className="group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden"
                 onClick={() => navigate(`/courses/${course.slug || course._id}`)}
               >
                 {/* Course Image */}
@@ -234,7 +234,7 @@ const Courses = () => {
                       {formatCurrency(course.price)}
                     </p>
                   </div>
-                  <Button size="sm" className="group-hover:bg-primary-700">
+                  <Button size="sm" className="group-hover:bg-primary/90">
                     View Details
                   </Button>
                 </CardFooter>

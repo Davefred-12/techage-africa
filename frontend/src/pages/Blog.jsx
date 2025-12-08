@@ -267,7 +267,7 @@ const Blog = () => {
                     <Badge
                       key={tag._id}
                       variant={selectedTag === tag._id ? "default" : "secondary"}
-                      className="cursor-pointer hover:bg-primary-100"
+                      className="cursor-pointer hover:bg-primary/10"
                       onClick={() => handleTagFilter(tag._id)}
                     >
                       {tag._id} ({tag.count})
@@ -408,7 +408,7 @@ const Blog = () => {
             ) : (
               <div className="space-y-6">
                 {blogs.map((blog) => (
-                  <Card key={blog._id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate(`/blog/${blog.slug}`)}>
+                  <Card key={blog._id} className="overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => navigate(`/blog/${blog.slug}`)}>
                     <div className="md:flex">
                       {blog.featuredImage && (
                         <div className="md:w-1/3">

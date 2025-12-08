@@ -317,7 +317,7 @@ const BlogPost = () => {
                     <div className="flex flex-wrap gap-2">
                       {blog.tags.map((tag) => (
                         <Link key={tag} to={`/blog?tag=${tag}`}>
-                          <Badge variant="secondary" className="cursor-pointer hover:bg-primary-100">
+                          <Badge variant="secondary" className="cursor-pointer hover:bg-primary/10">
                             #{tag}
                           </Badge>
                         </Link>
@@ -371,7 +371,7 @@ const BlogPost = () => {
                         value={commentContent}
                         onChange={(e) => setCommentContent(e.target.value)}
                         placeholder="Share your thoughts..."
-                        className="w-full p-3 border rounded-md resize-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full p-3 border border-input bg-background rounded-md resize-none transition-all duration-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         rows={4}
                         required
                       />
