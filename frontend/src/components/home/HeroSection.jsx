@@ -100,7 +100,7 @@ const HeroSection = () => {
                 size="lg"
                 variant="outline"
                 className="text-base group backdrop-blur-sm bg-background/50 hover:bg-background/70 shadow-md"
-                onClick={() => navigate("/about")}
+                onClick={() => navigate("/blog")}
               >
                 Read Our Latest Articles{" "}
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
