@@ -1,8 +1,8 @@
 // ============================================
 // FILE: src/components/layout/AdminLayout.jsx
 // ============================================
-import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
@@ -14,12 +14,12 @@ import {
   LogOut,
   ChevronRight,
   Settings,
-} from 'lucide-react';
-import { Button } from '../../components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { Badge } from '../../components/ui/badge';
-import { useAuth } from '../../context/authContext';
-import { cn } from '../../lib/utils';
+} from "lucide-react";
+import { Button } from "../../components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Badge } from "../../components/ui/badge";
+import { useAuth } from "../../context/authContext";
+import { cn } from "../../lib/utils";
 
 const AdminLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -29,9 +29,9 @@ const AdminLayout = ({ children }) => {
 
   const getInitials = (name) => {
     return name
-      .split(' ')
+      .split(" ")
       .map((word) => word[0])
-      .join('')
+      .join("")
       .toUpperCase()
       .slice(0, 2);
   };
@@ -39,44 +39,45 @@ const AdminLayout = ({ children }) => {
   const menuItems = [
     {
       icon: LayoutDashboard,
-      label: 'Dashboard',
-      path: '/admin',
+      label: "Dashboard",
+      path: "/admin",
     },
     {
       icon: Upload,
-      label: 'Upload Course',
-      path: '/admin/upload',
+      label: "Upload Course",
+      path: "/admin/upload",
     },
     {
       icon: BookOpen,
-      label: 'Manage Courses',
-      path: '/admin/courses',
+      label: "Manage Courses",
+      path: "/admin/courses",
     },
-    {
-      icon: BookOpen,
-      label: 'Blog Management',
-      path: '/admin/blog',
-    },
+
     {
       icon: Users,
-      label: 'Manage Users',
-      path: '/admin/users',
+      label: "Manage Users",
+      path: "/admin/users",
+    },
+    {
+      icon: BookOpen,
+      label: "Blog Management",
+      path: "/admin/blog",
     },
     {
       icon: DollarSign,
-      label: 'Revenue & Analytics',
-      path: '/admin/revenue',
+      label: "Revenue & Analytics",
+      path: "/admin/revenue",
     },
     {
       icon: Settings,
-      label: 'Settings',
-      path: '/admin/settings',
+      label: "Settings",
+      path: "/admin/settings",
     },
   ];
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   const isActive = (path) => {
@@ -93,7 +94,11 @@ const AdminLayout = ({ children }) => {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="bg-background shadow-lg"
         >
-          {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {sidebarOpen ? (
+            <X className="h-5 w-5" />
+          ) : (
+            <Menu className="h-5 w-5" />
+          )}
         </Button>
       </div>
 
@@ -119,14 +124,18 @@ const AdminLayout = ({ children }) => {
               <Avatar className="h-16 w-16 ring-2 ring-primary-500 ring-offset-2 ring-offset-background">
                 <AvatarImage src={user?.avatar} alt={user?.name} />
                 <AvatarFallback className="bg-gradient-to-br from-primary-500 to-primary-700 text-white text-xl font-bold">
-                  {getInitials(user?.name || 'Admin')}
+                  {getInitials(user?.name || "Admin")}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold truncate">{user?.name || 'Admin'}</p>
-                <p className="text-xs text-muted-foreground truncate">{user?.email || 'admin@techageafrica.com'}</p>
+                <p className="text-sm font-semibold truncate">
+                  {user?.name || "Admin"}
+                </p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {user?.email || "admin@techageafrica.com"}
+                </p>
                 <Badge className="mt-1 bg-gradient-to-r from-primary-600 to-secondary-600 text-xs">
-                  {user?.role || 'Admin'}
+                  {user?.role || "Admin"}
                 </Badge>
               </div>
             </div>
@@ -148,10 +157,14 @@ const AdminLayout = ({ children }) => {
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 <div className="flex items-center space-x-3">
-                  <item.icon className={cn(
-                    "h-5 w-5",
-                    isActive(item.path) ? "text-white" : "text-muted-foreground group-hover:text-foreground"
-                  )} />
+                  <item.icon
+                    className={cn(
+                      "h-5 w-5",
+                      isActive(item.path)
+                        ? "text-white"
+                        : "text-muted-foreground group-hover:text-foreground"
+                    )}
+                  />
                   <span className="font-medium text-sm">{item.label}</span>
                 </div>
                 {isActive(item.path) && (

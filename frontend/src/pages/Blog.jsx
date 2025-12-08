@@ -2,7 +2,7 @@
 // FILE: src/pages/Blog.jsx - SEO BLOG LISTING
 // ============================================
 import { useState, useEffect } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -28,6 +28,7 @@ import api from '../services/api';
 import { Helmet } from 'react-helmet-async';
 
 const Blog = () => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [blogs, setBlogs] = useState([]);
   const [featuredBlogs, setFeaturedBlogs] = useState([]);
@@ -407,7 +408,7 @@ const Blog = () => {
             ) : (
               <div className="space-y-6">
                 {blogs.map((blog) => (
-                  <Card key={blog._id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                  <Card key={blog._id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate(`/blog/${blog.slug}`)}>
                     <div className="md:flex">
                       {blog.featuredImage && (
                         <div className="md:w-1/3">
@@ -425,11 +426,9 @@ const Blog = () => {
                             {blog.featured && <Badge variant="default">Featured</Badge>}
                           </div>
 
-                          <Link to={`/blog/${blog.slug}`}>
-                            <h2 className="text-2xl font-bold mb-3 hover:text-primary-600 transition-colors line-clamp-2">
-                              {blog.title}
-                            </h2>
-                          </Link>
+                          <h2 className="text-2xl font-bold mb-3 hover:text-primary-600 transition-colors line-clamp-2">
+                            {blog.title}
+                          </h2>
 
                           <p className="text-muted-foreground mb-4 line-clamp-3">
                             {blog.excerpt}
@@ -483,12 +482,10 @@ const Blog = () => {
                               )}
                             </div>
 
-                            <Link to={`/blog/${blog.slug}`}>
-                              <Button variant="outline" size="sm">
-                                Read More
-                                <ChevronRight className="w-4 h-4 ml-1" />
-                              </Button>
-                            </Link>
+                            <Button variant="outline" size="sm">
+                              Read More
+                              <ChevronRight className="w-4 h-4 ml-1" />
+                            </Button>
                           </div>
                         </CardContent>
                       </div>

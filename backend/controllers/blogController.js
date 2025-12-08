@@ -279,7 +279,7 @@ export const addComment = async (req, res) => {
 };
 
 // @desc    Get blog statistics (for admin)
-// @route   GET /api/blog/stats
+// @route   GET /api/blog/admin/stats
 // @access  Private/Admin
 export const getBlogStats = async (req, res) => {
   try {

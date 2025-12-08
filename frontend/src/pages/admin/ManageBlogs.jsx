@@ -94,7 +94,7 @@ const ManageBlogs = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await api.get('/api/blog/stats');
+      const response = await api.get('/api/blog/admin/stats');
       setStats(response.data.data);
     } catch (error) {
       console.error('Error fetching blog stats:', error);
