@@ -1,8 +1,19 @@
-// FILE: src/components/ThemeProvider.jsx
+// FILE: src/components/ThemeProvider.tsx
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
-const ThemeProviderContext = createContext({
+interface ThemeProviderProps {
+  children: ReactNode;
+  defaultTheme?: string;
+  storageKey?: string;
+}
+
+interface ThemeContextType {
+  theme: string;
+  setTheme: (theme: string) => void;
+}
+
+const ThemeProviderContext = createContext<ThemeContextType>({
   theme: 'light',
   setTheme: () => null,
 });
@@ -12,8 +23,8 @@ export function ThemeProvider({
   defaultTheme = 'light',
   storageKey = 'techage-theme',
   ...props
-}) {
-  const [theme, setTheme] = useState(
+}: ThemeProviderProps) {
+  const [theme, setTheme] = useState<string>(
     () => localStorage.getItem(storageKey) || defaultTheme
   );
 
@@ -23,9 +34,9 @@ export function ThemeProvider({
     root.classList.add(theme);
   }, [theme]);
 
-  const value = {
+  const value: ThemeContextType = {
     theme,
-    setTheme: (theme) => {
+    setTheme: (theme: string) => {
       localStorage.setItem(storageKey, theme);
       setTheme(theme);
     },
@@ -38,10 +49,9 @@ export function ThemeProvider({
   );
 }
 
-export const useTheme = () => {
+export const useTheme = (): ThemeContextType => {
   const context = useContext(ThemeProviderContext);
   if (context === undefined)
     throw new Error('useTheme must be used within a ThemeProvider');
   return context;
 };
-

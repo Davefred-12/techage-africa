@@ -15,7 +15,7 @@ import {
   TabsTrigger,
 } from "../../components/ui/tabs";
 import api from "../../services/api";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import {
   Clock,
   PlayCircle,

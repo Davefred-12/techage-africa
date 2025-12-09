@@ -18,7 +18,7 @@ import WelcomeModal from "../../components/modals/WelcomeModal";
 import ContinueLearningModal from "../../components/modals/ContinueLearningModal";
 import { useAuth } from "../../context/authContext";
 import api from "../../services/api";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import {
   BookOpen,
   Clock,

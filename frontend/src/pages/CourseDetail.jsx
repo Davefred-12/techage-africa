@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import api from "../services/api";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { Helmet } from 'react-helmet-async';
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";

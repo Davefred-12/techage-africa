@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
 import { useAuth } from '../../context/authContext';
 import api from '../../services/api';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import {
   User,
   Mail,

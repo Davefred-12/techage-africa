@@ -10,7 +10,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Card, CardContent } from "../components/ui/card";
 import { Eye, EyeOff, Lock, Mail, ArrowRight, CheckCircle } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useAuth } from "../context/authContext";
 import api from '../services/api';
 import { useCountUp } from '../hooks/useCountUp';

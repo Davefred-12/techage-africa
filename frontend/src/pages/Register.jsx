@@ -6,7 +6,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { toast } from "react-toastify";  // ✅ ADD THIS
+import { toast } from "sonner";  // ✅ ADD THIS
 import { useAuth } from "../context/authContext";  // ✅ ADD THIS
 import api from '../services/api';
 import { useCountUp } from '../hooks/useCountUp';

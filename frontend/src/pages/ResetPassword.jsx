@@ -10,7 +10,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Card, CardContent } from "../components/ui/card";
 import { Eye, EyeOff, Lock, ArrowRight, CheckCircle } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import authService from "../services/authService";
 
 // Validation schema

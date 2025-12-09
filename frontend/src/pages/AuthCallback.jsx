@@ -4,7 +4,7 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 
 const AuthCallback = () => {
   const navigate = useNavigate();

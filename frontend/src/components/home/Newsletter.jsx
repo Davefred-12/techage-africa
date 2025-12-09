@@ -6,7 +6,7 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Mail, CheckCircle } from 'lucide-react';
 import api from '../../services/api';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 
 const Newsletter = () => {
   const [email, setEmail] = useState('');

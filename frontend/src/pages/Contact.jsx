@@ -17,7 +17,7 @@ import {
   AccordionTrigger,
 } from "../components/ui/accordion";
 import api from "../services/api";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import {
   Mail,
   Phone,

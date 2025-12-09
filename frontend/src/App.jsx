@@ -7,6 +7,7 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import { HelmetProvider } from 'react-helmet-async';
+import { Toaster } from './components/ui/sonner';
 
 // Pages
 import Home from "./pages/Home";
@@ -106,11 +107,19 @@ function App() {
 
           {/* Cookie Consent Popup */}
           <CookieConsent />
+
+          {/* Toast Notifications */}
+          <Toaster
+            position="top-right"
+            richColors
+            duration={4000}
+            closeButton
+          />
         </div>
       </Router>
     </ThemeProvider>
-    </HelmetProvider>
-  );
+  </HelmetProvider>
+);
 }
 
 export default App;

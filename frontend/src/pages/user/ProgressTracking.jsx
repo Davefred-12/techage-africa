@@ -14,7 +14,7 @@ import { Button } from "../../components/ui/button";
 import { Badge } from "../../components/ui/badge";
 import { Progress } from "../../components/ui/progress";
 import api from "../../services/api";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import {
   TrendingUp,
   Award,

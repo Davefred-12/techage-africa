@@ -15,7 +15,7 @@ import {
   TrendingUp,
   Shield,
 } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useTheme } from "../ThemeProvider";
 import { Button } from "../../components/ui/button";
 import {

@@ -12,7 +12,7 @@ import { Button } from '../../components/ui/button';
 import { Textarea } from '../../components/ui/textarea';
 import { Badge } from '../../components/ui/badge';
 import api from '../../services/api';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import CertificateGenerator from '../../components/CertificateGenerator';
 import {
   Award,

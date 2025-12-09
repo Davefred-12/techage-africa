@@ -8,7 +8,7 @@ import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 import api from '../../services/api';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import {
   CheckCircle,
   Download,
