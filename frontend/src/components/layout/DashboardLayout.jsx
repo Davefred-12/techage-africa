@@ -1,22 +1,25 @@
 // ============================================
 // FILE: src/components/layout/DashboardLayout.jsx
 // ============================================
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   BookOpen,
-  ShoppingBag,
   TrendingUp,
   Settings,
   Menu,
   X,
   LogOut,
-  ChevronRight
+  ChevronRight,
+  Award,
+  Bell
 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
+import { Badge } from '../../components/ui/badge';
 import { useAuth } from '../../context/authContext';
+import { useNotifications } from '../../hooks/useNotifications';
 import { cn } from '../../lib/utils';
 
 const DashboardLayout = ({ children }) => {
@@ -24,6 +27,7 @@ const DashboardLayout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { unreadCount } = useNotifications();
 
   const getInitials = (name) => {
     return name
@@ -46,14 +50,20 @@ const DashboardLayout = ({ children }) => {
       path: '/user/my-courses',
     },
     {
-      icon: ShoppingBag,
-      label: 'Order History',
-      path: '/user/orders',
-    },
-    {
       icon: TrendingUp,
       label: 'Progress Tracking',
       path: '/user/progress',
+    },
+    {
+      icon: Award,
+      label: 'Referrals & Rewards',
+      path: '/user/referrals',
+    },
+    {
+      icon: Bell,
+      label: 'Notifications',
+      path: '/user/notifications',
+      badge: unreadCount > 0 ? unreadCount : null,
     },
     {
       icon: Settings,
@@ -138,6 +148,14 @@ const DashboardLayout = ({ children }) => {
                     isActive(item.path) ? "text-white" : "text-muted-foreground group-hover:text-foreground"
                   )} />
                   <span className="font-medium text-sm">{item.label}</span>
+                  {item.badge && (
+                    <Badge
+                      variant={isActive(item.path) ? "secondary" : "destructive"}
+                      className="ml-auto text-xs px-2 py-0.5 h-5 min-w-[20px] flex items-center justify-center"
+                    >
+                      {item.badge > 99 ? '99+' : item.badge}
+                    </Badge>
+                  )}
                 </div>
                 {isActive(item.path) && (
                   <ChevronRight className="h-4 w-4 text-white" />

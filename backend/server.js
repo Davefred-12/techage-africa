@@ -14,6 +14,8 @@ import userRoutes from './routes/userRoutes.js';
 import publicRoutes from './routes/PublicRoutes.js';
 import blogRoutes from './routes/blogRoutes.js';
 import adminBlogRoutes from './routes/adminBlogRoutes.js';
+import referralRoutes from './routes/referralRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 
 import passport from './config/passport.js';
 
@@ -54,6 +56,8 @@ app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/blog', adminBlogRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/user/referrals', referralRoutes);
+app.use('/api/user/notifications', notificationRoutes);
 app.use('/api/public', publicRoutes);
 app.use('/api/blog', blogRoutes);
 

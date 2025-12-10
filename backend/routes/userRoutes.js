@@ -5,6 +5,7 @@ import express from "express";
 import User from "../models/User.js";
 import Course from "../models/course.js";
 import Enrollment from "../models/Enrollment.js";
+import Notification from "../models/Notification.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import { memoryUpload } from "../middleware/multer.js";
@@ -389,10 +390,23 @@ router.post(
         (enrollment.completedLessons.length / totalLessons) * 100
       );
 
-      // If 100% complete, issue certificate
+      // If 100% complete, issue certificate and award points
       if (enrollment.progress === 100 && !enrollment.certificateIssued) {
         enrollment.certificateIssued = true;
         enrollment.certificateIssuedAt = Date.now();
+
+        // Award 1000 points for course completion
+        const user = await User.findById(req.user._id);
+        user.points += 1000;
+        await user.save();
+
+        // Create notification for course completion
+        await Notification.create({
+          title: "Course Completed! 🎉",
+          message: `Congratulations! You have successfully completed "${course.title}" and earned 1000 points!`,
+          type: "course_completed",
+          recipient: req.user._id,
+        });
       }
 
       await enrollment.save();

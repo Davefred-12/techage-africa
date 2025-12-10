@@ -14,6 +14,7 @@ import {
   LogOut,
   ChevronRight,
   Settings,
+  Bell,
 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -67,6 +68,11 @@ const AdminLayout = ({ children }) => {
       icon: DollarSign,
       label: "Revenue & Analytics",
       path: "/admin/revenue",
+    },
+    {
+      icon: Bell,
+      label: "Notifications",
+      path: "/admin/notifications",
     },
     {
       icon: Settings,

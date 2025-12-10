@@ -23,10 +23,10 @@ const Footer = () => {
       { name: 'Startup Acceleration', path: '/startup' },
     ],
     support: [
-      { name: 'Help Center', path: '/contact' },
-      { name: 'FAQs', path: '/contact' },
-      { name: 'Privacy Policy', path: '/privacy' },
-      { name: 'Terms of Service', path: '/privacy' },
+      { name: 'Help Center', path: '/contact', key: 'help-center' },
+      { name: 'FAQs', path: '/contact', key: 'faqs' },
+      { name: 'Privacy Policy', path: '/privacy', key: 'privacy-policy' },
+      { name: 'Terms of Service', path: '/privacy', key: 'terms-of-service' },
     ],
   };
 
@@ -111,7 +111,7 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground mb-3">Support</h3>
             <ul className="space-y-1.5">
               {footerLinks.support.map((link) => (
-                <li key={link.path}>
+                <li key={link.key || link.path}>
                   <Link
                     to={link.path}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"

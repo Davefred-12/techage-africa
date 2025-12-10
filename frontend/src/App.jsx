@@ -3,6 +3,7 @@
 // ============================================
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./components/ThemeProvider";
+import { NotificationProvider } from "./context/NotificationContext";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import ScrollToTop from "./components/ScrollToTop";
@@ -32,7 +33,8 @@ import CookieConsent from "./components/CookieConsent";
 import UserDashboard from "./pages/user/UserDashboard";
 import ProgressTracking from "./pages/user/ProgressTracking";
 import MyCourses from "./pages/user/MyCourses";
-import OrderHistory from "./pages/user/OrderHistory";
+import ReferralsRewards from "./pages/user/ReferralsRewards";
+import Notifications from "./pages/user/Notifications";
 import Settings from "./pages/user/Settings";
 import CoursePlayer from "./pages/user/CoursePlayer";
 import CertificateReview from "./pages/user/CertificateReview";
@@ -46,18 +48,20 @@ import BlogEditor from "./pages/admin/BlogEditor";
 import UploadVideo from "./pages/admin/UploadVideo";
 import AdminSettings from "./pages/admin/AdminSettings";
 import RevenueAnalytics from "./pages/admin/RevenueAnalytics";
+import AdminNotifications from "./pages/admin/AdminNotifications";
 
 function App() {
   return (
     <HelmetProvider>
       <ThemeProvider defaultTheme="light" storageKey="techage-theme">
-        <Router>
-          <div className="flex flex-col min-h-screen">
-            {/* ScrollToTop component*/}
-            <ScrollToTop />
-            <Navbar />
-            <main className="flex-grow">
-              <Routes>
+        <NotificationProvider>
+          <Router>
+            <div className="flex flex-col min-h-screen">
+              {/* ScrollToTop component*/}
+              <ScrollToTop />
+              <Navbar />
+              <main className="flex-grow">
+                <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/courses" element={<Courses />} />
@@ -80,7 +84,8 @@ function App() {
               <Route path="/user" element={<UserDashboard />} />
               <Route path="/user/progress" element={<ProgressTracking />} />
               <Route path="/user/my-courses" element={<MyCourses />} />
-              <Route path="/user/orders" element={<OrderHistory />} />
+              <Route path="/user/referrals" element={<ReferralsRewards />} />
+              <Route path="/user/notifications" element={<Notifications />} />
               <Route path="/user/settings" element={<Settings />} />
               <Route
                 path="/user/courses/:id/learn"
@@ -99,27 +104,29 @@ function App() {
               <Route path="/admin/blog/edit/:id" element={<BlogEditor />} />
               <Route path="/admin/users" element={<ManageUsers />} />
               <Route path="/admin/revenue" element={<RevenueAnalytics />} />
+              <Route path="/admin/notifications" element={<AdminNotifications />} />
               <Route path="/admin/upload" element={<UploadVideo />} />
               <Route path="/admin/settings" element={<AdminSettings />} />
-            </Routes>
-          </main>
-          <Footer />
+                </Routes>
+              </main>
+              <Footer />
 
-          {/* Cookie Consent Popup */}
-          <CookieConsent />
+              {/* Cookie Consent Popup */}
+              <CookieConsent />
 
-          {/* Toast Notifications */}
-          <Toaster
-            position="top-right"
-            richColors
-            duration={4000}
-            closeButton
-          />
-        </div>
-      </Router>
-    </ThemeProvider>
-  </HelmetProvider>
-);
+              {/* Toast Notifications */}
+              <Toaster
+                position="top-right"
+                richColors
+                duration={4000}
+                closeButton
+              />
+            </div>
+          </Router>
+        </NotificationProvider>
+      </ThemeProvider>
+    </HelmetProvider>
+  );
 }
 
 export default App;

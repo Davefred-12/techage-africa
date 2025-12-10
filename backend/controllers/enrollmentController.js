@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import Enrollment from "../models/Enrollment.js";
 import Course from "../models/course.js";
 import User from "../models/User.js";
+import Notification from "../models/Notification.js";
 import {
   initializePayment,
   verifyPayment,
@@ -204,12 +205,46 @@ export const verifyEnrollment = async (req, res) => {
       console.log('✅ Course added to user enrolledCourses');
     }
 
+    // ✅ Award 500 points for course purchase
+    user.points += 500;
+    await user.save();
+
+    // ✅ Create notification for points earned
+    await Notification.create({
+      title: "Points Earned!",
+      message: `Congratulations! You earned 500 points for purchasing "${enrollment.course.title}".`,
+      type: "system",
+      recipient: enrollment.user,
+    });
+
+    // ✅ Check if user was referred and award points to referrer
+    if (user.referredBy) {
+      const referrer = await User.findById(user.referredBy);
+      if (referrer) {
+        referrer.points += 500;
+        referrer.referrals.push({
+          user: user._id,
+          pointsEarned: 500,
+        });
+        await referrer.save();
+
+        // ✅ Notify referrer
+        await Notification.create({
+          title: "Referral Reward!",
+          message: `Great news! ${user.name} purchased a course using your referral link. You earned 500 points!`,
+          type: "referral_reward",
+          recipient: referrer._id,
+        });
+      }
+    }
+
     res.status(200).json({
       success: true,
       message: "Enrollment completed successfully! 🎉",
       data: {
         enrollment,
         course: enrollment.course,
+        pointsEarned: 500,
       },
     });
   } catch (error) {

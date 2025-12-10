@@ -471,10 +471,10 @@ const UserDashboard = () => {
                   <Button
                     variant="outline"
                     className="w-full justify-start"
-                    onClick={() => navigate("/user/orders")}
+                    onClick={() => navigate("/user/my-courses")}
                   >
-                    <Award className="mr-2 h-4 w-4" />
-                    My Orders
+                    <BookOpen className="mr-2 h-4 w-4" />
+                    My Courses
                   </Button>
                 </>
               )}

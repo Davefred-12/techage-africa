@@ -83,14 +83,60 @@ const userSchema = new mongoose.Schema(
     resetPasswordExpire: Date,
     otp: String,
     otpExpire: Date,
+    // Referral and Points System
+    referralCode: {
+      type: String,
+      unique: true,
+      sparse: true, // Allows null values but ensures uniqueness when present
+    },
+    referredBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+    points: {
+      type: Number,
+      default: 0,
+    },
+    referrals: [{
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      earnedAt: {
+        type: Date,
+        default: Date.now,
+      },
+      pointsEarned: {
+        type: Number,
+        default: 500,
+      },
+    }],
   },
   {
     timestamps: true, // Adds createdAt and updatedAt
   }
 );
 
-// Encrypt password before saving (only for local auth)
+// Generate unique referral code before saving
 userSchema.pre("save", async function (next) {
+  // Generate referral code if not exists
+  if (!this.referralCode) {
+    let code;
+    let isUnique = false;
+
+    while (!isUnique) {
+      // Generate a random 8-character code
+      code = Math.random().toString(36).substring(2, 10).toUpperCase();
+      const existingUser = await mongoose.models.User.findOne({ referralCode: code });
+      if (!existingUser) {
+        isUnique = true;
+      }
+    }
+
+    this.referralCode = code;
+  }
+
   // Only hash password if it's modified and provider is local
   if (!this.isModified("password") || this.provider !== "local") {
     return next();

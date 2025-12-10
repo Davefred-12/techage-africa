@@ -30,6 +30,7 @@ const registerSchema = z
     email: z.string().email("Please enter a valid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
+    referralCode: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -92,6 +93,7 @@ const Register = () => {
         fullName: data.fullName,
         email: data.email,
         password: data.password,
+        referralCode: data.referralCode,
       });
 
       // ✅ SUCCESS: Show toast and redirect to login
@@ -329,8 +331,31 @@ const Register = () => {
                   )}
                 </div>
 
+                {/* Referral Code */}
+                <div className="animate-slide-up animation-delay-450">
+                  <label className="block text-sm font-medium mb-2">
+                    Referral Code (Optional)
+                  </label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+                    <Input
+                      {...register("referralCode")}
+                      placeholder="Enter referral code"
+                      className={`pl-10 transition-all ${errors.referralCode ? "border-danger-500 shake" : ""}`}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Have a referral code? Enter it here to get started with bonus points!
+                  </p>
+                  {errors.referralCode && (
+                    <p className="text-sm text-danger-600 mt-1 animate-fade-in">
+                      {errors.referralCode.message}
+                    </p>
+                  )}
+                </div>
+
                 {/* Password */}
-                <div className="animate-slide-up animation-delay-500">
+                <div className="animate-slide-up animation-delay-600">
                   <label className="block text-sm font-medium mb-2">
                     Password
                   </label>
@@ -364,7 +389,7 @@ const Register = () => {
                 </div>
 
                 {/* Confirm Password */}
-                <div className="animate-slide-up animation-delay-600">
+                <div className="animate-slide-up animation-delay-700">
                   <label className="block text-sm font-medium mb-2">
                     Confirm Password
                   </label>
@@ -400,7 +425,7 @@ const Register = () => {
                 </div>
 
                 {/* Terms and Conditions */}
-                <div className="flex items-start space-x-2 animate-fade-in-up animation-delay-700">
+                <div className="flex items-start space-x-2 animate-fade-in-up animation-delay-800">
                   <input
                     type="checkbox"
                     id="terms"
@@ -434,7 +459,7 @@ const Register = () => {
                   type="submit"
                   size="lg"
                   disabled={isLoading || !agreedToTerms}
-                  className="w-full animate-slide-up animation-delay-800 hover:scale-[1.02] active:scale-[0.98] transition-transform shadow-lg"
+                  className="w-full animate-slide-up animation-delay-900 hover:scale-[1.02] active:scale-[0.98] transition-transform shadow-lg"
                 >
                   {isLoading ? (
                     <span className="flex items-center">
@@ -457,7 +482,7 @@ const Register = () => {
           </Card>
 
           {/* Login Link */}
-          <div className="text-center space-y-4 animate-fade-in-up animation-delay-900">
+          <div className="text-center space-y-4 animate-fade-in-up animation-delay-1000">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-border"></div>
@@ -480,7 +505,7 @@ const Register = () => {
           </div>
 
           {/* Back to Home */}
-          <div className="text-center animate-fade-in-up animation-delay-1000">
+          <div className="text-center animate-fade-in-up animation-delay-1100">
             <Link
               to="/"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center group"

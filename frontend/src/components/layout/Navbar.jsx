@@ -14,6 +14,8 @@ import {
   ShoppingBag,
   TrendingUp,
   Shield,
+   Award,
+  Bell
 } from "lucide-react";
 import { toast } from "sonner";
 import { useTheme } from "../ThemeProvider";
@@ -71,7 +73,16 @@ const Navbar = () => {
   const userMenuItems = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/user" },
     { icon: BookOpen, label: "My Courses", path: "/user/my-courses" },
-    { icon: ShoppingBag, label: "Order History", path: "/user/orders" },
+    {
+      icon: Award,
+      label: "Referrals & Rewards",
+      path: "/user/referrals",
+    },
+    {
+      icon: Bell,
+      label: "Notifications",
+      path: "/user/notifications",
+    },
     { icon: TrendingUp, label: "Progress Tracking", path: "/user/progress" },
     { icon: Settings, label: "Profile & Settings", path: "/user/settings" },
   ];

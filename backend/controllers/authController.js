@@ -13,7 +13,7 @@ import Enrollment from '../models/Enrollment.js';
 export const register = async (req, res) => {
   try {
     // Accept both 'name' and 'fullName' from frontend
-    const { name, fullName, email, password } = req.body;
+    const { name, fullName, email, password, referralCode } = req.body;
     const userName = name || fullName;
 
     // Validation
@@ -33,12 +33,35 @@ export const register = async (req, res) => {
       });
     }
 
+    // Handle referral code
+    let referredBy = null;
+    if (referralCode) {
+      // Validate referral code
+      const referrer = await User.findOne({ referralCode: referralCode.toUpperCase() });
+      if (referrer) {
+        // Prevent self-referral
+        if (referrer.email === email) {
+          return res.status(400).json({
+            success: false,
+            message: 'You cannot use your own referral code',
+          });
+        }
+        referredBy = referrer._id;
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid referral code',
+        });
+      }
+    }
+
     // Create user
     const user = await User.create({
       name: userName,
       email,
       password,
       provider: 'local',
+      referredBy,
     });
 
     // Send confirmation email to user
