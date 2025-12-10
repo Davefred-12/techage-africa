@@ -10,29 +10,39 @@ const Stats = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Fetch real stats from backend
+  // ✅ Fetch real stats from backend (only once)
   useEffect(() => {
+    let isMounted = true;
+
     const fetchStats = async () => {
       try {
         const response = await api.get('/api/public/stats');
-        if (response.data.success) {
+        if (response.data.success && isMounted) {
           setStats(response.data.data);
         }
       } catch (error) {
         console.error('Failed to fetch stats:', error);
         // Fallback values
-        setStats({
-          students: 2000,
-          courses: 12,
-          successRate: 95,
-          jobPlacements: 500,
-        });
+        if (isMounted) {
+          setStats({
+            students: 2000,
+            courses: 12,
+            successRate: 95,
+            jobPlacements: 500,
+          });
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchStats();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // ✅ Animated counters

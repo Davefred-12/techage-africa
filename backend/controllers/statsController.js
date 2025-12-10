@@ -10,22 +10,16 @@ import Enrollment from '../models/Enrollment.js';
 // @access  Public
 export const getPlatformStats = async (req, res) => {
   try {
-    console.log('📊 Fetching platform statistics');
-
     // ✅ Count total users (students only, exclude admins)
     // Remove isEmailVerified filter to count all registered users
-    const totalStudents = await User.countDocuments({ 
+    const totalStudents = await User.countDocuments({
       role: 'user'
     });
 
-    console.log('👥 Total students found:', totalStudents);
-
     // ✅ Count total published courses
-    const totalCourses = await Course.countDocuments({ 
-      isPublished: true 
+    const totalCourses = await Course.countDocuments({
+      isPublished: true
     });
-
-    console.log('📚 Total courses found:', totalCourses);
 
     // ✅ Count total enrollments with completed payment
     const totalEnrollments = await Enrollment.countDocuments({ 
@@ -51,8 +45,6 @@ export const getPlatformStats = async (req, res) => {
       enrollments: totalEnrollments,
       certificates: totalCertificates,
     };
-
-    console.log('✅ Platform stats calculated:', stats);
 
     res.status(200).json({
       success: true,

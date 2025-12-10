@@ -32,29 +32,39 @@ const Login = () => {
   // Get the page user was trying to access before login
   const from = location.state?.from || "/user"; // Default to dashboard for logged-in users
 
-  // Fetch real stats from backend
+  // Fetch real stats from backend (only once)
   useEffect(() => {
+    let isMounted = true;
+
     const fetchStats = async () => {
       try {
         const response = await api.get('/api/public/stats');
-        if (response.data.success) {
+        if (response.data.success && isMounted) {
           setStats(response.data.data);
         }
       } catch (error) {
         console.error('Failed to fetch stats:', error);
         // Fallback values
-        setStats({
-          students: 2000,
-          courses: 12,
-          successRate: 95,
-          jobPlacements: 500,
-        });
+        if (isMounted) {
+          setStats({
+            students: 2000,
+            courses: 12,
+            successRate: 95,
+            jobPlacements: 500,
+          });
+        }
       } finally {
-        setStatsLoading(false);
+        if (isMounted) {
+          setStatsLoading(false);
+        }
       }
     };
 
     fetchStats();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const {

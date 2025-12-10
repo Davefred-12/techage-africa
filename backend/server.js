@@ -16,6 +16,7 @@ import blogRoutes from './routes/blogRoutes.js';
 import adminBlogRoutes from './routes/adminBlogRoutes.js';
 import referralRoutes from './routes/referralRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import serviceRoutes from './routes/serviceRoutes.js';
 
 import passport from './config/passport.js';
 
@@ -59,6 +60,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/user/referrals', referralRoutes);
 app.use('/api/user/notifications', notificationRoutes);
 app.use('/api/public', publicRoutes);
+app.use('/api/public', serviceRoutes);
 app.use('/api/blog', blogRoutes);
 
 

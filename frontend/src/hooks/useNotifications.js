@@ -13,6 +13,13 @@ export const useNotifications = () => {
   // Fetch unread count
   const fetchUnreadCount = useCallback(async () => {
     try {
+      // Only fetch if we have a token (user is authenticated)
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setUnreadCount(0);
+        return;
+      }
+
       const response = await api.get('/api/user/notifications');
       if (response.data.success) {
         const unread = response.data.data.notifications.filter(n => !n.read).length;
@@ -20,12 +27,22 @@ export const useNotifications = () => {
       }
     } catch (error) {
       console.error('Failed to fetch unread count:', error);
+      // Reset count on error (likely unauthorized)
+      setUnreadCount(0);
     }
   }, []);
 
   // Fetch recent notifications
   const fetchNotifications = useCallback(async () => {
     try {
+      // Only fetch if we have a token (user is authenticated)
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setNotifications([]);
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       const response = await api.get('/api/user/notifications?limit=5');
       if (response.data.success) {
@@ -33,6 +50,8 @@ export const useNotifications = () => {
       }
     } catch (error) {
       console.error('Failed to fetch notifications:', error);
+      // Reset notifications on error
+      setNotifications([]);
     } finally {
       setLoading(false);
     }
@@ -65,6 +84,12 @@ export const useNotifications = () => {
   // Check for new notifications (polling)
   const checkForNewNotifications = useCallback(async () => {
     try {
+      // Only check if we have a token (user is authenticated)
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return null;
+      }
+
       const response = await api.get('/api/user/notifications?limit=1');
       if (response.data.success && response.data.data.notifications.length > 0) {
         const latestNotification = response.data.data.notifications[0];
@@ -86,10 +111,18 @@ export const useNotifications = () => {
     return null;
   }, [lastNotification, fetchUnreadCount]);
 
-  // Initialize
+  // Initialize - only when authenticated
   useEffect(() => {
-    fetchUnreadCount();
-    fetchNotifications();
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetchUnreadCount();
+      fetchNotifications();
+    } else {
+      // Reset state for unauthenticated users
+      setUnreadCount(0);
+      setNotifications([]);
+      setLoading(false);
+    }
   }, [fetchUnreadCount, fetchNotifications]);
 
   return {
