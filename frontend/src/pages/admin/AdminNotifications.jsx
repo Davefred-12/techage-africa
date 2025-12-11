@@ -15,6 +15,7 @@ import { Input } from '../../components/ui/input';
 import { Textarea } from '../../components/ui/textarea';
 import { Badge } from '../../components/ui/badge';
 import { Checkbox } from '../../components/ui/checkbox';
+import { useNotification } from '../../context/NotificationContext';
 import {
   Form,
   FormControl,
@@ -69,7 +70,9 @@ const AdminNotifications = () => {
   const [userSearch, setUserSearch] = useState('');
   const [sendToAll, setSendToAll] = useState(true);
   const [userDialogOpen, setUserDialogOpen] = useState(false);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  
+  // Get notification context to trigger check after sending
+  const { triggerNotificationCheck } = useNotification();
 
   const form = useForm({
     resolver: zodResolver(notificationSchema),
@@ -95,6 +98,7 @@ const AdminNotifications = () => {
       }
     } catch (error) {
       console.error('Failed to fetch users:', error);
+      toast.error('Failed to load users list');
       setUsers([]);
     } finally {
       setUsersLoading(false);
@@ -110,7 +114,7 @@ const AdminNotifications = () => {
   };
 
   const handleSelectAllUsers = () => {
-    setSelectedUsers(users.map(user => user._id));
+    setSelectedUsers(filteredUsers.map(user => user._id));
   };
 
   const handleClearSelection = () => {
@@ -130,6 +134,7 @@ const AdminNotifications = () => {
       }
     } catch (error) {
       console.error('Failed to fetch notification stats:', error);
+      toast.error('Failed to load statistics');
     } finally {
       setStatsLoading(false);
     }
@@ -150,12 +155,14 @@ const AdminNotifications = () => {
     setLoading(true);
     try {
       let response;
+      let successCount = 0;
 
       if (sendToAll) {
         // Broadcast to all users
         response = await api.post('/api/user/notifications/broadcast', data);
         if (response.data.success) {
           toast.success('Notification sent successfully to all users!');
+          successCount = stats?.totalUsers || 0;
         }
       } else {
         // Send to selected users
@@ -173,7 +180,7 @@ const AdminNotifications = () => {
         );
 
         const results = await Promise.allSettled(promises);
-        const successCount = results.filter(result => result.status === 'fulfilled').length;
+        successCount = results.filter(result => result.status === 'fulfilled').length;
 
         if (successCount > 0) {
           toast.success(`Notification sent to ${successCount} user${successCount > 1 ? 's' : ''}!`);
@@ -183,6 +190,12 @@ const AdminNotifications = () => {
           toast.warning(`Failed to send to ${selectedUsers.length - successCount} user${selectedUsers.length - successCount > 1 ? 's' : ''}`);
         }
       }
+
+      // Trigger notification check for admin (since admin is also a user)
+      // This will show the modal popup for admin too
+      setTimeout(() => {
+        triggerNotificationCheck();
+      }, 1000);
 
       form.reset();
       setSelectedUsers([]);
@@ -244,7 +257,7 @@ const AdminNotifications = () => {
             Admin Notifications
           </h1>
           <p className="text-muted-foreground">
-            Send broadcast notifications to all users and manage notification history
+            Send broadcast notifications to all users or selected recipients
           </p>
         </div>
 
@@ -329,7 +342,7 @@ const AdminNotifications = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Send className="h-5 w-5" />
-                Send Broadcast Notification
+                Send Notification
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -412,28 +425,40 @@ const AdminNotifications = () => {
 
                               {/* User list */}
                               <div className="max-h-96 overflow-y-auto space-y-2">
-                                {filteredUsers.map((user) => (
-                                  <label
-                                    key={user._id}
-                                    className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 cursor-pointer"
-                                  >
-                                    <Checkbox
-                                      checked={selectedUsers.includes(user._id)}
-                                      onCheckedChange={() => handleUserToggle(user._id)}
-                                    />
-                                    <div className="flex items-center gap-3 flex-1">
-                                      <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                                        <span className="text-xs font-semibold text-primary">
-                                          {user.name.charAt(0).toUpperCase()}
-                                        </span>
+                                {usersLoading ? (
+                                  <div className="text-center py-8">
+                                    <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+                                    <p className="text-sm text-muted-foreground mt-2">Loading users...</p>
+                                  </div>
+                                ) : filteredUsers.length > 0 ? (
+                                  filteredUsers.map((user) => (
+                                    <label
+                                      key={user._id}
+                                      className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 cursor-pointer transition-colors"
+                                    >
+                                      <Checkbox
+                                        checked={selectedUsers.includes(user._id)}
+                                        onCheckedChange={() => handleUserToggle(user._id)}
+                                      />
+                                      <div className="flex items-center gap-3 flex-1">
+                                        <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                                          <span className="text-xs font-semibold text-primary">
+                                            {user.name.charAt(0).toUpperCase()}
+                                          </span>
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          <p className="text-sm font-medium truncate">{user.name}</p>
+                                          <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                                        </div>
                                       </div>
-                                      <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-medium truncate">{user.name}</p>
-                                        <p className="text-xs text-muted-foreground truncate">{user.email}</p>
-                                      </div>
-                                    </div>
-                                  </label>
-                                ))}
+                                    </label>
+                                  ))
+                                ) : (
+                                  <div className="text-center py-8">
+                                    <Users className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                                    <p className="text-sm text-muted-foreground">No users found</p>
+                                  </div>
+                                )}
                               </div>
 
                               <div className="flex justify-end gap-2 pt-4 border-t">
@@ -447,6 +472,7 @@ const AdminNotifications = () => {
                                 <Button
                                   type="button"
                                   onClick={() => setUserDialogOpen(false)}
+                                  disabled={selectedUsers.length === 0}
                                 >
                                   Done ({selectedUsers.length})
                                 </Button>
@@ -542,7 +568,7 @@ const AdminNotifications = () => {
 
                   <Button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || (!sendToAll && selectedUsers.length === 0)}
                     className="w-full bg-gradient-to-r from-primary-600 to-secondary-600"
                   >
                     {loading ? (
@@ -575,7 +601,7 @@ const AdminNotifications = () => {
             </CardHeader>
             <CardContent>
               {recentNotifications.length > 0 ? (
-                <div className="space-y-4 max-h-[400px] overflow-y-auto">
+                <div className="space-y-4 max-h-[600px] overflow-y-auto">
                   {recentNotifications.map((notification, index) => (
                     <div
                       key={notification._id}

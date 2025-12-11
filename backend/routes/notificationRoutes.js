@@ -9,6 +9,7 @@ import {
   deleteNotification,
   sendBroadcastNotification,
   sendUserNotification,
+  getAllUsersForNotification,
   getNotificationStats,
   getRecentBroadcasts,
 } from "../controllers/notificationController.js";
@@ -19,15 +20,16 @@ const router = express.Router();
 // All routes require authentication
 router.use(protect);
 
-// User routes
+// User routes (accessible by all authenticated users)
 router.get("/", getUserNotifications);
 router.put("/:id/read", markNotificationAsRead);
 router.put("/mark-all-read", markAllNotificationsAsRead);
 router.delete("/:id", deleteNotification);
 
-// Admin routes
+// Admin routes (accessible by admin only)
 router.post("/broadcast", admin, sendBroadcastNotification);
 router.post("/send", admin, sendUserNotification);
+router.get("/admin/users", admin, getAllUsersForNotification);
 router.get("/admin/stats", admin, getNotificationStats);
 router.get("/admin/recent", admin, getRecentBroadcasts);
 

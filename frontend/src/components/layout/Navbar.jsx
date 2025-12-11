@@ -11,10 +11,9 @@ import {
   Settings,
   BookOpen,
   LayoutDashboard,
-  ShoppingBag,
   TrendingUp,
   Shield,
-   Award,
+  Award,
   Bell
 } from "lucide-react";
 import { toast } from "sonner";
@@ -42,6 +41,7 @@ import {
   DialogTitle,
 } from "../../components/ui/dialog";
 import { useAuth } from "../../context/authContext";
+import NotificationBell from "../NotificationBell";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -126,8 +126,9 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Right Side Actions */}
+          {/* RIGHT SIDE ACTIONS */}
           <div className="flex items-center space-x-4">
+
             {/* Theme Toggle */}
             <Button
               variant="ghost"
@@ -140,6 +141,9 @@ const Navbar = () => {
                 <Sun className="h-5 w-5" />
               )}
             </Button>
+
+            {/* --- Notification Bell (PLACED HERE) --- */}
+            {isAuthenticated && <NotificationBell />}
 
             {/* Auth Buttons / User Menu */}
             {isAuthenticated && user ? (
@@ -177,7 +181,7 @@ const Navbar = () => {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
 
-                  {/* Show Admin Dashboard link ONLY if user is admin */}
+                  {/* Admin Section */}
                   {user.role === "admin" && (
                     <>
                       <DropdownMenuItem
@@ -193,6 +197,7 @@ const Navbar = () => {
                     </>
                   )}
 
+                  {/* User Menu Items */}
                   {userMenuItems.map((item) => (
                     <DropdownMenuItem
                       key={item.path}
@@ -227,19 +232,14 @@ const Navbar = () => {
               className="md:hidden"
               onClick={toggleMenu}
             >
-              {isOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           </div>
         </div>
 
-        {/* ✅ FIXED: Mobile Menu - Only Navigation Links */}
+        {/* MOBILE MENU */}
         {isOpen && (
           <div className="md:hidden py-4 space-y-3 animate-fade-in border-t">
-            {/* Navigation Links */}
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -251,7 +251,6 @@ const Navbar = () => {
               </Link>
             ))}
 
-            {/* ✅ Login/Register Button for Non-Authenticated Users */}
             {!isAuthenticated && (
               <div className="pt-2 border-t">
                 <Button
@@ -269,21 +268,17 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* Logout Confirmation Dialog */}
+      {/* Logout Dialog */}
       <Dialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirm Logout</DialogTitle>
             <DialogDescription>
-              Are you sure you want to log out? You will need to log in again to
-              access your account.
+              Are you sure you want to log out?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setShowLogoutDialog(false)}
-            >
+            <Button variant="outline" onClick={() => setShowLogoutDialog(false)}>
               Cancel
             </Button>
             <Button variant="destructive" onClick={handleConfirmLogout}>

@@ -132,7 +132,7 @@ export const deleteNotification = async (req, res) => {
 };
 
 // @desc    Send broadcast notification to all users
-// @route   POST /api/admin/notifications/broadcast
+// @route   POST /api/user/notifications/broadcast
 // @access  Private (Admin only)
 export const sendBroadcastNotification = async (req, res) => {
   try {
@@ -145,7 +145,7 @@ export const sendBroadcastNotification = async (req, res) => {
       });
     }
 
-    // Get all users
+    // Get all users (including admin)
     const users = await User.find({}).select('_id');
 
     // Create notifications for all users
@@ -161,6 +161,9 @@ export const sendBroadcastNotification = async (req, res) => {
     res.status(200).json({
       success: true,
       message: `Broadcast notification sent to ${users.length} users`,
+      data: {
+        recipientsCount: users.length,
+      }
     });
   } catch (error) {
     console.error("Send broadcast notification error:", error);
@@ -172,7 +175,7 @@ export const sendBroadcastNotification = async (req, res) => {
 };
 
 // @desc    Send notification to specific user
-// @route   POST /api/admin/notifications/send
+// @route   POST /api/user/notifications/send
 // @access  Private (Admin only)
 export const sendUserNotification = async (req, res) => {
   try {
@@ -214,6 +217,30 @@ export const sendUserNotification = async (req, res) => {
   }
 };
 
+// @desc    Get all users for selection (Admin)
+// @route   GET /api/user/notifications/admin/users
+// @access  Private (Admin only)
+export const getAllUsersForNotification = async (req, res) => {
+  try {
+    // Get all users with basic info
+    const users = await User.find({})
+      .select('_id name email avatar')
+      .sort({ name: 1 })
+      .lean();
+
+    res.status(200).json({
+      success: true,
+      data: users,
+    });
+  } catch (error) {
+    console.error("Get users error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 // @desc    Get notification statistics (Admin)
 // @route   GET /api/user/notifications/admin/stats
 // @access  Private (Admin only)
@@ -222,18 +249,6 @@ export const getNotificationStats = async (req, res) => {
     const totalUsers = await User.countDocuments();
     const totalNotifications = await Notification.countDocuments();
     const unreadNotifications = await Notification.countDocuments({ read: false });
-
-    // Count unique broadcast notifications (by title and message) sent to multiple users
-    const broadcastNotifications = await Notification.aggregate([
-      { $match: { type: "admin_broadcast" } },
-      {
-        $group: {
-          _id: { title: "$title", message: "$message" },
-          count: { $sum: 1 }
-        }
-      },
-      { $count: "totalBroadcasts" }
-    ]).then(result => result[0]?.totalBroadcasts || 0);
 
     // Delivered today (count of notifications created today)
     const today = new Date();
@@ -247,7 +262,16 @@ export const getNotificationStats = async (req, res) => {
       { $match: { type: "admin_broadcast" } },
       {
         $group: {
-          _id: { title: "$title", message: "$message", createdAt: { $dateToString: { format: "%Y-%m-%d %H:%M", date: "$createdAt" } } }
+          _id: { 
+            title: "$title", 
+            message: "$message", 
+            createdAt: { 
+              $dateToString: { 
+                format: "%Y-%m-%d %H:%M", 
+                date: "$createdAt" 
+              } 
+            } 
+          }
         }
       },
       { $count: "totalUniqueBroadcasts" }
@@ -259,7 +283,6 @@ export const getNotificationStats = async (req, res) => {
         totalUsers,
         totalNotifications,
         unreadNotifications,
-        broadcastNotifications,
         deliveredToday,
         broadcastsSent,
       },
@@ -278,11 +301,39 @@ export const getNotificationStats = async (req, res) => {
 // @access  Private (Admin only)
 export const getRecentBroadcasts = async (req, res) => {
   try {
-    const broadcasts = await Notification.find({ type: "admin_broadcast" })
-      .sort({ createdAt: -1 })
-      .limit(10)
-      .select('title message type createdAt')
-      .lean();
+    // Get unique broadcasts by grouping on title, message, and rounded timestamp
+    const broadcasts = await Notification.aggregate([
+      { $match: { type: { $in: ["admin_broadcast", "announcement", "system", "warning"] } } },
+      {
+        $group: {
+          _id: {
+            title: "$title",
+            message: "$message",
+            type: "$type",
+            // Group by 1-minute intervals to catch duplicates
+            timeWindow: {
+              $dateToString: {
+                format: "%Y-%m-%d %H:%M",
+                date: "$createdAt"
+              }
+            }
+          },
+          createdAt: { $first: "$createdAt" },
+          notificationId: { $first: "$_id" }
+        }
+      },
+      { $sort: { createdAt: -1 } },
+      { $limit: 10 },
+      {
+        $project: {
+          _id: "$notificationId",
+          title: "$_id.title",
+          message: "$_id.message",
+          type: "$_id.type",
+          createdAt: 1
+        }
+      }
+    ]);
 
     res.status(200).json({
       success: true,
@@ -294,5 +345,25 @@ export const getRecentBroadcasts = async (req, res) => {
       success: false,
       message: "Server error",
     });
+  }
+};
+
+// @desc    Create notification (utility function for system use)
+// @route   Not exposed as API route
+// @access  Internal use only
+export const createNotification = async ({ userId, title, message, type = "system", metadata = {} }) => {
+  try {
+    const notification = await Notification.create({
+      title,
+      message,
+      type,
+      recipient: userId,
+      metadata,
+    });
+
+    return notification;
+  } catch (error) {
+    console.error("Create notification error:", error);
+    throw error;
   }
 };

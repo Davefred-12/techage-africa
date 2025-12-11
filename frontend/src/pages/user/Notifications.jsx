@@ -8,29 +8,7 @@ import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 import api from '../../services/api';
 import { toast } from 'sonner';
-
-// Notification sound function using Web Audio API
-const playNotificationSound = () => {
-  try {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-
-    oscillator.frequency.setValueAtTime(800, audioContext.currentTime); // Frequency in Hz
-    oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1); // Slide down
-
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime); // Volume
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3); // Fade out
-
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.3);
-  } catch {
-    // Silently fail if Web Audio API is not supported
-  }
-};
+import { useNotification } from '../../context/NotificationContext';
 import {
   Bell,
   BellRing,
@@ -42,40 +20,48 @@ import {
   Users,
   Trophy,
   Trash2,
+  RefreshCw,
 } from 'lucide-react';
 
 const Notifications = () => {
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
+  const { unreadCount: contextUnreadCount } = useNotification();
+  const [localUnreadCount, setLocalUnreadCount] = useState(0);
 
   useEffect(() => {
     fetchNotifications();
   }, []);
 
-  const fetchNotifications = async () => {
+  // Update local unread count from context
+  useEffect(() => {
+    setLocalUnreadCount(contextUnreadCount);
+  }, [contextUnreadCount]);
+
+  const fetchNotifications = async (showLoading = true) => {
     try {
-      setLoading(true);
+      if (showLoading) setLoading(true);
       const response = await api.get('/api/user/notifications');
 
       if (response.data.success) {
-        const newNotifications = response.data.data.notifications;
-        const newUnreadCount = response.data.data.unreadCount;
-
-        setNotifications(newNotifications);
-        setUnreadCount(newUnreadCount);
-
-        // Play sound for new unread notifications
-        if (newUnreadCount > unreadCount) {
-          playNotificationSound();
-        }
+        setNotifications(response.data.data.notifications);
+        setLocalUnreadCount(response.data.data.unreadCount);
       }
     } catch (error) {
       console.error('Notifications fetch error:', error);
-      toast.error('Failed to load notifications');
+      if (showLoading) {
+        toast.error('Failed to load notifications');
+      }
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
+  };
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchNotifications(false);
   };
 
   const markAsRead = async (notificationId) => {
@@ -90,7 +76,7 @@ const Notifications = () => {
               : notification
           )
         );
-        setUnreadCount(prev => Math.max(0, prev - 1));
+        setLocalUnreadCount(prev => Math.max(0, prev - 1));
       }
     } catch (error) {
       console.error('Mark as read error:', error);
@@ -106,7 +92,7 @@ const Notifications = () => {
         setNotifications(prev =>
           prev.map(notification => ({ ...notification, read: true }))
         );
-        setUnreadCount(0);
+        setLocalUnreadCount(0);
         toast.success('All notifications marked as read');
       }
     } catch (error) {
@@ -135,6 +121,8 @@ const Notifications = () => {
     switch (type) {
       case 'admin_broadcast':
         return <BellRing className="h-5 w-5 text-primary-600" />;
+      case 'announcement':
+        return <BellRing className="h-5 w-5 text-green-600" />;
       case 'referral_reward':
         return <Gift className="h-5 w-5 text-accent-600" />;
       case 'course_completed':
@@ -154,6 +142,8 @@ const Notifications = () => {
     switch (type) {
       case 'admin_broadcast':
         return <Badge className="bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300">Admin</Badge>;
+      case 'announcement':
+        return <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">Announcement</Badge>;
       case 'referral_reward':
         return <Badge className="bg-accent-100 text-accent-700 dark:bg-accent-900/30 dark:text-accent-300">Reward</Badge>;
       case 'course_completed':
@@ -175,9 +165,13 @@ const Notifications = () => {
     const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
 
     if (diffInHours < 1) {
-      return 'Just now';
+      const diffInMinutes = Math.floor((now - date) / (1000 * 60));
+      if (diffInMinutes < 1) return 'Just now';
+      return `${diffInMinutes}m ago`;
     } else if (diffInHours < 24) {
       return `${diffInHours}h ago`;
+    } else if (diffInHours < 48) {
+      return 'Yesterday';
     } else {
       return date.toLocaleDateString('en-US', {
         month: 'short',
@@ -215,12 +209,22 @@ const Notifications = () => {
             </p>
           </div>
 
-          {unreadCount > 0 && (
-            <Button onClick={markAllAsRead} variant="outline">
-              <CheckCircle className="h-4 w-4 mr-2" />
-              Mark All as Read ({unreadCount})
+          <div className="flex gap-2">
+            <Button 
+              onClick={handleRefresh} 
+              variant="outline"
+              disabled={refreshing}
+            >
+              <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+              Refresh
             </Button>
-          )}
+            {localUnreadCount > 0 && (
+              <Button onClick={markAllAsRead} variant="outline">
+                <CheckCircle className="h-4 w-4 mr-2" />
+                Mark All Read ({localUnreadCount})
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* Stats */}
@@ -248,7 +252,7 @@ const Notifications = () => {
                   <p className="text-sm font-medium text-muted-foreground mb-1">
                     Unread
                   </p>
-                  <p className="text-3xl font-bold text-accent-600">{unreadCount}</p>
+                  <p className="text-3xl font-bold text-accent-600">{localUnreadCount}</p>
                 </div>
                 <div className="w-12 h-12 rounded-xl bg-accent-100 dark:bg-accent-900/30 flex items-center justify-center">
                   <BellRing className="h-6 w-6 text-accent-600" />
@@ -286,7 +290,7 @@ const Notifications = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Bell className="h-5 w-5" />
-              Recent Notifications
+              All Notifications
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -311,7 +315,7 @@ const Notifications = () => {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-3">
                             <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
+                              <div className="flex items-center gap-2 mb-1 flex-wrap">
                                 {getNotificationBadge(notification.type)}
                                 {!notification.read && (
                                   <div className="w-2 h-2 bg-accent-600 rounded-full"></div>
@@ -335,6 +339,7 @@ const Notifications = () => {
                                   variant="ghost"
                                   onClick={() => markAsRead(notification._id)}
                                   className="h-8 w-8 p-0"
+                                  title="Mark as read"
                                 >
                                   <CheckCircle className="h-4 w-4" />
                                 </Button>
@@ -344,6 +349,7 @@ const Notifications = () => {
                                 variant="ghost"
                                 onClick={() => deleteNotification(notification._id)}
                                 className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                                title="Delete notification"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </Button>
