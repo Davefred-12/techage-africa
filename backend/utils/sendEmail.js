@@ -5,6 +5,14 @@ import nodemailer from 'nodemailer';
 
 const sendEmail = async (options) => {
   try {
+    // Check if email configuration is available
+    if (!process.env.EMAIL_HOST || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.warn('⚠️ Email configuration missing. Skipping email send.');
+      console.log('Required environment variables: EMAIL_HOST, EMAIL_USER, EMAIL_PASS');
+      // Don't throw error, just return success to prevent breaking the flow
+      return { success: true, message: 'Email skipped - configuration missing', skipped: true };
+    }
+
     // Create transporter
     // For development, we'll use Gmail or a test account
     const transporter = nodemailer.createTransport({

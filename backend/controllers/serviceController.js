@@ -84,11 +84,21 @@ export const submitServiceInquiry = async (req, res) => {
     `;
 
     // Send email to admin
-    await sendEmail({
-      to: process.env.ADMIN_EMAIL || 'admin@techageafrica.com',
-      subject: `New Service Inquiry: ${serviceName} - ${name}`,
-      html: adminEmailContent,
-    });
+    try {
+      const adminEmailResult = await sendEmail({
+        to: process.env.ADMIN_EMAIL || 'admin@techageafrica.com',
+        subject: `New Service Inquiry: ${serviceName} - ${name}`,
+        html: adminEmailContent,
+      });
+      if (adminEmailResult.skipped) {
+        console.log('ℹ️ Admin notification email skipped (configuration missing)');
+      } else {
+        console.log('✅ Admin notification email sent successfully');
+      }
+    } catch (emailError) {
+      console.error('❌ Failed to send admin notification email:', emailError);
+      // Continue processing even if admin email fails
+    }
 
     // Send confirmation email to user
     const userEmailContent = `
@@ -121,11 +131,21 @@ export const submitServiceInquiry = async (req, res) => {
     `;
 
     // Send confirmation email to user
-    await sendEmail({
-      to: email,
-      subject: `Service Inquiry Received - ${serviceName}`,
-      html: userEmailContent,
-    });
+    try {
+      const userEmailResult = await sendEmail({
+        to: email,
+        subject: `Service Inquiry Received - ${serviceName}`,
+        html: userEmailContent,
+      });
+      if (userEmailResult.skipped) {
+        console.log('ℹ️ User confirmation email skipped (configuration missing)');
+      } else {
+        console.log('✅ User confirmation email sent successfully');
+      }
+    } catch (emailError) {
+      console.error('❌ Failed to send user confirmation email:', emailError);
+      // Continue processing even if user email fails
+    }
 
     res.status(200).json({
       success: true,

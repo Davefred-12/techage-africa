@@ -152,7 +152,7 @@ export const verifyEnrollment = async (req, res) => {
       });
     }
 
-    // ✅ FIX: Check if already completed BEFORE doing anything else
+    // ✅ Check if already completed BEFORE doing anything else
     if (enrollment.paymentStatus === "completed") {
       console.log('⚠️ Payment already verified for this enrollment');
       return res.status(200).json({
@@ -180,15 +180,17 @@ export const verifyEnrollment = async (req, res) => {
     enrollment.paidAt = new Date();
     await enrollment.save();
 
-    // ✅ FIX: Increment enrolled students count ONLY ONCE
+    // ✅ Increment enrolled students count ONLY ONCE
     await Course.findByIdAndUpdate(enrollment.course._id, {
       $inc: { enrolledStudents: 1 },
     });
 
     console.log('✅ Enrollment completed, student count incremented by 1');
 
-    // ✅ Add course to user's enrolledCourses (check if not already added)
+    // ✅ Get user details
     const user = await User.findById(enrollment.user);
+    
+    // ✅ Add course to user's enrolledCourses (check if not already added)
     const alreadyInUserCourses = user.enrolledCourses.some(
       (ec) => ec.course.toString() === enrollment.course._id.toString()
     );
@@ -217,25 +219,61 @@ export const verifyEnrollment = async (req, res) => {
       recipient: enrollment.user,
     });
 
-    // ✅ Check if user was referred and award points to referrer
+    // ✅ FIXED: Check if user was referred and award points to referrer
     if (user.referredBy) {
+      console.log(`🎯 User was referred by: ${user.referredBy}`);
+      
       const referrer = await User.findById(user.referredBy);
+      
       if (referrer) {
-        referrer.points += 500;
-        referrer.referrals.push({
+        // ✅ Check if this is the FIRST purchase by the referred user
+        const previousPurchases = await Enrollment.countDocuments({
           user: user._id,
-          pointsEarned: 500,
+          paymentStatus: "completed",
         });
-        await referrer.save();
 
-        // ✅ Notify referrer
-        await Notification.create({
-          title: "Referral Reward!",
-          message: `Great news! ${user.name} purchased a course using your referral link. You earned 500 points!`,
-          type: "referral_reward",
-          recipient: referrer._id,
-        });
+        // Only award referral points for the FIRST purchase
+        if (previousPurchases === 1) { // This is their first completed purchase
+          // ✅ Award 500 points to referrer
+          referrer.points += 500;
+
+          // ✅ Find the referral entry and update pointsEarned
+          const referralIndex = referrer.referrals.findIndex(
+            (ref) => ref.user.toString() === user._id.toString()
+          );
+
+          if (referralIndex !== -1) {
+            // Update existing referral entry
+            referrer.referrals[referralIndex].pointsEarned = 500;
+            referrer.referrals[referralIndex].earnedAt = new Date();
+          } else {
+            // If somehow not in array, add it (fallback)
+            referrer.referrals.push({
+              user: user._id,
+              pointsEarned: 500,
+              earnedAt: new Date(),
+            });
+          }
+
+          await referrer.save();
+
+          console.log(`✅ Referrer ${referrer.name} awarded 500 points!`);
+
+          // ✅ Notify referrer
+          await Notification.create({
+            title: "Referral Reward! 🎉",
+            message: `Great news! ${user.name} purchased "${enrollment.course.title}" using your referral link. You earned 500 points!`,
+            type: "referral_reward",
+            recipient: referrer._id,
+          });
+        } else {
+          console.log(`⚠️ User ${user.name} already had ${previousPurchases - 1} previous purchase(s). No referral points awarded.`);
+        }
+      } else {
+        console.log('⚠️ Referrer not found');
       }
+    } else {
+      console.log('ℹ️ User was not referred by anyone');
     }
 
     res.status(200).json({

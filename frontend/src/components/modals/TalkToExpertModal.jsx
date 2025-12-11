@@ -59,38 +59,58 @@ const TalkToExpertModal = ({ isOpen, onClose, service, allServices }) => {
     },
   });
 
-  const onSubmit = async (data) => {
-    // Check if user is authenticated
-    if (!isAuthenticated) {
-      toast.error('Please log in to submit a service inquiry.');
-      navigate('/login', { state: { from: window.location.pathname } });
-      return;
+ const onSubmit = async (data) => {
+  // Check if user is authenticated
+  if (!isAuthenticated) {
+    toast.error('Please log in to submit a service inquiry.');
+    navigate('/login', { state: { from: window.location.pathname } });
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Please log in to submit an inquiry');
     }
 
-    setLoading(true);
-    try {
-      const response = await fetch('/api/public/service-inquiry', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+    // USE YOUR ENV VARIABLE HERE
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/public/service-inquiry`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      credentials: 'include',
+      body: JSON.stringify(data),
+    });
 
-      if (response.ok) {
-        toast.success('Your inquiry has been sent successfully! We\'ll get back to you soon.');
-        form.reset();
-        onClose();
-      } else {
-        throw new Error('Failed to send inquiry');
+    // Check if response is ok before parsing JSON
+    if (!response.ok) {
+      let errorMessage = 'Failed to send inquiry';
+      try {
+        const errorData = await response.text();
+        if (errorData) {
+          const parsedError = JSON.parse(errorData);
+          errorMessage = parsedError.message || errorMessage;
+        }
+      } catch {
+        errorMessage = `Request failed: ${response.status} ${response.statusText}`;
       }
-    } catch (error) {
-      console.error('Inquiry submission error:', error);
-      toast.error('Failed to send your inquiry. Please try again.');
-    } finally {
-      setLoading(false);
+      throw new Error(errorMessage);
     }
-  };
+
+
+    toast.success('Your inquiry has been sent successfully! We\'ll get back to you soon.');
+    form.reset();
+    onClose();
+  } catch (error) {
+    console.error('Inquiry submission error:', error);
+    toast.error(error.message || 'Failed to send your inquiry. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (!isOpen || !service) return null;
 

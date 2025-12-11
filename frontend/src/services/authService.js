@@ -1,23 +1,22 @@
 // ============================================
-// FILE: src/services/authService.js
+// FILE: src/services/authService.js - FIXED
 // ============================================
 import api from './api';
 
 const authService = {
   // Register new user
   register: async (userData) => {
-    // ✅ FIX: Map fullName to name for backend
+    // ✅ FIX: Include referralCode in payload
     const payload = {
-      name: userData.fullName || userData.name,  // Support both fullName and name
+      name: userData.fullName || userData.name,
       email: userData.email,
-      password: userData.password
+      password: userData.password,
+      referralCode: userData.referralCode || '', // ✅ ADD THIS LINE
     };
     
+    console.log('📤 Sending registration data:', payload); // Debug log
+    
     const response = await api.post('/api/auth/register', payload);
-    // if (response.data.token) {
-    //   localStorage.setItem('token', response.data.token);
-    //   localStorage.setItem('user', JSON.stringify(response.data.user));
-    // }
     return response.data;
   },
 

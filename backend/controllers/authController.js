@@ -16,6 +16,12 @@ export const register = async (req, res) => {
     const { name, fullName, email, password, referralCode } = req.body;
     const userName = name || fullName;
 
+    // ✅ Debug logs
+    console.log('📥 Registration request received:');
+    console.log('- Name:', userName);
+    console.log('- Email:', email);
+    console.log('- Referral Code:', referralCode);
+
     // Validation
     if (!userName || !email || !password) {
       return res.status(400).json({
@@ -34,35 +40,64 @@ export const register = async (req, res) => {
     }
 
     // Handle referral code
-    let referredBy = null;
-    if (referralCode) {
+    let referrer = null;
+    if (referralCode && referralCode.trim() !== '') {
+      console.log('🔍 Looking for referrer with code:', referralCode.toUpperCase());
+      
       // Validate referral code
-      const referrer = await User.findOne({ referralCode: referralCode.toUpperCase() });
+      referrer = await User.findOne({ referralCode: referralCode.toUpperCase() });
+      
       if (referrer) {
+        console.log('✅ Referrer found:', referrer.name, '-', referrer.email);
+        
         // Prevent self-referral
         if (referrer.email === email) {
+          console.log('❌ Self-referral attempt blocked');
           return res.status(400).json({
             success: false,
             message: 'You cannot use your own referral code',
           });
         }
-        referredBy = referrer._id;
       } else {
+        console.log('❌ Invalid referral code provided');
         return res.status(400).json({
           success: false,
           message: 'Invalid referral code',
         });
       }
+    } else {
+      console.log('ℹ️ No referral code provided');
     }
 
-    // Create user
+    console.log('👤 Creating user with referredBy:', referrer ? referrer._id : null);
+
+    // Create user with referredBy field
     const user = await User.create({
       name: userName,
       email,
       password,
       provider: 'local',
-      referredBy,
+      referredBy: referrer ? referrer._id : null,
     });
+
+    console.log('✅ User created successfully:');
+    console.log('   - User ID:', user._id);
+    console.log('   - Name:', user.name);
+    console.log('   - Email:', user.email);
+    console.log('   - ReferredBy:', user.referredBy);
+
+    // ✅ If there's a referrer, update their referrals array
+    if (referrer) {
+      referrer.referrals.push({
+        user: user._id,
+        earnedAt: new Date(),
+        pointsEarned: 0, // Will be updated to 500 when user makes first purchase
+      });
+      await referrer.save();
+
+      console.log(`✅ Added ${user.email} to ${referrer.name}'s referrals array`);
+      console.log(`   Total referrals for ${referrer.name}: ${referrer.referrals.length}`);
+    }
 
     // Send confirmation email to user
     try {
@@ -90,6 +125,7 @@ export const register = async (req, res) => {
               <div class="content">
                 <p>Hi ${user.name},</p>
                 <p>Thank you for joining TechAge Africa! Your account has been successfully created.</p>
+                ${referrer ? `<p>✨ You were referred by ${referrer.name}! When you make your first course purchase, they'll earn 500 reward points.</p>` : ''}
                 <p>You can now access our platform to start your learning journey in technology and digital skills.</p>
                 <div style="text-align: center;">
                   <a href="${process.env.CLIENT_URL}/login" class="button">Login to Your Account</a>
@@ -108,7 +144,6 @@ export const register = async (req, res) => {
       });
     } catch (emailError) {
       console.error('Failed to send confirmation email to user:', emailError);
-      // Don't fail registration if email fails
     }
 
     // Send notification email to admin
@@ -141,6 +176,7 @@ export const register = async (req, res) => {
                   <p><strong>Email:</strong> ${user.email}</p>
                   <p><strong>Registration Date:</strong> ${new Date().toLocaleString()}</p>
                   <p><strong>User ID:</strong> ${user._id}</p>
+                  ${referrer ? `<p><strong>Referred By:</strong> ${referrer.name} (${referrer.email})</p>` : '<p><strong>Referred By:</strong> None</p>'}
                 </div>
                 <p>Please review the user account in the admin dashboard if needed.</p>
               </div>
@@ -155,7 +191,6 @@ export const register = async (req, res) => {
       });
     } catch (emailError) {
       console.error('Failed to send notification email to admin:', emailError);
-      // Don't fail registration if email fails
     }
 
     // Generate token
@@ -175,7 +210,7 @@ export const register = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Register error:', error);
+    console.error('❌ Register error:', error);
     res.status(500).json({
       success: false,
       message: 'Server error. Please try again later.',
