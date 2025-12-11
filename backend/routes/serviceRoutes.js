@@ -9,7 +9,7 @@ const router = express.Router();
 
 // @route   POST /api/public/service-inquiry
 // @desc    Submit service inquiry form
-// @access  Public
-router.post('/service-inquiry', submitServiceInquiry);
+// @access  Private (Authenticated users only)
+router.post('/service-inquiry', protect, submitServiceInquiry);
 
 export default router;

@@ -64,13 +64,6 @@ export const register = async (req, res) => {
       referredBy,
     });
 
-    // Update referrer's referrals array if referredBy is set
-    if (referredBy) {
-      await User.findByIdAndUpdate(referredBy, {
-        $push: { referrals: { user: user._id, pointsEarned: 0 } }
-      });
-    }
-
     // Send confirmation email to user
     try {
       await sendEmail({

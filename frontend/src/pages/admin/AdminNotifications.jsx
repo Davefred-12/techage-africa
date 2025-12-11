@@ -63,10 +63,12 @@ const AdminNotifications = () => {
   const [recentNotifications, setRecentNotifications] = useState([]);
   const [statsLoading, setStatsLoading] = useState(true);
   const [users, setUsers] = useState([]);
+  const [usersLoading, setUsersLoading] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [userSearch, setUserSearch] = useState('');
   const [sendToAll, setSendToAll] = useState(true);
   const [userDialogOpen, setUserDialogOpen] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(notificationSchema),
@@ -85,12 +87,16 @@ const AdminNotifications = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await api.get('/api/admin/users');
+      setUsersLoading(true);
+      const response = await api.get('/api/user/notifications/admin/users');
       if (response.data.success) {
-        setUsers(response.data.data);
+        setUsers(response.data.data || []);
       }
     } catch (error) {
       console.error('Failed to fetch users:', error);
+      setUsers([]);
+    } finally {
+      setUsersLoading(false);
     }
   };
 
@@ -110,7 +116,7 @@ const AdminNotifications = () => {
     setSelectedUsers([]);
   };
 
-  const filteredUsers = users.filter(user =>
+  const filteredUsers = (users || []).filter(user =>
     user.name.toLowerCase().includes(userSearch.toLowerCase()) ||
     user.email.toLowerCase().includes(userSearch.toLowerCase())
   );
@@ -330,7 +336,7 @@ const AdminNotifications = () => {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                   {/* Recipients Selection */}
                   <div className="space-y-3">
-                    <FormLabel>Send To</FormLabel>
+                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Send To</label>
                     <div className="flex gap-4">
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input

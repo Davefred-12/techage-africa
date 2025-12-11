@@ -222,16 +222,10 @@ export const verifyEnrollment = async (req, res) => {
       const referrer = await User.findById(user.referredBy);
       if (referrer) {
         referrer.points += 500;
-        // Update existing referral or add if not exists
-        const existingReferral = referrer.referrals.find(r => r.user.toString() === user._id.toString());
-        if (existingReferral) {
-          existingReferral.pointsEarned += 500;
-        } else {
-          referrer.referrals.push({
-            user: user._id,
-            pointsEarned: 500,
-          });
-        }
+        referrer.referrals.push({
+          user: user._id,
+          pointsEarned: 500,
+        });
         await referrer.save();
 
         // ✅ Notify referrer

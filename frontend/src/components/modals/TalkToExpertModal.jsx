@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/authContext';
 import {
   X,
   Send,
@@ -40,12 +42,14 @@ const inquirySchema = z.object({
 const TalkToExpertModal = ({ isOpen, onClose, service, allServices }) => {
   const [loading, setLoading] = useState(false);
   const ServiceIcon = service?.icon;
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
 
   const form = useForm({
     resolver: zodResolver(inquirySchema),
     defaultValues: {
-      name: '',
-      email: '',
+      name: user?.name || '',
+      email: user?.email || '',
       phone: '',
       company: '',
       service: service?.id || '',
@@ -56,6 +60,13 @@ const TalkToExpertModal = ({ isOpen, onClose, service, allServices }) => {
   });
 
   const onSubmit = async (data) => {
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      toast.error('Please log in to submit a service inquiry.');
+      navigate('/login', { state: { from: window.location.pathname } });
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await fetch('/api/public/service-inquiry', {
