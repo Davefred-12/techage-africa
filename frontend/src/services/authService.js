@@ -10,7 +10,8 @@ const authService = {
     const payload = {
       name: userData.fullName || userData.name,  // Support both fullName and name
       email: userData.email,
-      password: userData.password
+      password: userData.password,
+      referralCode: userData.referralCode
     };
     
     const response = await api.post('/api/auth/register', payload);
