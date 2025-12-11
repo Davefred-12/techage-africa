@@ -5,7 +5,7 @@ import sendEmail from '../utils/sendEmail.js';
 
 // @desc    Handle service inquiry form submission
 // @route   POST /api/public/service-inquiry
-// @access  Private (Authenticated users only)
+// @access  Public
 export const submitServiceInquiry = async (req, res) => {
   try {
     const {
@@ -27,21 +27,12 @@ export const submitServiceInquiry = async (req, res) => {
       });
     }
 
-    // Get user from auth middleware
-    const user = req.user;
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
-    }
-
     // Service mapping for better display
     const services = {
-      'web-development': 'Web Development',
-      'copywriting': 'Copywriting',
-      'seo-optimization': 'SEO Optimization',
-      'amazon-kdp': 'Amazon KDP'
+      'content-writing': 'Content Writing and Management',
+      'marketing-pr': 'Business and Personal Brand Marketing & PR',
+      'seo-visibility': 'SEO and Visibility Management',
+      'web-app-development': 'Website and App Development'
     };
 
     const serviceName = services[service] || service;
@@ -69,12 +60,6 @@ export const submitServiceInquiry = async (req, res) => {
         <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
           <h3 style="margin-top: 0; color: #1f2937;">Message</h3>
           <p style="white-space: pre-wrap;">${message}</p>
-        </div>
-
-        <div style="background: #dbeafe; padding: 15px; border-radius: 8px; margin: 20px 0;">
-          <p style="margin: 0; color: #1e40af;">
-            <strong>User Account:</strong> ${user.name} (${user.email})
-          </p>
         </div>
 
         <p style="color: #6b7280; font-size: 14px;">

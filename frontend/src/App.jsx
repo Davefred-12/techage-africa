@@ -7,8 +7,8 @@ import { NotificationProvider } from "./context/NotificationContext";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import ScrollToTop from "./components/ScrollToTop";
-import { HelmetProvider } from 'react-helmet-async';
-import { Toaster } from './components/ui/sonner';
+import { HelmetProvider } from "react-helmet-async";
+import { Toaster } from "./components/ui/sonner";
 
 // Pages
 import Home from "./pages/Home";
@@ -26,7 +26,6 @@ import Privacy from "./pages/Privacy";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Services from "./pages/Services";
-import TalkToExpert from "./pages/TalkToExpert";
 
 // Components
 import CookieConsent from "./components/CookieConsent";
@@ -64,53 +63,61 @@ function App() {
               <Navbar />
               <main className="flex-grow">
                 <Routes>
-                 {/* Public Routes */}
-                 <Route path="/" element={<Home />} />
-                 <Route path="/courses" element={<Courses />} />
-                 <Route path="/courses/:slug" element={<CourseDetail />} />
-                 <Route path="/about" element={<About />} />
-                 <Route path="/contact" element={<Contact />} />
-                 <Route path="/privacy" element={<Privacy />} />
-                 <Route path="/blog" element={<Blog />} />
-                 <Route path="/blog/:slug" element={<BlogPost />} />
-                 <Route path="/services" element={<Services />} />
-                 <Route path="/services/:serviceId" element={<TalkToExpert />} />
-                 <Route path="/login" element={<Login />} />
-                 <Route path="/register" element={<Register />} />
-                 <Route path="/forgot-password" element={<ForgetPassword />} />
-                 <Route path="/reset-password" element={<ResetPassword />} />
-                 <Route path="/payment/verify" element={<PaymentVerify />} />
-  
-                 {/* ✅ NEW - OAuth Callback Route */}
-                 <Route path="/auth/callback" element={<AuthCallback />} />
+                  {/* Public Routes */}
+                  <Route path="/" element={<Home />} />
+                  <Route path="/courses" element={<Courses />} />
+                  <Route path="/courses/:slug" element={<CourseDetail />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPost />} />
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/forgot-password" element={<ForgetPassword />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
+                  <Route path="/payment/verify" element={<PaymentVerify />} />
 
-              {/* User Dashboard Routes */}
-              <Route path="/user" element={<UserDashboard />} />
-              <Route path="/user/progress" element={<ProgressTracking />} />
-              <Route path="/user/my-courses" element={<MyCourses />} />
-              <Route path="/user/referrals" element={<ReferralsRewards />} />
-              <Route path="/user/notifications" element={<Notifications />} />
-              <Route path="/user/settings" element={<Settings />} />
-              <Route
-                path="/user/courses/:id/learn"
-                element={<CoursePlayer />}
-              />
-              <Route
-                path="/user/courses/:id/certificate"
-                element={<CertificateReview />}
-              />
+                  {/* ✅ NEW - OAuth Callback Route */}
+                  <Route path="/auth/callback" element={<AuthCallback />} />
 
-              {/* Admin Dashboard Routes */}
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/admin/courses" element={<ManageCourses />} />
-              <Route path="/admin/blog" element={<ManageBlogs />} />
-              <Route path="/admin/blog/create" element={<BlogEditor />} />
-              <Route path="/admin/blog/edit/:id" element={<BlogEditor />} />
-              <Route path="/admin/users" element={<ManageUsers />} />
-              <Route path="/admin/revenue" element={<RevenueAnalytics />} />
-              <Route path="/admin/notifications" element={<AdminNotifications />} />
-              <Route path="/admin/upload" element={<UploadVideo />} />
-              <Route path="/admin/settings" element={<AdminSettings />} />
+                  {/* User Dashboard Routes */}
+                  <Route path="/user" element={<UserDashboard />} />
+                  <Route path="/user/progress" element={<ProgressTracking />} />
+                  <Route path="/user/my-courses" element={<MyCourses />} />
+                  <Route
+                    path="/user/referrals"
+                    element={<ReferralsRewards />}
+                  />
+                  <Route
+                    path="/user/notifications"
+                    element={<Notifications />}
+                  />
+                  <Route path="/user/settings" element={<Settings />} />
+                  <Route
+                    path="/user/courses/:id/learn"
+                    element={<CoursePlayer />}
+                  />
+                  <Route
+                    path="/user/courses/:id/certificate"
+                    element={<CertificateReview />}
+                  />
+
+                  {/* Admin Dashboard Routes */}
+                  <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/admin/courses" element={<ManageCourses />} />
+                  <Route path="/admin/blog" element={<ManageBlogs />} />
+                  <Route path="/admin/blog/create" element={<BlogEditor />} />
+                  <Route path="/admin/blog/edit/:id" element={<BlogEditor />} />
+                  <Route path="/admin/users" element={<ManageUsers />} />
+                  <Route path="/admin/revenue" element={<RevenueAnalytics />} />
+                  <Route
+                    path="/admin/notifications"
+                    element={<AdminNotifications />}
+                  />
+                  <Route path="/admin/upload" element={<UploadVideo />} />
+                  <Route path="/admin/settings" element={<AdminSettings />} />
                 </Routes>
               </main>
               <Footer />
