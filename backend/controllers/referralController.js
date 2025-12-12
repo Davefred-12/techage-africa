@@ -1,7 +1,8 @@
 // ============================================
-// FILE: backend/controllers/referralController.js
+// FILE: backend/controllers/referralController.js - FIXED
 // ============================================
 import User from "../models/User.js";
+import Enrollment from "../models/Enrollment.js";
 import Notification from "../models/Notification.js";
 
 // @desc    Get user's referral data
@@ -20,10 +21,14 @@ export const getReferralData = async (req, res) => {
       });
     }
 
-    // Calculate completed courses for achievements
-    const completedCourses = req.user.enrolledCourses.filter(
-      course => course.progress === 100
-    ).length;
+    // ✅ FIX: Calculate completed courses from Enrollment model
+    const completedCourses = await Enrollment.countDocuments({
+      user: req.user._id,
+      paymentStatus: "completed",
+      progress: 100, // Only courses with 100% progress
+    });
+
+    console.log(`📊 User ${user.name} has completed ${completedCourses} courses`);
 
     // Define achievements
     const achievements = [

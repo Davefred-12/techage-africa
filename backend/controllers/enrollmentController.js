@@ -409,7 +409,7 @@ export const updateProgress = async (req, res) => {
       _id: id,
       user: userId,
       paymentStatus: "completed",
-    });
+    }).populate('course');
 
     if (!enrollment) {
       return res.status(404).json({
@@ -418,6 +418,9 @@ export const updateProgress = async (req, res) => {
       });
     }
 
+    // Store old progress to check if course was just completed
+    const oldProgress = enrollment.progress;
+
     // Add or remove lesson from completedLessons
     if (completed) {
       if (!enrollment.completedLessons.includes(lessonId)) {
@@ -425,12 +428,12 @@ export const updateProgress = async (req, res) => {
       }
     } else {
       enrollment.completedLessons = enrollment.completedLessons.filter(
-        (id) => id.toString() !== lessonId.toString()
+        (lessonIdItem) => lessonIdItem.toString() !== lessonId.toString()
       );
     }
 
     // Calculate progress percentage
-    const course = await Course.findById(enrollment.course);
+    const course = await Course.findById(enrollment.course._id);
     const totalLessons = course.modules.reduce(
       (sum, module) => sum + module.lessons.length,
       0
@@ -443,6 +446,23 @@ export const updateProgress = async (req, res) => {
     enrollment.lastAccessedAt = new Date();
 
     await enrollment.save();
+
+    // ✅ Award 1000 points when course is completed (100% progress)
+    if (oldProgress < 100 && enrollment.progress === 100) {
+      const user = await User.findById(userId);
+      user.points += 1000;
+      await user.save();
+
+      // Create notification
+      await Notification.create({
+        title: "Course Completed! 🎉",
+        message: `Congratulations! You completed "${enrollment.course.title}" and earned 1000 points!`,
+        type: "achievement",
+        recipient: userId,
+      });
+
+      console.log(`🎓 User ${user.name} completed course "${enrollment.course.title}" - awarded 1000 points`);
+    }
 
     res.status(200).json({
       success: true,
