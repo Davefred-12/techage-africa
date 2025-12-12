@@ -22,7 +22,8 @@ const notificationSchema = new mongoose.Schema(
         "course_completed",
         "referral_signup",
         "system",
-        "warning"
+        "warning",
+        "announcement"
       ],
       default: "system",
     },
@@ -38,6 +39,12 @@ const notificationSchema = new mongoose.Schema(
     readAt: {
       type: Date,
     },
+    // NEW FIELD: Groups related notifications (e.g., one broadcast to many users)
+    broadcastId: {
+      type: String,
+      default: null,
+      index: true, // Index for fast queries
+    },
     // For admin broadcasts, this will be null (sent to all users)
     // For specific notifications, this will contain relevant data
     metadata: {
@@ -52,6 +59,7 @@ const notificationSchema = new mongoose.Schema(
 
 // Index for efficient queries
 notificationSchema.index({ recipient: 1, read: 1, createdAt: -1 });
+notificationSchema.index({ broadcastId: 1, createdAt: -1 });
 
 const Notification = mongoose.model("Notification", notificationSchema);
 

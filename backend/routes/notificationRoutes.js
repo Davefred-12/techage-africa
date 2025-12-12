@@ -9,6 +9,7 @@ import {
   deleteNotification,
   sendBroadcastNotification,
   sendUserNotification,
+  sendMultipleUserNotification,
   getAllUsersForNotification,
   getNotificationStats,
   getRecentBroadcasts,
@@ -29,6 +30,7 @@ router.delete("/:id", deleteNotification);
 // Admin routes (accessible by admin only)
 router.post("/broadcast", admin, sendBroadcastNotification);
 router.post("/send", admin, sendUserNotification);
+router.post("/send-multiple", admin, sendMultipleUserNotification);
 router.get("/admin/users", admin, getAllUsersForNotification);
 router.get("/admin/stats", admin, getNotificationStats);
 router.get("/admin/recent", admin, getRecentBroadcasts);

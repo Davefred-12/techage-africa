@@ -165,29 +165,26 @@ const AdminNotifications = () => {
           successCount = stats?.totalUsers || 0;
         }
       } else {
-        // Send to selected users
+        // Send to selected users (with single broadcastId)
         if (selectedUsers.length === 0) {
           toast.error('Please select at least one user');
           setLoading(false);
           return;
         }
 
-        const promises = selectedUsers.map(userId =>
-          api.post('/api/user/notifications/send', {
-            userId,
-            ...data
-          })
-        );
+        // Send to multiple users with a single broadcast endpoint
+        response = await api.post('/api/user/notifications/send-multiple', {
+          userIds: selectedUsers,
+          ...data
+        });
 
-        const results = await Promise.allSettled(promises);
-        successCount = results.filter(result => result.status === 'fulfilled').length;
-
-        if (successCount > 0) {
+        if (response.data.success) {
+          successCount = response.data.data.successCount;
           toast.success(`Notification sent to ${successCount} user${successCount > 1 ? 's' : ''}!`);
-        }
-
-        if (successCount < selectedUsers.length) {
-          toast.warning(`Failed to send to ${selectedUsers.length - successCount} user${selectedUsers.length - successCount > 1 ? 's' : ''}`);
+          
+          if (successCount < selectedUsers.length) {
+            toast.warning(`Failed to send to ${selectedUsers.length - successCount} user${selectedUsers.length - successCount > 1 ? 's' : ''}`);
+          }
         }
       }
 
