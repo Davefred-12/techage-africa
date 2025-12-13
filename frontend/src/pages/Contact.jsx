@@ -289,7 +289,7 @@ const Contact = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Contact Form */}
-            <Card className="border-2 hover:shadow-xl transition-all animate-fade-in-left">
+            <Card className="border-2 hover:shadow-xl transition-all animate-fade-in-left h-30">
               <CardContent className="p-6 lg:p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center animate-bounce-in">
