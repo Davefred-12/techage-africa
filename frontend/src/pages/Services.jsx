@@ -160,7 +160,7 @@ const Services = () => {
   return (
     <div className="min-h-screen bg-muted/30">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 text-white py-20">
+      <section className="bg-primary-600 text-white py-20">
         <div className="container-custom">
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium mb-6 animate-bounce">
@@ -223,7 +223,7 @@ const Services = () => {
                       <Card className="relative h-96 overflow-hidden bg-muted group shadow-2xl rounded-2xl border-0">
                         {service.popular && (
                           <div className="absolute top-4 right-4 z-20">
-                            <div className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1 shadow-lg">
+                            <div className="bg-primary-600 text-white px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1 shadow-lg">
                               <Star className="h-3 w-3 fill-current" />
                               Most Popular
                             </div>
@@ -289,7 +289,7 @@ const Services = () => {
                     <div className={`space-y-6 ${!isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                       {/* Icon & Title */}
                       <div className="flex items-start gap-4">
-                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center flex-shrink-0 hover:scale-110 transition-transform duration-300">
+                        <div className="w-14 h-14 rounded-xl bg-primary-500 flex items-center justify-center flex-shrink-0 hover:scale-110 transition-transform duration-300">
                           <Icon className="h-7 w-7 text-white" />
                         </div>
                         <div className="flex-1">
@@ -339,7 +339,7 @@ const Services = () => {
                       {/* CTA Button */}
                       <Button
                         onClick={() => openModal(service)}
-                        className="w-full lg:w-auto bg-gradient-to-r from-primary-600 to-secondary-600 h-12 px-8 group/btn"
+                        className="w-full lg:w-auto bg-primary-600 h-12 px-8 group/btn"
                       >
                         Talk to an Expert
                         <ArrowRight className="ml-2 h-5 w-5 group-hover/btn:translate-x-1 transition-transform" />
@@ -366,7 +366,7 @@ const Services = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white"
+                className="bg-primary-600 text-white"
                 onClick={() => navigate('/contact')}
               >
                 Get Free Consultation

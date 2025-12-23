@@ -100,7 +100,7 @@ const Courses = () => {
   const filteredCourses = getFilteredCourses();
 
   return (
-    <div className="min-h-screen py-12 bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-primary-900/20 dark:via-background dark:to-secondary-900/20">
+    <div className="min-h-screen py-12 bg-primary-50 dark:bg-primary-900/20">
       <div className="container-custom">
         {/* Header with animation */}
         <div 
@@ -112,7 +112,7 @@ const Courses = () => {
             <Sparkles className="w-4 h-4" />
             <span>Transform Your Career</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4 bg-gradient-to-r from-primary-600 via-secondary-600 to-primary-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4 text-primary-600">
             Explore Our Courses
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -275,7 +275,7 @@ const Courses = () => {
 
                   <CardFooter className="p-5 pt-0 flex justify-between items-center border-t">
                     <div>
-                      <p className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+                      <p className="text-2xl font-bold text-primary-600">
                         {formatCurrency(course.price)}
                       </p>
                     </div>
@@ -289,7 +289,7 @@ const Courses = () => {
           </div>
         ) : (
           <div className="text-center py-20">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/30 dark:to-secondary-900/30 mb-4 animate-pulse">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary-100 dark:bg-primary-900/30 mb-4 animate-pulse">
               <Search className="w-10 h-10 text-primary-600" />
             </div>
             <h3 className="text-xl font-semibold mb-2">No courses found</h3>

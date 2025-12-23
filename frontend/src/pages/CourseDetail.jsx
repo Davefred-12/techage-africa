@@ -345,7 +345,7 @@ const CourseDetail = () => {
       </div>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20">
+      <div className="bg-primary-50 dark:bg-primary-900/20">
         <div className="container-custom py-12">
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Left Content */}

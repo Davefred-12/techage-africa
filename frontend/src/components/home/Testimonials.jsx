@@ -128,7 +128,7 @@ const Testimonials = () => {
         </div>
 
         {/* Bottom Stats */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 p-8 rounded-2xl bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20">
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 p-8 rounded-2xl bg-primary-50 dark:bg-primary-900/20">
           <div className="text-center">
             <p className="text-3xl font-bold text-foreground">4.9/5</p>
             <p className="text-sm text-muted-foreground mt-1">Average Rating</p>

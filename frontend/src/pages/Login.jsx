@@ -135,7 +135,7 @@ const Login = () => {
             className="w-full h-full object-cover"
           />
           {/* Gradient Overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-900/30 via-primary-800/65 to-secondary-900/90"></div>
+          <div className="absolute inset-0 bg-primary-900/80"></div>
         </div>
 
         {/* Animated background blobs */}
@@ -194,7 +194,7 @@ const Login = () => {
           {/* Mobile Logo */}
           <div className="lg:hidden text-center animate-fade-in">
             <Link to="/" className="inline-flex items-center space-x-2 mb-4">
-              <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700">
+              <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary-600">
                 <span className="text-white font-bold text-2xl">T</span>
               </div>
               <span className="font-heading font-bold text-2xl">

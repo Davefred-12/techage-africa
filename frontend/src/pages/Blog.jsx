@@ -190,7 +190,7 @@ const Blog = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-primary-600 via-primary-500 to-secondary-600 text-white">
+      <div className="bg-primary-600 text-white">
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex items-center justify-center mb-6">

@@ -233,7 +233,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-20 md:py-32 bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-primary-900/20 dark:via-background dark:to-secondary-900/20 relative overflow-hidden">
+      <section className="py-20 md:py-32 bg-primary-50 dark:bg-primary-900/20 relative overflow-hidden">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
         <div className="absolute bottom-20 right-10 w-72 h-72 bg-secondary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
 
@@ -242,7 +242,7 @@ const Contact = () => {
             <Badge className="text-sm px-4 py-2">Get In Touch</Badge>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold animate-fade-in-up animation-delay-200">
               Let's Connect and{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-600">
+              <span className="text-primary-600">
                 Grow Together
               </span>
             </h1>
@@ -272,7 +272,7 @@ const Contact = () => {
                 onClick={reason.action}
               >
                 <CardContent className="p-6 text-center space-y-3">
-                  <div className="w-14 h-14 mx-auto rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all shadow-lg">
+                  <div className="w-14 h-14 mx-auto rounded-xl bg-primary-500 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all shadow-lg">
                     <reason.icon className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="font-bold text-lg group-hover:text-primary-600 transition-colors">{reason.title}</h3>
@@ -471,7 +471,7 @@ const Contact = () => {
               </Card>
 
               {/* Quick Links Card */}
-              <Card className="border-2 bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20 hover:shadow-xl transition-all animate-fade-in-right animation-delay-400">
+              <Card className="border-2 bg-primary-50 dark:bg-primary-900/20 hover:shadow-xl transition-all animate-fade-in-right animation-delay-400">
                 <CardContent className="p-5 space-y-3">
                   <div className="flex items-center gap-2">
                     <HelpCircle className="w-4 h-4 text-primary-600" />
@@ -578,7 +578,7 @@ const Contact = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-600 to-secondary-600 relative overflow-hidden">
+      <section className="py-20 bg-primary-600 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
           <div className="absolute w-96 h-96 bg-white rounded-full -bottom-48 -right-48 animate-pulse animation-delay-1000"></div>

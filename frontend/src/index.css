@@ -113,22 +113,6 @@
     }
   }
 
-  /* Gradient backgrounds for TechAge */
-  .gradient-primary {
-    @apply bg-gradient-to-r from-primary-500 to-primary-700;
-  }
-
-  .gradient-secondary {
-    @apply bg-gradient-to-r from-secondary-500 to-secondary-700;
-  }
-
-  .gradient-accent {
-    @apply bg-gradient-to-r from-accent-500 to-accent-700;
-  }
-
-  .gradient-hero {
-    @apply bg-gradient-to-br from-primary-50 via-white to-secondary-50;
-  }
 
   /* Custom scrollbar */
   .scrollbar-hide::-webkit-scrollbar {

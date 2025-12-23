@@ -198,7 +198,7 @@ const About = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-primary-900/20 dark:via-background dark:to-secondary-900/20 overflow-hidden">
+      <section className="relative py-20 md:py-32 bg-primary-50 dark:bg-primary-900/20 overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         
         {/* Animated background elements */}
@@ -211,7 +211,7 @@ const About = () => {
             <Badge className="text-sm px-4 py-2 animate-fade-in">About TechAge Africa</Badge>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight animate-fade-in-up animation-delay-200">
               Accelerating Africa's{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-600">
+              <span className="text-primary-600">
                 Tech Advantage
               </span>
             </h1>
@@ -286,7 +286,7 @@ const About = () => {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <CardContent className="p-6 space-y-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all shadow-lg">
+                  <div className="w-14 h-14 rounded-2xl bg-red-500 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all shadow-lg">
                     <problem.icon className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="text-xl font-bold">{problem.title}</h3>
@@ -322,7 +322,7 @@ const About = () => {
               >
                 <CardContent className="p-8 space-y-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all shadow-lg">
+                    <div className="w-16 h-16 rounded-2xl bg-primary-500 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all shadow-lg">
                       <solution.icon className="w-8 h-8 text-white" />
                     </div>
                     <div className="flex-1">
@@ -353,7 +353,7 @@ const About = () => {
           </div>
 
           <div className="relative">
-            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500 transform -translate-y-1/2"></div>
+            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-primary-500 transform -translate-y-1/2"></div>
 
             <div className="grid md:grid-cols-4 gap-6">
               {milestones.map((milestone, index) => (
@@ -363,7 +363,7 @@ const About = () => {
                   style={{ animationDelay: `${index * 150}ms` }}
                 >
                   <div className="hidden md:block absolute -top-8 left-1/2 transform -translate-x-1/2">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center shadow-lg group-hover:scale-125 transition-transform animate-bounce-in" style={{ animationDelay: `${index * 150}ms` }}>
+                    <div className="w-16 h-16 rounded-full bg-primary-500 flex items-center justify-center shadow-lg group-hover:scale-125 transition-transform animate-bounce-in" style={{ animationDelay: `${index * 150}ms` }}>
                       <span className="text-2xl">{milestone.icon}</span>
                     </div>
                   </div>
@@ -391,7 +391,7 @@ const About = () => {
             <Card className="border-2 hover:border-primary-300 transition-all group animate-fade-in-left hover:shadow-2xl">
               <CardContent className="p-8 lg:p-10 space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all">
+                  <div className="w-14 h-14 rounded-xl bg-primary-600 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all">
                     <Eye className="w-7 h-7 text-white" />
                   </div>
                   <h2 className="text-2xl lg:text-3xl font-bold">Our Vision</h2>
@@ -415,7 +415,7 @@ const About = () => {
             <Card className="border-2 hover:border-secondary-300 transition-all group animate-fade-in-right hover:shadow-2xl">
               <CardContent className="p-8 lg:p-10 space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-secondary-500 to-secondary-700 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all">
+                  <div className="w-14 h-14 rounded-xl bg-secondary-600 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all">
                     <Target className="w-7 h-7 text-white" />
                   </div>
                   <h2 className="text-2xl lg:text-3xl font-bold">Our Mission</h2>
@@ -514,7 +514,7 @@ const About = () => {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <CardContent className="p-6 text-center space-y-4">
-                  <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all shadow-lg">
+                  <div className="w-16 h-16 mx-auto rounded-2xl bg-primary-500 flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all shadow-lg">
                     <value.icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-xl font-bold">{value.title}</h3>
@@ -548,7 +548,7 @@ const About = () => {
                 className="relative overflow-hidden group hover:shadow-2xl transition-all border-2 hover:border-primary-200 animate-fade-in-up hover:-translate-y-2"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary-500/20 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
                 <CardContent className="p-6 relative z-10 text-center space-y-3">
                   <div className="w-14 h-14 mx-auto rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <item.icon className="w-7 h-7 text-primary-600" />
@@ -563,7 +563,7 @@ const About = () => {
       </section>
 
       {/* Blog Preview Section */}
-      <section className="py-20 md:py-32 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20">
+      <section className="py-20 md:py-32 bg-blue-50 dark:bg-blue-900/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
             <Badge className="mb-4 bg-blue-600 text-white">Tech Updates Blog</Badge>
@@ -620,7 +620,7 @@ const About = () => {
       <section className="py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
-            <Badge className="mb-4 bg-gradient-to-r from-primary-600 to-secondary-600 text-white">
+            <Badge className="mb-4 bg-primary-600 text-white">
               Our Services
             </Badge>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
@@ -642,7 +642,7 @@ const About = () => {
               >
                 <CardContent className="p-8 space-y-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all shadow-lg">
+                    <div className="w-14 h-14 rounded-xl bg-primary-500 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all shadow-lg">
                       <service.icon className="w-7 h-7 text-white" />
                     </div>
                     <div className="flex-1">
@@ -677,7 +677,7 @@ const About = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 md:py-32 bg-gradient-to-r from-primary-600 to-secondary-600 relative overflow-hidden">
+      <section className="py-20 md:py-32 bg-primary-600 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
           <div className="absolute w-96 h-96 bg-white rounded-full -bottom-48 -right-48 animate-pulse animation-delay-1000"></div>

@@ -44,7 +44,7 @@ const Newsletter = () => {
   };
 
   return (
-    <section className="py-20 md:py-12 bg-gradient-to-br from-primary-600 to-secondary-600">
+    <section className="py-20 md:py-12 bg-primary-600">
       <div className="container-custom">
         <div className="max-w-4xl mx-auto text-center space-y-4">
           {/* Icon */}

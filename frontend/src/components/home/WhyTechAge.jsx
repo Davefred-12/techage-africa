@@ -70,7 +70,7 @@ const WhyTechAge = () => {
               className="border-2 hover:border-primary-200 hover:shadow-lg transition-all duration-300"
             >
               <CardContent className="p-6 space-y-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-lg bg-primary-600 flex items-center justify-center">
                   <feature.icon className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -86,7 +86,7 @@ const WhyTechAge = () => {
 
         {/* Bottom CTA */}
         <div className="mt-16 text-center">
-          <div className="inline-flex flex-col md:flex-row items-center gap-4 p-8 rounded-2xl bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20 border">
+          <div className="inline-flex flex-col md:flex-row items-center gap-4 p-8 rounded-2xl bg-primary-50 dark:bg-primary-900/20 border">
             <div className="text-left flex-1">
               <h3 className="text-2xl font-bold mb-2">
                 Ready to Start Your Journey?

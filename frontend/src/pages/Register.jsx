@@ -150,7 +150,7 @@ const Register = () => {
             alt="Learning"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-secondary-900/90 via-primary-800/85 to-primary-900/80"></div>
+          <div className="absolute inset-0 bg-primary-900/80"></div>
         </div>
 
         <div className="absolute top-20 right-20 w-96 h-96 bg-white/10 rounded-full mix-blend-overlay filter blur-3xl animate-blob"></div>
@@ -204,7 +204,7 @@ const Register = () => {
         <div className="w-full max-w-md space-y-6 my-8">
           <div className="lg:hidden text-center animate-fade-in">
             <Link to="/" className="inline-flex items-center space-x-2 mb-4">
-              <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700">
+              <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary-600">
                 <span className="text-white font-bold text-2xl">T</span>
               </div>
               <span className="font-heading font-bold text-2xl">

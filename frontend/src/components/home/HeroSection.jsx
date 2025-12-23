@@ -75,7 +75,7 @@ const HeroSection = () => {
             <div className="space-y-4 animate-slide-up">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-foreground leading-tight drop-shadow-sm">
                 Accelerate with{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-600">
+                <span className="text-primary-600">
                   TechAge
                 </span>
               </h1>
@@ -139,7 +139,7 @@ const HeroSection = () => {
             {/* Active Learners Card - Top Right */}
             <div className="absolute top-25 right-5 bg-card/95 backdrop-blur-md p-5 rounded-xl shadow-2xl border-2 border-accent-200 dark:border-accent-800 animate-float">
               <div className="flex items-center space-x-4">
-                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-accent-400 to-accent-600 flex items-center justify-center shadow-lg">
+                <div className="w-14 h-14 rounded-full bg-accent-500 flex items-center justify-center shadow-lg">
                   <span className="text-3xl">🎓</span>
                 </div>
                 <div>
@@ -156,7 +156,7 @@ const HeroSection = () => {
             {/* Rating Card - Bottom Left */}
             <div className="absolute bottom-80 right-50 bg-card/95 backdrop-blur-md p-5 rounded-xl shadow-2xl border-2 border-primary-200 dark:border-primary-800 animate-float animation-delay-1000">
               <div className="flex items-center space-x-4">
-                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg">
+                <div className="w-14 h-14 rounded-full bg-secondary-500 flex items-center justify-center shadow-lg">
                   <span className="text-3xl">⭐</span>
                 </div>
                 <div>
@@ -173,7 +173,7 @@ const HeroSection = () => {
             {/* Certificate Badge - Middle Right */}
             <div className="absolute top-60 right-0 transform -translate-y-1/2 bg-card/95 backdrop-blur-md p-5 rounded-xl shadow-2xl border-2 border-secondary-200 dark:border-secondary-800 animate-float animation-delay-500">
               <div className="flex items-center space-x-4">
-                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-secondary-400 to-secondary-600 flex items-center justify-center shadow-lg">
+                <div className="w-14 h-14 rounded-full bg-secondary-500 flex items-center justify-center shadow-lg">
                   <span className="text-3xl">🏆</span>
                 </div>
                 <div>
