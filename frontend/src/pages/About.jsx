@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import api from "../services/api";
 import {
   Target,
   Eye,
@@ -30,6 +32,28 @@ import {
 
 const About = () => {
   const navigate = useNavigate();
+  const [blogs, setBlogs] = useState([]);
+  const [blogsLoading, setBlogsLoading] = useState(true);
+
+  // Fetch blogs from API
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setBlogsLoading(true);
+        const response = await api.get('/api/blog?limit=3');
+        if (response.data.success) {
+          setBlogs(response.data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+        setBlogs([]);
+      } finally {
+        setBlogsLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   const values = [
     {
@@ -154,23 +178,6 @@ const About = () => {
     },
   ];
 
-  const blogPosts = [
-    {
-      category: "Industry News",
-      title: "Latest AI & Web3 Trends Shaping Africa",
-      description: "Stay updated on emerging technologies and their impact on African markets.",
-    },
-    {
-      category: "Learning Insights",
-      title: "Expert Tips for Digital Skills Mastery",
-      description: "Guides and resources to accelerate your learning journey.",
-    },
-    {
-      category: "Future of Work",
-      title: "Remote Work & Digital Nomad Opportunities",
-      description: "Insights on global career opportunities for African professionals.",
-    },
-  ];
 
   const services = [
     {
@@ -576,32 +583,47 @@ const About = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            {blogPosts.map((post, index) => (
-              <Card
-                key={index}
-                className="hover:shadow-2xl transition-all group animate-fade-in-up hover:-translate-y-2 border-2 hover:border-blue-200 cursor-pointer"
-                style={{ animationDelay: `${index * 100}ms` }}
-                onClick={() => navigate("/blog")}
-              >
-                <CardContent className="p-6 space-y-4">
-                  <Badge variant="secondary" className="text-xs">
-                    {post.category}
-                  </Badge>
-                  <h3 className="text-xl font-bold group-hover:text-blue-600 transition-colors">
-                    {post.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {post.description}
-                  </p>
-                  <div className="flex items-center text-sm text-blue-600 font-semibold group-hover:gap-2 transition-all">
-                    Read More
-                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {blogsLoading ? (
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <Card key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
+                  <CardContent className="p-6 space-y-4">
+                    <div className="h-4 w-20 bg-muted rounded animate-pulse"></div>
+                    <div className="h-6 w-full bg-muted rounded animate-pulse"></div>
+                    <div className="h-4 w-3/4 bg-muted rounded animate-pulse"></div>
+                    <div className="h-4 w-16 bg-muted rounded animate-pulse"></div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : blogs.length > 0 ? (
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              {blogs.map((blog, index) => (
+                <Card
+                  key={blog._id}
+                  className="hover:shadow-2xl transition-all group animate-fade-in-up hover:-translate-y-2 border-2 hover:border-blue-200 cursor-pointer"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                  onClick={() => navigate(`/blog/${blog.slug || blog._id}`)}
+                >
+                  <CardContent className="p-6 space-y-4">
+                    <Badge variant="secondary" className="text-xs">
+                      {blog.category}
+                    </Badge>
+                    <h3 className="text-xl font-bold group-hover:text-blue-600 transition-colors">
+                      {blog.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {blog.excerpt || blog.description}
+                    </p>
+                    <div className="flex items-center text-sm text-blue-600 font-semibold group-hover:gap-2 transition-all">
+                      Read More
+                      <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : null}
 
           <div className="text-center animate-fade-in-up animation-delay-400">
             <Button
