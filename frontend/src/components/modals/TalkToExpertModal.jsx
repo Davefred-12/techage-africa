@@ -346,12 +346,11 @@ const TalkToExpertModal = ({ isOpen, onClose, service, allServices }) => {
                             <option value="500k-1M">
                               ₦500,000 - ₦1,000,000,000
                             </option>
-
                             <option value="1M-5M">
                               ₦1,000,000,000 - ₦5,000,000,000
                             </option>
                             <option value="5M-10M">
-                              ₦7,000,000,000 - ₦10,000,000,000
+                              ₦5,000,000,000 - ₦10,000,000,000
                             </option>
                             <option value="over-10M">Over ₦10M</option>
                           </select>
