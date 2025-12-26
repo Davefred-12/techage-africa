@@ -61,7 +61,7 @@ export const subscribeNewsletter = async (req, res) => {
         subject: 'Welcome to TechAge Africa Newsletter! 🎉',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <div style="background: linear-gradient(135deg, #0284c7 0%, #f59e0b 100%); padding: 40px; text-align: center; border-radius: 10px 10px 0 0;">
+            <div style="background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%); padding: 40px; text-align: center; border-radius: 10px 10px 0 0;">
               <h1 style="color: white; margin: 0; font-size: 28px;">Welcome to TechAge Africa! 🎉</h1>
             </div>
             
@@ -94,6 +94,9 @@ export const subscribeNewsletter = async (req, res) => {
                 No spam, ever. <a href="${process.env.FRONTEND_URL}/unsubscribe?email=${email}" style="color: #0284c7;">Unsubscribe anytime</a>.
               </p>
             </div>
+            <div style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
+              <p>&copy; ${new Date().getFullYear()} TechAge Africa. All rights reserved.</p>
+            </div>
           </div>
         `,
       });
@@ -108,10 +111,22 @@ export const subscribeNewsletter = async (req, res) => {
         to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
         subject: '📬 New Newsletter Subscription',
         html: `
-          <h2>New Newsletter Subscriber</h2>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
-          <p><strong>Total Subscribers:</strong> ${await Newsletter.countDocuments({ status: 'active' })}</p>
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+              <h2>New Newsletter Subscriber 📧</h2>
+            </div>
+            <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px;">
+              <p>A new user has subscribed to your newsletter:</p>
+              <div style="background: white; padding: 15px; border-left: 4px solid #0284c7; margin: 15px 0;">
+                <strong>Email:</strong> ${email}<br>
+                <strong>Date:</strong> ${new Date().toLocaleString()}<br>
+                <strong>Total Subscribers:</strong> ${await Newsletter.countDocuments({ status: 'active' })}
+              </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
+              <p>&copy; ${new Date().getFullYear()} TechAge Africa. All rights reserved.</p>
+            </div>
+          </div>
         `,
       });
     } catch (emailError) {
@@ -226,28 +241,30 @@ export const submitContactForm = async (req, res) => {
         to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
         subject: `🔔 New Contact Form: ${subject}`,
         html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9fafb; padding: 30px; border-radius: 10px;">
-            <h2 style="color: #0284c7; border-bottom: 3px solid #0284c7; padding-bottom: 10px;">
-              New Contact Form Submission
-            </h2>
-            
-            <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 20px;">
-              <p style="margin: 10px 0;"><strong>Name:</strong> ${name}</p>
-              <p style="margin: 10px 0;"><strong>Email:</strong> ${email}</p>
-              <p style="margin: 10px 0;"><strong>Subject:</strong> ${subject}</p>
-              <p style="margin: 10px 0;"><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+              <h2>New Contact Form Submission</h2>
             </div>
-            
-            <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 20px;">
-              <h3 style="color: #1f2937; margin-top: 0;">Message:</h3>
-              <p style="color: #4b5563; line-height: 1.6; white-space: pre-wrap;">${message}</p>
+            <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px;">
+              <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 0;">
+                <p style="margin: 10px 0;"><strong>Name:</strong> ${name}</p>
+                <p style="margin: 10px 0;"><strong>Email:</strong> ${email}</p>
+                <p style="margin: 10px 0;"><strong>Subject:</strong> ${subject}</p>
+                <p style="margin: 10px 0;"><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+              </div>
+              <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                <h3 style="color: #1f2937; margin-top: 0;">Message:</h3>
+                <p style="color: #4b5563; line-height: 1.6; white-space: pre-wrap;">${message}</p>
+              </div>
+              <div style="text-align: center; margin-top: 30px;">
+                <a href="mailto:${email}"
+                   style="background: #0284c7; color: white; padding: 12px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
+                  Reply to ${name}
+                </a>
+              </div>
             </div>
-            
-            <div style="text-align: center; margin-top: 30px;">
-              <a href="mailto:${email}" 
-                 style="background: #0284c7; color: white; padding: 12px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
-                Reply to ${name}
-              </a>
+            <div style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
+              <p>&copy; ${new Date().getFullYear()} TechAge Africa. All rights reserved.</p>
             </div>
           </div>
         `,
@@ -263,7 +280,7 @@ export const submitContactForm = async (req, res) => {
         subject: 'We received your message! ✅',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <div style="background: linear-gradient(135deg, #0284c7 0%, #f59e0b 100%); padding: 40px; text-align: center; border-radius: 10px 10px 0 0;">
+            <div style="background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%); padding: 40px; text-align: center; border-radius: 10px 10px 0 0;">
               <h1 style="color: white; margin: 0; font-size: 28px;">Thank You for Contacting Us! ✅</h1>
             </div>
             
@@ -289,8 +306,8 @@ export const submitContactForm = async (req, res) => {
                    style="background: #0284c7; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold; margin: 0 10px;">
                   Browse Courses
                 </a>
-                <a href="${process.env.FRONTEND_URL}/contact#faq" 
-                   style="background: #f59e0b; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold; margin: 0 10px;">
+                <a href="${process.env.FRONTEND_URL}/contact#faq"
+                   style="background: #0284c7; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold; margin: 0 10px;">
                   View FAQs
                 </a>
               </div>
@@ -299,6 +316,9 @@ export const submitContactForm = async (req, res) => {
                 Best regards,<br>
                 <strong>The TechAge Africa Team</strong>
               </p>
+            </div>
+            <div style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
+              <p>&copy; ${new Date().getFullYear()} TechAge Africa. All rights reserved.</p>
             </div>
           </div>
         `,

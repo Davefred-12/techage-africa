@@ -313,11 +313,12 @@ const TalkToExpertModal = ({ isOpen, onClose, service, allServices }) => {
                             {...field}
                           >
                             <option value="">Select budget range</option>
-                            <option value="under-50k">Under ₦50,000</option>
-                            <option value="50k-150k">₦50,000 - ₦150,000</option>
                             <option value="150k-300k">₦150,000 - ₦300,000</option>
                             <option value="300k-500k">₦300,000 - ₦500,000</option>
-                            <option value="over-500k">Over ₦500,000</option>
+                            <option value="500k-1M">₦500,000 - ₦1,000,000,000</option>
+                            <option value="1M-5M">₦1,000,000,000 - ₦5,000,000,000</option>
+                              <option value="5M-10M">₦7,000,000,000 - ₦10,000,000,000</option>
+                            <option value="over-10M">Over ₦10M</option>
                           </select>
                         </FormControl>
                         <FormMessage className="text-xs" />
@@ -341,7 +342,7 @@ const TalkToExpertModal = ({ isOpen, onClose, service, allServices }) => {
                             <option value="1-month">Within 1 month</option>
                             <option value="2-3-months">2-3 months</option>
                             <option value="3-6-months">3-6 months</option>
-                            <option value="flexible">Flexible</option>
+                            <option value="flexible">Monthly</option>
                           </select>
                         </FormControl>
                         <FormMessage className="text-xs" />

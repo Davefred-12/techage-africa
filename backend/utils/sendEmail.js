@@ -133,7 +133,7 @@ export const sendNewsletterEmail = async (email, name) => {
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-          .header { background: linear-gradient(135deg, #0284c7 0%, #d97706 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+          .header { background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
           .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; }
           .button { display: inline-block; background: #0284c7; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin-top: 20px; }
           .footer { text-align: center; margin-top: 20px; color: #666; font-size: 14px; }
@@ -183,9 +183,10 @@ export const sendNewsletterAdminNotification = async (email, name) => {
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-          .header { background: #0284c7; color: white; padding: 20px; text-align: center; }
-          .content { background: #f9fafb; padding: 20px; }
+          .header { background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+          .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; }
           .info-box { background: white; padding: 15px; border-left: 4px solid #0284c7; margin: 15px 0; }
+          .footer { text-align: center; margin-top: 20px; color: #666; font-size: 14px; }
         </style>
       </head>
       <body>
@@ -200,6 +201,9 @@ export const sendNewsletterAdminNotification = async (email, name) => {
               <strong>Email:</strong> ${email}<br>
               <strong>Date:</strong> ${new Date().toLocaleString()}
             </div>
+          </div>
+          <div class="footer">
+            <p>&copy; ${new Date().getFullYear()} TechAge Africa. All rights reserved.</p>
           </div>
         </div>
       </body>

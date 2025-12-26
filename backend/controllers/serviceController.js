@@ -48,38 +48,44 @@ export const submitServiceInquiry = async (req, res) => {
 
     // Prepare email content for admin
     const adminEmailContent = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #2563eb;">New Service Inquiry</h2>
-
-        <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="margin-top: 0; color: #1f2937;">Client Information</h3>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-          <p><strong>Company:</strong> ${company || 'Not provided'}</p>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+          <h2>New Service Inquiry</h2>
         </div>
+        <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px;">
+          <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0; color: #1f2937;">Client Information</h3>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+            <p><strong>Company:</strong> ${company || 'Not provided'}</p>
+          </div>
 
-        <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="margin-top: 0; color: #1f2937;">Project Details</h3>
-          <p><strong>Service:</strong> ${serviceName}</p>
-          <p><strong>Budget:</strong> ${budget || 'Not specified'}</p>
-          <p><strong>Timeline:</strong> ${timeline || 'Not specified'}</p>
-        </div>
+          <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0; color: #1f2937;">Project Details</h3>
+            <p><strong>Service:</strong> ${serviceName}</p>
+            <p><strong>Budget:</strong> ${budget || 'Not specified'}</p>
+            <p><strong>Timeline:</strong> ${timeline || 'Not specified'}</p>
+          </div>
 
-        <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="margin-top: 0; color: #1f2937;">Message</h3>
-          <p style="white-space: pre-wrap;">${message}</p>
-        </div>
+          <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0; color: #1f2937;">Message</h3>
+            <p style="white-space: pre-wrap;">${message}</p>
+          </div>
 
-        <div style="background: #dbeafe; padding: 15px; border-radius: 8px; margin: 20px 0;">
-          <p style="margin: 0; color: #1e40af;">
-            <strong>User Account:</strong> ${user.name} (${user.email})
+          <div style="background: #dbeafe; padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <p style="margin: 0; color: #1e40af;">
+              <strong>User Account:</strong> ${user.name} (${user.email})
+            </p>
+          </div>
+
+          <p style="color: #6b7280; font-size: 14px;">
+            This inquiry was submitted through the TechAge Africa website.
           </p>
         </div>
-
-        <p style="color: #6b7280; font-size: 14px;">
-          This inquiry was submitted through the TechAge Africa website.
-        </p>
+        <div style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
+          <p>&copy; ${new Date().getFullYear()} TechAge Africa. All rights reserved.</p>
+        </div>
       </div>
     `;
 
@@ -102,31 +108,37 @@ export const submitServiceInquiry = async (req, res) => {
 
     // Send confirmation email to user
     const userEmailContent = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #2563eb;">Thank You for Your Inquiry!</h2>
-
-        <p>Hi ${name},</p>
-
-        <p>Thank you for your interest in our <strong>${serviceName}</strong> services. We've received your inquiry and will get back to you within 24 hours.</p>
-
-        <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="margin-top: 0; color: #1f2937;">Your Inquiry Summary</h3>
-          <p><strong>Service:</strong> ${serviceName}</p>
-          <p><strong>Budget:</strong> ${budget || 'Not specified'}</p>
-          <p><strong>Timeline:</strong> ${timeline || 'Not specified'}</p>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+          <h2>Thank You for Your Inquiry!</h2>
         </div>
+        <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px;">
+          <p>Hi ${name},</p>
 
-        <p>Our team will review your requirements and contact you soon with a customized proposal.</p>
+          <p>Thank you for your interest in our <strong>${serviceName}</strong> services. We've received your inquiry and will get back to you within 24 hours.</p>
 
-        <p>If you have any additional information or questions, feel free to reply to this email.</p>
+          <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0; color: #1f2937;">Your Inquiry Summary</h3>
+            <p><strong>Service:</strong> ${serviceName}</p>
+            <p><strong>Budget:</strong> ${budget || 'Not specified'}</p>
+            <p><strong>Timeline:</strong> ${timeline || 'Not specified'}</p>
+          </div>
 
-        <p>Best regards,<br>The TechAge Africa Team</p>
+          <p>Our team will review your requirements and contact you soon with a customized proposal.</p>
 
-        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
+          <p>If you have any additional information or questions, feel free to reply to this email.</p>
 
-        <p style="color: #6b7280; font-size: 12px;">
-          This is an automated response to your service inquiry submitted through techageafrica.com
-        </p>
+          <p>Best regards,<br>The TechAge Africa Team</p>
+
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
+
+          <p style="color: #6b7280; font-size: 12px;">
+            This is an automated response to your service inquiry submitted through techageafrica.com
+          </p>
+        </div>
+        <div style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
+          <p>&copy; ${new Date().getFullYear()} TechAge Africa. All rights reserved.</p>
+        </div>
       </div>
     `;
 
