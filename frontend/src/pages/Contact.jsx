@@ -29,7 +29,7 @@ import {
   HelpCircle,
   Globe,
   Building,
-  BookOpen
+  BookOpen,
 } from "lucide-react";
 import {
   FaFacebookF,
@@ -97,8 +97,8 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Call Us",
-      details: "+234-XXX-XXX-XXXX",
-      link: "tel:+234XXXXXXXXXX",
+      details: "+234 803 650 9531",
+      link: "tel:+2348036509531",
       description: "Mon-Fri from 9AM to 5PM",
     },
     {
@@ -122,31 +122,31 @@ const Contact = () => {
       icon: FaFacebookF,
       href: "https://facebook.com/techageafrica",
       label: "Facebook",
-      color: "hover:text-blue-600 hover:bg-blue-50",
+      color: "text-blue-600 bg-sky-50",
     },
     {
       icon: FaTwitter,
       href: "https://twitter.com/techageafrica",
       label: "Twitter",
-      color: "hover:text-sky-500 hover:bg-sky-50",
+      color: "text-sky-500 bg-sky-50",
     },
     {
       icon: FaInstagram,
       href: "https://instagram.com/techageafrica",
       label: "Instagram",
-      color: "hover:text-pink-600 hover:bg-pink-50",
+      color: "text-pink-600 bg-pink-50",
     },
     {
       icon: FaLinkedinIn,
       href: "https://linkedin.com/company/techageafrica",
       label: "LinkedIn",
-      color: "hover:text-blue-700 hover:bg-blue-50",
+      color: "text-blue-700 bg-sky-50",
     },
     {
       icon: FaWhatsapp,
-      href: "https://wa.me/234XXXXXXXXXX",
+      href: "https://wa.me/+234803650953",
       label: "WhatsApp",
-      color: "hover:text-green-600 hover:bg-green-50",
+      color: "text-green-600 bg-sky-50",
     },
   ];
 
@@ -155,25 +155,31 @@ const Contact = () => {
       icon: GraduationCap,
       title: "Course Enrollment",
       description: "Browse our courses, certifications, and learning paths",
-      action: () => window.location.href = "/courses",
+      action: () => (window.location.href = "/courses"),
     },
     {
       icon: Briefcase,
       title: "Business Services",
-      description: "Explore our SEO, marketing, branding, and web development services",
-      action: () => window.location.href = "/services",
+      description:
+        "Explore our SEO, marketing, branding, and web development services",
+      action: () => (window.location.href = "/services"),
     },
     {
       icon: BookOpen,
       title: "Tech Updates Blog",
-      description: "Read latest insights on AI, Web3, remote work, and tech trends",
-      action: () => window.location.href = "/blog",
+      description:
+        "Read latest insights on AI, Web3, remote work, and tech trends",
+      action: () => (window.location.href = "/blog"),
     },
     {
       icon: Users,
       title: "Partnership Inquiry",
-      description: "Collaborate with us on training programs or corporate partnerships",
-      action: () => document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" }),
+      description:
+        "Collaborate with us on training programs or corporate partnerships",
+      action: () =>
+        document
+          .getElementById("contact-form")
+          ?.scrollIntoView({ behavior: "smooth" }),
     },
   ];
 
@@ -181,7 +187,7 @@ const Contact = () => {
     {
       question: "How do I enroll in a course?",
       answer:
-        'Browse our courses page, select the course you want, and click "Enroll Now". You\'ll need to create an account, then proceed to payment via Paystack. Once payment is confirmed, you\'ll get instant access to the course materials.',
+        "Browse our courses page, select the course you want, and click \"Enroll Now\". You'll need to create an account, then proceed to payment via Paystack. Once payment is confirmed, you'll get instant access to the course materials.",
     },
     {
       question: "What payment methods do you accept?",
@@ -242,14 +248,12 @@ const Contact = () => {
             <Badge className="text-sm px-4 py-2">Get In Touch</Badge>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold animate-fade-in-up animation-delay-200">
               Let's Connect and{" "}
-              <span className="text-primary-600">
-                Grow Together
-              </span>
+              <span className="text-primary-600">Grow Together</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed animate-fade-in-up animation-delay-400">
-              Have questions about our courses? Need business services? Want to partner with us? 
-              We're here to help you accelerate your digital journey. Drop us a message and we'll 
-              respond within 24 hours.
+              Have questions about our courses? Need business services? Want to
+              partner with us? We're here to help you accelerate your digital
+              journey. Drop us a message and we'll respond within 24 hours.
             </p>
           </div>
         </div>
@@ -259,8 +263,12 @@ const Contact = () => {
       <section className="py-16 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center mb-12 animate-fade-in-up">
-            <h2 className="text-2xl md:text-3xl font-bold mb-3">How Can We Help You?</h2>
-            <p className="text-muted-foreground">Choose your area of interest</p>
+            <h2 className="text-2xl md:text-3xl font-bold mb-3">
+              How Can We Help You?
+            </h2>
+            <p className="text-muted-foreground">
+              Choose your area of interest
+            </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -275,8 +283,12 @@ const Contact = () => {
                   <div className="w-14 h-14 mx-auto rounded-xl bg-primary-500 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all shadow-lg">
                     <reason.icon className="w-7 h-7 text-white" />
                   </div>
-                  <h3 className="font-bold text-lg group-hover:text-primary-600 transition-colors">{reason.title}</h3>
-                  <p className="text-sm text-muted-foreground">{reason.description}</p>
+                  <h3 className="font-bold text-lg group-hover:text-primary-600 transition-colors">
+                    {reason.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {reason.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -296,7 +308,9 @@ const Contact = () => {
                     <MessageSquare className="w-5 h-5 text-primary-600" />
                   </div>
                   <div>
-                    <h2 className="text-xl lg:text-2xl font-bold">Send Us a Message</h2>
+                    <h2 className="text-xl lg:text-2xl font-bold">
+                      Send Us a Message
+                    </h2>
                     <p className="text-xs text-muted-foreground">
                       We typically respond within 24 hours
                     </p>
@@ -322,7 +336,9 @@ const Contact = () => {
                       <Input
                         {...register("name")}
                         placeholder="John Doe"
-                        className={`h-10 ${errors.name ? "border-red-500" : ""}`}
+                        className={`h-10 ${
+                          errors.name ? "border-red-500" : ""
+                        }`}
                       />
                       {errors.name && (
                         <p className="text-xs text-red-600 mt-1">
@@ -340,7 +356,9 @@ const Contact = () => {
                         {...register("email")}
                         type="email"
                         placeholder="john@example.com"
-                        className={`h-10 ${errors.email ? "border-red-500" : ""}`}
+                        className={`h-10 ${
+                          errors.email ? "border-red-500" : ""
+                        }`}
                       />
                       {errors.email && (
                         <p className="text-xs text-red-600 mt-1">
@@ -358,7 +376,9 @@ const Contact = () => {
                     <Input
                       {...register("subject")}
                       placeholder="What is this about?"
-                      className={`h-10 ${errors.subject ? "border-red-500" : ""}`}
+                      className={`h-10 ${
+                        errors.subject ? "border-red-500" : ""
+                      }`}
                     />
                     {errors.subject && (
                       <p className="text-xs text-red-600 mt-1">
@@ -376,7 +396,9 @@ const Contact = () => {
                       {...register("message")}
                       rows={5}
                       placeholder="Tell us how we can help you..."
-                      className={`text-sm ${errors.message ? "border-red-500" : ""}`}
+                      className={`text-sm ${
+                        errors.message ? "border-red-500" : ""
+                      }`}
                     />
                     {errors.message && (
                       <p className="text-xs text-red-600 mt-1">
@@ -414,7 +436,9 @@ const Contact = () => {
                     <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
                       <Globe className="w-5 h-5 text-primary-600" />
                     </div>
-                    <h3 className="text-xl lg:text-2xl font-bold">Contact Information</h3>
+                    <h3 className="text-xl lg:text-2xl font-bold">
+                      Contact Information
+                    </h3>
                   </div>
 
                   <div className="space-y-5">
@@ -439,7 +463,9 @@ const Contact = () => {
                               {info.details}
                             </a>
                           ) : (
-                            <p className="text-sm font-semibold truncate">{info.details}</p>
+                            <p className="text-sm font-semibold truncate">
+                              {info.details}
+                            </p>
                           )}
                           <p className="text-xs text-muted-foreground mt-0.5">
                             {info.description}
@@ -519,7 +545,8 @@ const Contact = () => {
               Find Us in Lagos
             </h2>
             <p className="text-lg text-muted-foreground">
-              Located in West Africa's tech hub, connecting African talent to global opportunities
+              Located in West Africa's tech hub, connecting African talent to
+              global opportunities
             </p>
           </div>
 
@@ -549,7 +576,8 @@ const Contact = () => {
               Frequently Asked Questions
             </h2>
             <p className="text-lg text-muted-foreground">
-              Find answers to common questions about TechAge Africa, our courses, and services
+              Find answers to common questions about TechAge Africa, our
+              courses, and services
             </p>
           </div>
 
@@ -591,8 +619,9 @@ const Contact = () => {
                 Still Have Questions?
               </h2>
               <p className="text-lg text-white/90 max-w-2xl mx-auto">
-                Can't find the answer you're looking for? Our support team is here to help you! 
-                We're committed to providing excellent service and support.
+                Can't find the answer you're looking for? Our support team is
+                here to help you! We're committed to providing excellent service
+                and support.
               </p>
               <Button
                 size="lg"

@@ -134,6 +134,23 @@ app.get("/", (req, res) => {
     },
   });
 });
+// Add this after your other routes, before the 404 handler
+app.get("/test-email", async (req, res) => {
+  try {
+    const sendEmail = (await import('./utils/sendEmail.js')).default;
+    
+    const result = await sendEmail({
+      to: 'clinton@techageafrica.com', // Your email
+      subject: 'Test Email from TechAge Africa',
+      html: '<h1>✅ It works!</h1><p>Your Resend integration is working perfectly!</p>',
+      from: 'info'
+    });
+    
+    res.json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 // ============================================
 // ERROR HANDLERS

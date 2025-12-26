@@ -18,7 +18,7 @@ import {
 // @access  Private (logged-in users only)
 export const initiateEnrollment = async (req, res) => {
   try {
-    const { courseId } = req.body;
+    const { courseId, pointsUsed = 0 } = req.body;
     const userId = req.user.id;
 
     if (!courseId) {

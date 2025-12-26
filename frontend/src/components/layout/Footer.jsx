@@ -1,40 +1,60 @@
-
 // ============================================
 // FILE: src/components/layout/Footer.jsx
 // ============================================
-import { Link } from 'react-router-dom';
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Link } from "react-router-dom";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedinIn,
+} from "react-icons/fa";
+import { Mail, MapPin, Phone } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
     company: [
-      { name: 'About Us', path: '/about' },
-      { name: 'Courses', path: '/courses' },
-      { name: 'Contact', path: '/contact' },
-      { name: 'Blog', path: '/blog' },
+      { name: "About Us", path: "/about" },
+      { name: "Courses", path: "/courses" },
+      { name: "Contact", path: "/contact" },
+      { name: "Blog", path: "/blog" },
     ],
     programs: [
-      { name: 'Digital Skills Training', path: '/courses' },
-      { name: 'Business Services', path: '/services' },
-      { name: 'Career Accelerator', path: '/career-accelerator' },
-      { name: 'Startup Acceleration', path: '/startup' },
+      { name: "Digital Skills Training", path: "/courses" },
+      { name: "Business Services", path: "/services" },
+      { name: "Career Accelerator", path: "/career-accelerator" },
+      { name: "Startup Acceleration", path: "/startup" },
     ],
     support: [
-      { name: 'Help Center', path: '/contact', key: 'help-center' },
-      { name: 'FAQs', path: '/contact', key: 'faqs' },
-      { name: 'Privacy Policy', path: '/privacy', key: 'privacy-policy' },
-      { name: 'Terms of Service', path: '/privacy', key: 'terms-of-service' },
+      { name: "Help Center", path: "/contact", key: "help-center" },
+      { name: "FAQs", path: "/contact", key: "faqs" },
+      { name: "Privacy Policy", path: "/privacy", key: "privacy-policy" },
+      { name: "Terms of Service", path: "/privacy", key: "terms-of-service" },
     ],
   };
 
   const socialLinks = [
-    { icon: FaFacebookF, href: 'https://facebook.com', label: 'Facebook' },
-    { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter' },
-    { icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
-    { icon: FaLinkedinIn, href: 'https://linkedin.com', label: 'LinkedIn' },
+    {
+      icon: FaFacebookF,
+      href: "https://facebook.com/techageafrica",
+      label: "Facebook",
+    },
+    {
+      icon: FaTwitter,
+      href: "https://twitter.com/techageafrica",
+      label: "Twitter",
+    },
+    {
+      icon: FaInstagram,
+      href: "https://instagram.com/techageafrica",
+      label: "Instagram",
+    },
+    {
+      icon: FaLinkedinIn,
+      href: "https://linkedin.com/company/techageafrica",
+      label: "LinkedIn",
+    },
   ];
 
   return (
@@ -47,23 +67,29 @@ const Footer = () => {
               <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700">
                 <span className="text-white font-bold text-xl">T</span>
               </div>
-              <span className="font-heading font-bold text-xl">TechAge Africa</span>
+              <span className="font-heading font-bold text-xl">
+                TechAge Africa
+              </span>
             </Link>
             <p className="text-sm text-muted-foreground mb-3 max-w-sm">
-              Empowering Africa's future through digital skills, brand visibility, and tech-driven opportunities.
+              Empowering Africa's future through digital skills, brand
+              visibility, and tech-driven opportunities.
             </p>
 
             {/* Contact Info */}
             <div className="space-y-1.5 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
-                <a href="mailto:clinton@techageafrica.com" className="hover:text-foreground transition-colors">
+                <a
+                  href="mailto:clinton@techageafrica.com"
+                  className="hover:text-foreground transition-colors"
+                >
                   clinton@techageafrica.com
                 </a>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>+234-XXX-XXX-XXXX</span>
+                <span>+234 803 650 9531</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4" />

@@ -33,6 +33,14 @@ const enrollmentSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'Amount is required'],
     },
+    discountedAmount: {
+      type: Number,
+      default: 0, // Amount after applying points discount
+    },
+    pointsUsed: {
+      type: Number,
+      default: 0, // Points used for discount
+    },
     currency: {
       type: String,
       default: 'NGN',
