@@ -44,20 +44,29 @@ const Newsletter = () => {
   };
 
   return (
-    <section className="py-20 md:py-12 bg-primary-600">
-      <div className="container-custom">
-        <div className="max-w-4xl mx-auto text-center space-y-4">
+    <section className="py-12 bg-gradient-to-r from-primary-600 to-primary-700 relative overflow-hidden">
+      {/* Animated Background Bubbles */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
+        <div
+          className="absolute w-96 h-96 bg-white rounded-full -bottom-48 -right-48 animate-pulse"
+          style={{ animationDelay: "1s" }}
+        ></div>
+      </div>
+
+      <div className="container-custom relative z-10">
+        <div className="max-w-3xl mx-auto text-center space-y-6">
           {/* Icon */}
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm">
-            <Mail className="w-8 h-8 text-white" />
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm">
+            <Mail className="w-7 h-7 text-white" />
           </div>
 
           {/* Heading */}
-          <div className="space-y-4">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-white">
+          <div className="space-y-3">
+            <h2 className="text-2xl md:text-3xl font-heading font-bold text-white">
               Stay Updated with TechAge
             </h2>
-            <p className="text-lg text-white/90 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-white/90 max-w-2xl mx-auto">
               Get the latest tech insights, course updates, and exclusive opportunities delivered to your inbox. Join 5000+ subscribers!
             </p>
           </div>
@@ -97,17 +106,17 @@ const Newsletter = () => {
           )}
 
           {/* Trust Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-white/80">
+          <div className="flex flex-wrap items-center justify-center gap-6 pt-4 text-white/80">
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5" />
+              <CheckCircle className="w-4 h-4" />
               <span className="text-sm">No spam, ever</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5" />
+              <CheckCircle className="w-4 h-4" />
               <span className="text-sm">Unsubscribe anytime</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5" />
+              <CheckCircle className="w-4 h-4" />
               <span className="text-sm">Weekly updates</span>
             </div>
           </div>

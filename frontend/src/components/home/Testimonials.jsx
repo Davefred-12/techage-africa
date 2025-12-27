@@ -76,7 +76,7 @@ const Testimonials = () => {
     <section className="py-20 md:py-32">
       <div className="container-custom">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
             What Our Students Say
           </h2>
@@ -128,7 +128,7 @@ const Testimonials = () => {
         </div>
 
         {/* Bottom Stats */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 p-8 rounded-2xl bg-primary-50 dark:bg-primary-900/20">
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 p-6 md:p-8 rounded-2xl bg-primary-50 dark:bg-primary-900/20">
           <div className="text-center">
             <p className="text-3xl font-bold text-foreground">4.9/5</p>
             <p className="text-sm text-muted-foreground mt-1">Average Rating</p>

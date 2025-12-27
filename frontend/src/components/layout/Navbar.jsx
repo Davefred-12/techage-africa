@@ -1,6 +1,6 @@
 // src/components/layout/Navbar.jsx
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   Moon,
   Sun,
@@ -14,7 +14,7 @@ import {
   TrendingUp,
   Shield,
   Award,
-  Bell
+  Bell,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useTheme } from "../ThemeProvider";
@@ -48,6 +48,7 @@ const Navbar = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { user, isAuthenticated, logout } = useAuth();
 
@@ -99,6 +100,14 @@ const Navbar = () => {
     navigate("/");
   };
 
+  // Check if link is active
+  const isActiveLink = (path) => {
+    if (path === "/") {
+      return location.pathname === "/";
+    }
+    return location.pathname.startsWith(path);
+  };
+
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -119,7 +128,11 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className={`text-sm font-medium transition-colors relative group ${
+                  isActiveLink(link.path)
+                    ? "text-primary-600 font-semibold"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
               >
                 {link.name}
               </Link>
@@ -128,7 +141,6 @@ const Navbar = () => {
 
           {/* RIGHT SIDE ACTIONS */}
           <div className="flex items-center space-x-4">
-
             {/* Theme Toggle */}
             <Button
               variant="ghost"
@@ -232,7 +244,11 @@ const Navbar = () => {
               className="md:hidden"
               onClick={toggleMenu}
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </Button>
           </div>
         </div>
@@ -245,7 +261,11 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 onClick={toggleMenu}
-                className="block py-2 px-3 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors"
+                className={`block py-2 px-3 text-base font-medium rounded-lg transition-colors ${
+                  isActiveLink(link.path)
+                    ? "text-primary-600 bg-primary-50 dark:bg-primary-900/20 font-semibold"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                }`}
               >
                 {link.name}
               </Link>
@@ -278,7 +298,10 @@ const Navbar = () => {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowLogoutDialog(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setShowLogoutDialog(false)}
+            >
               Cancel
             </Button>
             <Button variant="destructive" onClick={handleConfirmLogout}>

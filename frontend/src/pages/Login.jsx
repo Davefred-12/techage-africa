@@ -130,7 +130,7 @@ const Login = () => {
         {/* Full Background Image */}
         <div className="absolute inset-0">
           <img
-            src="/images/reg.jpg"
+            src="/images/african3.jpg"
             alt="Learning"
             className="w-full h-full object-cover"
           />

@@ -28,6 +28,7 @@ import {
   Calendar,
   TrendingDown,
   AlertCircle,
+  Sparkles,
 } from "lucide-react";
 
 const About = () => {
@@ -40,12 +41,12 @@ const About = () => {
     const fetchBlogs = async () => {
       try {
         setBlogsLoading(true);
-        const response = await api.get('/api/blog?limit=3');
+        const response = await api.get("/api/blog?limit=3");
         if (response.data.success) {
           setBlogs(response.data.data);
         }
       } catch (error) {
-        console.error('Error fetching blogs:', error);
+        console.error("Error fetching blogs:", error);
         setBlogs([]);
       } finally {
         setBlogsLoading(false);
@@ -86,25 +87,29 @@ const About = () => {
     {
       year: "2019",
       title: "The Beginning",
-      description: "Started with WhatsApp forums engaging 557 youth members in digital skills and online safety conversations.",
+      description:
+        "Started with WhatsApp forums engaging 557 youth members in digital skills and online safety conversations.",
       icon: "🌱",
     },
     {
       year: "2020-2024",
       title: "Stealth Growth",
-      description: "Trained 2,000+ youths across Africa via WhatsApp/Telegram bootcamps. Validated demand and refined our approach.",
+      description:
+        "Trained 2,000+ youths across Africa via WhatsApp/Telegram bootcamps. Validated demand and refined our approach.",
       icon: "📈",
     },
     {
       year: "2025",
       title: "Going Public",
-      description: "Launched full digital platform with 12+ courses, mobile app, and scaling to reach 10,000+ learners this year.",
+      description:
+        "Launched full digital platform with 12+ courses, mobile app, and scaling to reach 10,000+ learners this year.",
       icon: "🚀",
     },
     {
       year: "2028 Vision",
       title: "Continental Impact",
-      description: "Training 100,000+ Africans, launching startup accelerator, and expanding across 5+ African countries.",
+      description:
+        "Training 100,000+ Africans, launching startup accelerator, and expanding across 5+ African countries.",
       icon: "✨",
     },
   ];
@@ -136,22 +141,26 @@ const About = () => {
     {
       icon: TrendingDown,
       title: "High Unemployment",
-      description: "Africa's youth face unprecedented unemployment rates despite growing global tech industries.",
+      description:
+        "Africa's youth face unprecedented unemployment rates despite growing global tech industries.",
     },
     {
       icon: AlertCircle,
       title: "Skills Gap",
-      description: "Traditional education systems fail to equip young Africans with relevant digital skills for the future of work.",
+      description:
+        "Traditional education systems fail to equip young Africans with relevant digital skills for the future of work.",
     },
     {
       icon: Shield,
       title: "Rising Cybercrime",
-      description: "Lack of digital safety education leads to increased online fraud and cybercrime across the continent.",
+      description:
+        "Lack of digital safety education leads to increased online fraud and cybercrime across the continent.",
     },
     {
       icon: Building,
       title: "Limited Opportunities",
-      description: "African startups and entrepreneurs struggle to access funding, mentorship, and global market connections.",
+      description:
+        "African startups and entrepreneurs struggle to access funding, mentorship, and global market connections.",
     },
   ];
 
@@ -159,92 +168,94 @@ const About = () => {
     {
       icon: GraduationCap,
       title: "Digital Skills Training",
-      description: "Scalable, mobile-first courses in AI, product design, cybersecurity, SEO, and remote work preparation.",
+      description:
+        "Scalable, mobile-first courses in AI, product design, cybersecurity, SEO, and remote work preparation.",
     },
     {
       icon: Briefcase,
       title: "Business Growth Services",
-      description: "SEO optimization, content marketing, paid advertising, and brand positioning for African businesses.",
+      description:
+        "SEO optimization, content marketing, paid advertising, and brand positioning for African businesses.",
     },
     {
       icon: Shield,
       title: "Cybersecurity Education",
-      description: "Digital safety courses to combat scams, build resilience, and promote responsible online behavior.",
+      description:
+        "Digital safety courses to combat scams, build resilience, and promote responsible online behavior.",
     },
     {
       icon: Rocket,
       title: "Startup Acceleration",
-      description: "Coming soon: Mentorship, non-equity grants, and market access for early-stage African tech startups.",
+      description:
+        "Coming soon: Mentorship, non-equity grants, and market access for early-stage African tech startups.",
     },
   ];
-
 
   const services = [
     {
       icon: BookOpen,
       title: "Content Writing & Management",
-      description: "Strategic content that attracts, nurtures, and converts your audience into loyal customers.",
+      description:
+        "Strategic content that attracts, nurtures, and converts your audience into loyal customers.",
     },
     {
       icon: TrendingUp,
       title: "Brand Marketing & PR",
-      description: "Position your brand to be remembered, trusted, and preferred in your market.",
+      description:
+        "Position your brand to be remembered, trusted, and preferred in your market.",
     },
     {
       icon: Zap,
       title: "SEO & Visibility Management",
-      description: "Dominate search results and drive steady organic traffic that converts.",
+      description:
+        "Dominate search results and drive steady organic traffic that converts.",
     },
     {
       icon: Code,
       title: "Website & App Development",
-      description: "High-performance digital products built for growth and optimized for conversions.",
+      description:
+        "High-performance digital products built for growth and optimized for conversions.",
     },
   ];
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative py-20 md:py-32 bg-primary-50 dark:bg-primary-900/20 overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        
-        {/* Animated background elements */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-secondary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-accent-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+      {/* Hero Section - Compact Blue Gradient */}
+      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
+          <div
+            className="absolute w-96 h-96 bg-white rounded-full -bottom-48 -right-48 animate-pulse"
+            style={{ animationDelay: "1s" }}
+          ></div>
+        </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in-up">
-            <Badge className="text-sm px-4 py-2 animate-fade-in">About TechAge Africa</Badge>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight animate-fade-in-up animation-delay-200">
-              Accelerating Africa's{" "}
-              <span className="text-primary-600">
-                Tech Advantage
-              </span>
+        <div className="container-custom relative z-10">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium mb-6 animate-bounce">
+              <Sparkles className="h-4 w-4" />
+              <span>About TechAge Africa</span>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6">
+              Accelerating Africa's Tech Advantage
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed animate-fade-in-up animation-delay-400">
-              We believe Africa's greatest asset is its people — youthful, creative, and hungry for opportunity. 
-              Since 2019, we've been empowering African youth with the digital skills needed to thrive in the global economy. 
-              Now in 2025, we're scaling this mission publicly to transform 100,000+ lives across the continent.
+            <p className="text-xl md:text-2xl text-primary-100 mb-8">
+              Empowering African youth with digital skills to thrive in the
+              global economy
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 animate-fade-in-up animation-delay-600">
-              <Button
-                size="lg"
-                className="text-base group shadow-xl hover:scale-105 transition-transform"
-                onClick={() => navigate("/courses")}
-              >
-                Explore Our Courses
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-base group shadow-lg hover:scale-105 transition-transform"
-                onClick={() => navigate("/services")}
-              >
-                View Our Services
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
+            <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
+                <CheckCircle className="h-4 w-4" />
+                <span>6+ Years Impact</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
+                <Users className="h-4 w-4" />
+                <span>2,000+ Students</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
+                <Award className="h-4 w-4" />
+                <span>12+ Courses</span>
+              </div>
             </div>
           </div>
         </div>
@@ -255,15 +266,45 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { value: "2,000+", label: "Students Trained", color: "text-primary-600", delay: "0" },
-              { value: "6+", label: "Years of Impact", color: "text-secondary-600", delay: "100" },
-              { value: "12+", label: "Expert Courses", color: "text-accent-600", delay: "200" },
-              { value: "5", label: "Countries Target", color: "text-primary-600", delay: "300" },
+              {
+                value: "2,000+",
+                label: "Students Trained",
+                color: "text-primary-600",
+                delay: "0",
+              },
+              {
+                value: "6+",
+                label: "Years of Impact",
+                color: "text-secondary-600",
+                delay: "100",
+              },
+              {
+                value: "12+",
+                label: "Expert Courses",
+                color: "text-accent-600",
+                delay: "200",
+              },
+              {
+                value: "5",
+                label: "Countries Target",
+                color: "text-primary-600",
+                delay: "300",
+              },
             ].map((stat, index) => (
-              <Card key={index} className="text-center hover:shadow-xl transition-all hover:-translate-y-2 animate-fade-in-up group" style={{ animationDelay: `${stat.delay}ms` }}>
+              <Card
+                key={index}
+                className="text-center hover:shadow-xl transition-all hover:-translate-y-2 animate-fade-in-up group"
+                style={{ animationDelay: `${stat.delay}ms` }}
+              >
                 <CardContent className="p-6">
-                  <p className={`text-4xl md:text-5xl font-bold ${stat.color} animate-scale-in group-hover:scale-110 transition-transform`}>{stat.value}</p>
-                  <p className="text-sm text-muted-foreground mt-2">{stat.label}</p>
+                  <p
+                    className={`text-4xl md:text-5xl font-bold ${stat.color} animate-scale-in group-hover:scale-110 transition-transform`}
+                  >
+                    {stat.value}
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    {stat.label}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -280,8 +321,8 @@ const About = () => {
               Why TechAge Africa Exists
             </h2>
             <p className="text-lg text-muted-foreground">
-              Africa faces critical barriers that prevent millions from accessing the digital economy. 
-              We're here to change that.
+              Africa faces critical barriers that prevent millions from
+              accessing the digital economy. We're here to change that.
             </p>
           </div>
 
@@ -316,7 +357,8 @@ const About = () => {
               How We're Making a Difference
             </h2>
             <p className="text-lg text-muted-foreground">
-              TechAge Africa delivers comprehensive solutions that empower individuals, businesses, and startups.
+              TechAge Africa delivers comprehensive solutions that empower
+              individuals, businesses, and startups.
             </p>
           </div>
 
@@ -333,7 +375,9 @@ const About = () => {
                       <solution.icon className="w-8 h-8 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold mb-2">{solution.title}</h3>
+                      <h3 className="text-xl font-bold mb-2">
+                        {solution.title}
+                      </h3>
                       <p className="text-muted-foreground leading-relaxed">
                         {solution.description}
                       </p>
@@ -355,7 +399,8 @@ const About = () => {
               The Journey So Far
             </h2>
             <p className="text-lg text-muted-foreground">
-              From humble beginnings to transforming thousands of lives across Africa
+              From humble beginnings to transforming thousands of lives across
+              Africa
             </p>
           </div>
 
@@ -370,7 +415,10 @@ const About = () => {
                   style={{ animationDelay: `${index * 150}ms` }}
                 >
                   <div className="hidden md:block absolute -top-8 left-1/2 transform -translate-x-1/2">
-                    <div className="w-16 h-16 rounded-full bg-primary-500 flex items-center justify-center shadow-lg group-hover:scale-125 transition-transform animate-bounce-in" style={{ animationDelay: `${index * 150}ms` }}>
+                    <div
+                      className="w-16 h-16 rounded-full bg-primary-500 flex items-center justify-center shadow-lg group-hover:scale-125 transition-transform animate-bounce-in"
+                      style={{ animationDelay: `${index * 150}ms` }}
+                    >
                       <span className="text-2xl">{milestone.icon}</span>
                     </div>
                   </div>
@@ -404,13 +452,22 @@ const About = () => {
                   <h2 className="text-2xl lg:text-3xl font-bold">Our Vision</h2>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-base">
-                  To build a continent where Africans have the skills, resources, and opportunities 
-                  to compete and thrive in the global digital economy. We envision an Africa where 
-                  access to global tech innovation is borderless, inclusive, and scalable.
+                  To build a continent where Africans have the skills,
+                  resources, and opportunities to compete and thrive in the
+                  global digital economy. We envision an Africa where access to
+                  global tech innovation is borderless, inclusive, and scalable.
                 </p>
                 <div className="pt-4 space-y-3">
-                  {["Borderless tech access for all", "Inclusive digital economy", "Scalable, sustainable solutions"].map((item, i) => (
-                    <div key={i} className="flex items-center gap-3 text-sm animate-fade-in-left" style={{ animationDelay: `${i * 100 + 300}ms` }}>
+                  {[
+                    "Borderless tech access for all",
+                    "Inclusive digital economy",
+                    "Scalable, sustainable solutions",
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 text-sm animate-fade-in-left"
+                      style={{ animationDelay: `${i * 100 + 300}ms` }}
+                    >
                       <CheckCircle className="w-5 h-5 text-primary-600 flex-shrink-0" />
                       <span>{item}</span>
                     </div>
@@ -425,16 +482,27 @@ const About = () => {
                   <div className="w-14 h-14 rounded-xl bg-secondary-600 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all">
                     <Target className="w-7 h-7 text-white" />
                   </div>
-                  <h2 className="text-2xl lg:text-3xl font-bold">Our Mission</h2>
+                  <h2 className="text-2xl lg:text-3xl font-bold">
+                    Our Mission
+                  </h2>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-base">
-                  To democratize digital learning and provide access to digital skills, economic 
-                  empowerment, and startup funding across Africa. We empower youth and professionals 
-                  through simplified, localized, and practical education.
+                  To democratize digital learning and provide access to digital
+                  skills, economic empowerment, and startup funding across
+                  Africa. We empower youth and professionals through simplified,
+                  localized, and practical education.
                 </p>
                 <div className="pt-4 space-y-3">
-                  {["Democratize digital education", "Empower African businesses", "Fund & mentor startups"].map((item, i) => (
-                    <div key={i} className="flex items-center gap-3 text-sm animate-fade-in-right" style={{ animationDelay: `${i * 100 + 300}ms` }}>
+                  {[
+                    "Democratize digital education",
+                    "Empower African businesses",
+                    "Fund & mentor startups",
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 text-sm animate-fade-in-right"
+                      style={{ animationDelay: `${i * 100 + 300}ms` }}
+                    >
                       <CheckCircle className="w-5 h-5 text-secondary-600 flex-shrink-0" />
                       <span>{item}</span>
                     </div>
@@ -474,9 +542,10 @@ const About = () => {
                 <div className="relative pl-6 border-l-4 border-primary-600">
                   <Quote className="absolute -left-3 top-0 w-6 h-6 text-primary-600 bg-background" />
                   <p className="text-muted-foreground leading-relaxed italic">
-                    "I started TechAge Africa with a simple belief: that every African youth 
-                    deserves access to quality digital education. What began as WhatsApp forums 
-                    has grown into a movement that's transforming lives across the continent."
+                    "I started TechAge Africa with a simple belief: that every
+                    African youth deserves access to quality digital education.
+                    What began as WhatsApp forums has grown into a movement
+                    that's transforming lives across the continent."
                   </p>
                 </div>
 
@@ -485,13 +554,16 @@ const About = () => {
                     <strong className="text-foreground">
                       Entrepreneur, Educator, and Digital Strategist
                     </strong>{" "}
-                    with over 6 years of experience training 2,000+ youths across Africa 
-                    in digital skills, online safety, and career development.
+                    with over 6 years of experience training 2,000+ youths
+                    across Africa in digital skills, online safety, and career
+                    development.
                   </p>
                   <p className="text-muted-foreground leading-relaxed">
-                    Clinton's vision extends beyond training — he's building an ecosystem that 
-                    connects African talent to global opportunities, empowers businesses with 
-                    digital tools, and creates pathways for startups to access funding and mentorship.
+                    Clinton's vision extends beyond training — he's building an
+                    ecosystem that connects African talent to global
+                    opportunities, empowers businesses with digital tools, and
+                    creates pathways for startups to access funding and
+                    mentorship.
                   </p>
                 </div>
               </CardContent>
@@ -509,7 +581,8 @@ const About = () => {
               Core Values That Guide Us
             </h2>
             <p className="text-lg text-muted-foreground">
-              The principles that drive every decision we make and every solution we build
+              The principles that drive every decision we make and every
+              solution we build
             </p>
           </div>
 
@@ -544,7 +617,8 @@ const About = () => {
               Building Africa's Digital Future
             </h2>
             <p className="text-lg text-muted-foreground">
-              Measurable impact targets that will transform the African tech ecosystem
+              Measurable impact targets that will transform the African tech
+              ecosystem
             </p>
           </div>
 
@@ -560,8 +634,12 @@ const About = () => {
                   <div className="w-14 h-14 mx-auto rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <item.icon className="w-7 h-7 text-primary-600" />
                   </div>
-                  <p className="text-4xl md:text-5xl font-bold text-foreground group-hover:scale-110 transition-transform">{item.goal}</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                  <p className="text-4xl md:text-5xl font-bold text-foreground group-hover:scale-110 transition-transform">
+                    {item.goal}
+                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {item.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -573,20 +651,27 @@ const About = () => {
       <section className="py-20 md:py-32 bg-blue-50 dark:bg-blue-900/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
-            <Badge className="mb-4 bg-blue-600 text-white">Tech Updates Blog</Badge>
+            <Badge className="mb-4 bg-blue-600 text-white">
+              Tech Updates Blog
+            </Badge>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
               Stay Ahead with Africa's Tech Pulse
             </h2>
             <p className="text-lg text-muted-foreground">
-              Latest insights, news, and updates on emerging technologies, career opportunities, 
-              and digital trends shaping Africa and the world.
+              Latest insights, news, and updates on emerging technologies,
+              career opportunities, and digital trends shaping Africa and the
+              world.
             </p>
           </div>
 
           {blogsLoading ? (
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               {Array.from({ length: 3 }).map((_, index) => (
-                <Card key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
+                <Card
+                  key={index}
+                  className="animate-fade-in-up"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
                   <CardContent className="p-6 space-y-4">
                     <div className="h-4 w-20 bg-muted rounded animate-pulse"></div>
                     <div className="h-6 w-full bg-muted rounded animate-pulse"></div>
@@ -649,8 +734,9 @@ const About = () => {
               Grow Your Business with Expert Services
             </h2>
             <p className="text-lg text-muted-foreground">
-              We help African brands, SMEs, and startups gain visibility, optimize for growth, 
-              and build powerful digital presences that drive results.
+              We help African brands, SMEs, and startups gain visibility,
+              optimize for growth, and build powerful digital presences that
+              drive results.
             </p>
           </div>
 
@@ -698,44 +784,49 @@ const About = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 md:py-32 bg-primary-600 relative overflow-hidden">
+      {/* CTA Section - Matches Services Page */}
+      <section className="py-20 bg-gradient-to-r from-primary-600 to-primary-700 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
-          <div className="absolute w-96 h-96 bg-white rounded-full -bottom-48 -right-48 animate-pulse animation-delay-1000"></div>
+          <div
+            className="absolute w-96 h-96 bg-white rounded-full -bottom-48 -right-48 animate-pulse"
+            style={{ animationDelay: "1s" }}
+          ></div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
-          <div className="max-w-4xl mx-auto text-center text-white space-y-8 animate-fade-in-up">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold">
-              Join the Movement to Transform Africa's Tech Future
-            </h2>
-            <p className="text-lg lg:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-              Whether you want to learn new skills, grow your business, or support our mission — 
-              there's a place for you at TechAge Africa. Together, we're building the digital 
-              future of Africa.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <Button
-                size="lg"
-                variant="secondary"
-                className="text-base group shadow-2xl hover:scale-105 transition-transform"
-                onClick={() => navigate("/courses")}
-              >
-                Browse Courses
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-base bg-white/10 hover:bg-white/20 text-white border-white/30 group shadow-2xl hover:scale-105 transition-transform"
-                onClick={() => navigate("/contact")}
-              >
-                Get In Touch
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </div>
-          </div>
+        <div className="container-custom relative z-10">
+          <Card className="bg-white/10 backdrop-blur-sm border-2 border-white/20 hover:shadow-2xl transition-all hover:scale-[1.02]">
+            <CardContent className="p-12 text-center space-y-6 text-white">
+              <h2 className="text-3xl md:text-4xl font-heading font-bold">
+                Join the Movement to Transform Africa's Tech Future
+              </h2>
+              <p className="text-lg text-white/90 max-w-2xl mx-auto">
+                Whether you want to learn new skills, grow your business, or
+                support our mission — there's a place for you at TechAge Africa.
+                Together, we're building the digital future of Africa.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="hover:scale-110 transition-transform shadow-xl"
+                  onClick={() => navigate("/courses")}
+                >
+                  Browse Courses
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-primary-600 transition-all"
+                  onClick={() => navigate("/contact")}
+                >
+                  Get In Touch
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 

@@ -52,7 +52,7 @@ const WhyTechAge = () => {
     <section className="py-20 md:py-32">
       <div className="container-custom">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
             Why Choose TechAge Africa?
           </h2>
@@ -86,7 +86,7 @@ const WhyTechAge = () => {
 
         {/* Bottom CTA */}
         <div className="mt-16 text-center">
-          <div className="inline-flex flex-col md:flex-row items-center gap-4 p-8 rounded-2xl bg-primary-50 dark:bg-primary-900/20 border">
+          <div className="inline-flex flex-col md:flex-row items-center gap-4 p-6 md:p-8 rounded-2xl bg-primary-50 dark:bg-primary-900/20 border">
             <div className="text-left flex-1">
               <h3 className="text-2xl font-bold mb-2">
                 Ready to Start Your Journey?

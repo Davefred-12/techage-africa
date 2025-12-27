@@ -125,7 +125,7 @@ const AdminLayout = ({ children }) => {
       >
         <div className="flex flex-col h-full">
           {/* Admin Profile Section */}
-          <div className="p-6 border-b bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20">
+          <div className="p-6 border-b bg-gradient-to-r from-primary-100 to-primary-100 dark:from-primary-900/20 dark:to-secondary-900/20">
             <div className="flex items-center space-x-4 animate-fade-in">
               <Avatar className="h-16 w-16 ring-2 ring-primary-500 ring-offset-2 ring-offset-background">
                 <AvatarImage src={user?.avatar} alt={user?.name} />
@@ -140,7 +140,7 @@ const AdminLayout = ({ children }) => {
                 <p className="text-xs text-muted-foreground truncate">
                   {user?.email || "admin@techageafrica.com"}
                 </p>
-                <Badge className="mt-1 bg-gradient-to-r from-primary-600 to-secondary-600 text-xs">
+                <Badge className="mt-1 bg-gradient-to-r from-secondary-600 to-secondary-600 text-xs">
                   {user?.role || "Admin"}
                 </Badge>
               </div>

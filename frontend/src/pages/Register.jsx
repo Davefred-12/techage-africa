@@ -146,7 +146,7 @@ const Register = () => {
       <div className="hidden lg:flex flex-col justify-start items-center pt-40 px-12 relative overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="/images/res.jpg"
+            src="/images/african2.jpg"
             alt="Learning"
             className="w-full h-full object-cover"
           />

@@ -44,7 +44,7 @@ const FeaturedCourses = () => {
     <section className="py-20 bg-background">
       <div className="container-custom">
         {/* Section Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <Badge className="mb-4">Featured Courses</Badge>
           <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
             Start Learning Today

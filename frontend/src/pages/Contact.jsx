@@ -30,6 +30,7 @@ import {
   Globe,
   Building,
   BookOpen,
+  Shield,
 } from "lucide-react";
 import {
   FaFacebookF,
@@ -68,7 +69,7 @@ const Contact = () => {
 
       if (response.data.success) {
         setIsSubmitted(true);
-        reset();
+        reset(); // ✅ THIS CLEARS THE FORM
         toast.success(
           "Message sent successfully! We'll respond within 24 hours."
         );
@@ -238,23 +239,43 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="py-20 md:py-32 bg-primary-50 dark:bg-primary-900/20 relative overflow-hidden">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-        <div className="absolute bottom-20 right-10 w-72 h-72 bg-secondary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+      {/* Hero Section - Compact Blue Gradient */}
+      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
+          <div
+            className="absolute w-96 h-96 bg-white rounded-full -bottom-48 -right-48 animate-pulse"
+            style={{ animationDelay: "1s" }}
+          ></div>
+        </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in-up">
-            <Badge className="text-sm px-4 py-2">Get In Touch</Badge>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold animate-fade-in-up animation-delay-200">
-              Let's Connect and{" "}
-              <span className="text-primary-600">Grow Together</span>
+        <div className="container-custom relative z-10">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium mb-6 animate-bounce">
+              <MessageSquare className="h-4 w-4" />
+              <span>Get In Touch</span>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6">
+              Contact Us
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed animate-fade-in-up animation-delay-400">
-              Have questions about our courses? Need business services? Want to
-              partner with us? We're here to help you accelerate your digital
-              journey. Drop us a message and we'll respond within 24 hours.
+            <p className="text-xl md:text-2xl text-primary-100 mb-8">
+              Have questions? We're here to help you accelerate your digital
+              journey
             </p>
+            <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
+                <Clock className="h-4 w-4" />
+                <span>24hr Response</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
+                <Mail className="h-4 w-4" />
+                <span>Quick Support</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
+                <Users className="h-4 w-4" />
+                <span>Expert Team</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -300,134 +321,201 @@ const Contact = () => {
       <section className="py-20" id="contact-form">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-8">
-            {/* Contact Form */}
-            <Card className="border-2 hover:shadow-xl transition-all animate-fade-in-left h-30">
-              <CardContent className="p-6 lg:p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center animate-bounce-in">
-                    <MessageSquare className="w-5 h-5 text-primary-600" />
+            {/* LEFT SIDE - Contact Form Split into Two Cards */}
+            <div className="space-y-6">
+              {/* Contact Form Card */}
+              <Card className="border-2 hover:shadow-xl transition-all animate-fade-in-left">
+                <CardContent className="p-6 lg:p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center animate-bounce-in">
+                      <MessageSquare className="w-5 h-5 text-primary-600" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl lg:text-2xl font-bold">
+                        Send Us a Message
+                      </h2>
+                      <p className="text-xs text-muted-foreground">
+                        We typically respond within 24 hours
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h2 className="text-xl lg:text-2xl font-bold">
-                      Send Us a Message
-                    </h2>
-                    <p className="text-xs text-muted-foreground">
-                      We typically respond within 24 hours
-                    </p>
-                  </div>
-                </div>
 
-                {isSubmitted && (
-                  <div className="mb-4 p-3 bg-accent-50 dark:bg-accent-900/20 border border-accent-200 dark:border-accent-800 rounded-lg flex items-center gap-2 animate-fade-in">
-                    <CheckCircle className="w-4 h-4 text-accent-600 flex-shrink-0" />
-                    <p className="text-xs text-accent-700 dark:text-accent-400">
-                      Thank you! Your message has been sent successfully.
-                    </p>
-                  </div>
-                )}
+                  {isSubmitted && (
+                    <div className="mb-4 p-3 bg-accent-50 dark:bg-accent-900/20 border border-accent-200 dark:border-accent-800 rounded-lg flex items-center gap-2 animate-fade-in">
+                      <CheckCircle className="w-4 h-4 text-accent-600 flex-shrink-0" />
+                      <p className="text-xs text-accent-700 dark:text-accent-400">
+                        Thank you! Your message has been sent successfully.
+                      </p>
+                    </div>
+                  )}
 
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    {/* Name */}
-                    <div className="animate-fade-in-up animation-delay-200">
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      {/* Name */}
+                      <div className="animate-fade-in-up animation-delay-200">
+                        <label className="block text-xs font-medium mb-1.5">
+                          Full Name *
+                        </label>
+                        <Input
+                          {...register("name")}
+                          placeholder="John Doe"
+                          className={`h-10 ${
+                            errors.name ? "border-red-500" : ""
+                          }`}
+                        />
+                        {errors.name && (
+                          <p className="text-xs text-red-600 mt-1">
+                            {errors.name.message}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Email */}
+                      <div className="animate-fade-in-up animation-delay-300">
+                        <label className="block text-xs font-medium mb-1.5">
+                          Email Address *
+                        </label>
+                        <Input
+                          {...register("email")}
+                          type="email"
+                          placeholder="john@example.com"
+                          className={`h-10 ${
+                            errors.email ? "border-red-500" : ""
+                          }`}
+                        />
+                        {errors.email && (
+                          <p className="text-xs text-red-600 mt-1">
+                            {errors.email.message}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Subject */}
+                    <div className="animate-fade-in-up animation-delay-400">
                       <label className="block text-xs font-medium mb-1.5">
-                        Full Name *
+                        Subject *
                       </label>
                       <Input
-                        {...register("name")}
-                        placeholder="John Doe"
+                        {...register("subject")}
+                        placeholder="What is this about?"
                         className={`h-10 ${
-                          errors.name ? "border-red-500" : ""
+                          errors.subject ? "border-red-500" : ""
                         }`}
                       />
-                      {errors.name && (
+                      {errors.subject && (
                         <p className="text-xs text-red-600 mt-1">
-                          {errors.name.message}
+                          {errors.subject.message}
                         </p>
                       )}
                     </div>
 
-                    {/* Email */}
-                    <div className="animate-fade-in-up animation-delay-300">
+                    {/* Message */}
+                    <div className="animate-fade-in-up animation-delay-500">
                       <label className="block text-xs font-medium mb-1.5">
-                        Email Address *
+                        Your Message *
                       </label>
-                      <Input
-                        {...register("email")}
-                        type="email"
-                        placeholder="john@example.com"
-                        className={`h-10 ${
-                          errors.email ? "border-red-500" : ""
+                      <Textarea
+                        {...register("message")}
+                        rows={5}
+                        placeholder="Tell us how we can help you..."
+                        className={`text-sm ${
+                          errors.message ? "border-red-500" : ""
                         }`}
                       />
-                      {errors.email && (
+                      {errors.message && (
                         <p className="text-xs text-red-600 mt-1">
-                          {errors.email.message}
+                          {errors.message.message}
                         </p>
                       )}
                     </div>
+
+                    <Button
+                      type="button"
+                      size="lg"
+                      disabled={isSubmitting}
+                      onClick={handleSubmit(onSubmit)}
+                      className="w-full animate-fade-in-up animation-delay-600 hover:scale-105 transition-transform h-11"
+                    >
+                      {isSubmitting ? (
+                        "Sending..."
+                      ) : (
+                        <>
+                          Send Message
+                          <Send className="ml-2 h-4 w-4" />
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Response Information Card */}
+              <Card className="border-2 bg-primary-50 dark:bg-primary-900/20 hover:shadow-xl transition-all animate-fade-in-left animation-delay-400">
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CheckCircle className="w-5 h-5 text-primary-600" />
+                    <h3 className="text-base font-bold">
+                      Our Commitment to You
+                    </h3>
                   </div>
 
-                  {/* Subject */}
-                  <div className="animate-fade-in-up animation-delay-400">
-                    <label className="block text-xs font-medium mb-1.5">
-                      Subject *
-                    </label>
-                    <Input
-                      {...register("subject")}
-                      placeholder="What is this about?"
-                      className={`h-10 ${
-                        errors.subject ? "border-red-500" : ""
-                      }`}
-                    />
-                    {errors.subject && (
-                      <p className="text-xs text-red-600 mt-1">
-                        {errors.subject.message}
-                      </p>
-                    )}
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-white dark:bg-primary-800/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Clock className="w-4 h-4 text-primary-600" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-semibold mb-1">
+                          Quick Response Time
+                        </h4>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          We aim to respond to all inquiries within 24 hours
+                          during business days. For urgent matters, please call
+                          us directly.
+                        </p>
+                      </div>
+                    </div>
+
+                
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-white dark:bg-primary-800/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Shield className="w-4 h-4 text-primary-600" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-semibold mb-1">
+                          Your Privacy Matters
+                        </h4>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          Your information is secure and confidential. We never
+                          share your contact details with third parties without
+                          your consent.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-white dark:bg-primary-800/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Users className="w-4 h-4 text-primary-600" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-semibold mb-1">
+                          Expert Support Team
+                        </h4>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          Our dedicated support team is knowledgeable about all
+                          our courses and services, ready to provide
+                          personalized assistance.
+                        </p>
+                      </div>
+                    </div>
                   </div>
+                </CardContent>
+              </Card>
+            </div>
 
-                  {/* Message */}
-                  <div className="animate-fade-in-up animation-delay-500">
-                    <label className="block text-xs font-medium mb-1.5">
-                      Your Message *
-                    </label>
-                    <Textarea
-                      {...register("message")}
-                      rows={5}
-                      placeholder="Tell us how we can help you..."
-                      className={`text-sm ${
-                        errors.message ? "border-red-500" : ""
-                      }`}
-                    />
-                    {errors.message && (
-                      <p className="text-xs text-red-600 mt-1">
-                        {errors.message.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <Button
-                    type="button"
-                    size="lg"
-                    disabled={isSubmitting}
-                    onClick={handleSubmit(onSubmit)}
-                    className="w-full animate-fade-in-up animation-delay-600 hover:scale-105 transition-transform h-11"
-                  >
-                    {isSubmitting ? (
-                      "Sending..."
-                    ) : (
-                      <>
-                        Send Message
-                        <Send className="ml-2 h-4 w-4" />
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Contact Information */}
+            {/* RIGHT SIDE - Contact Information */}
             <div className="space-y-6">
               {/* Main Contact Card */}
               <Card className="border-2 hover:shadow-xl transition-all animate-fade-in-right">
@@ -506,25 +594,25 @@ const Contact = () => {
                   <div className="space-y-1.5 text-sm">
                     <a
                       href="/courses"
-                      className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200 flex items-center gap-2 py-1"
+                      className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200 items-center gap-2 py-1"
                     >
                       <span>→</span> Browse Our Courses
                     </a>
                     <a
                       href="/services"
-                      className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200 flex items-center gap-2 py-1"
+                      className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200 items-center gap-2 py-1"
                     >
                       <span>→</span> Explore Our Services
                     </a>
                     <a
                       href="/about"
-                      className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200 flex items-center gap-2 py-1"
+                      className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200 items-center gap-2 py-1"
                     >
                       <span>→</span> Learn About Us
                     </a>
                     <a
                       href="#faq"
-                      className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200 flex items-center gap-2 py-1"
+                      className="block hover:text-primary-600 transition-colors hover:translate-x-2 transform duration-200 items-center gap-2 py-1"
                     >
                       <span>→</span> Check FAQs Below
                     </a>
