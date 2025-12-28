@@ -32,9 +32,9 @@ export const getCourse = async (req, res) => {
   try {
     let course;
     if (mongoose.Types.ObjectId.isValid(req.params.id)) {
-      course = await Course.findById(req.params.id);
+      course = await Course.findById(req.params.id).populate('instructor', 'name email avatar');
     } else {
-      course = await Course.findOne({ slug: req.params.id });
+      course = await Course.findOne({ slug: req.params.id }).populate('instructor', 'name email avatar');
     }
 
     if (!course) {

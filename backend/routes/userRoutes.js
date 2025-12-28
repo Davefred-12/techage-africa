@@ -946,6 +946,7 @@ router.get("/certificates/:courseId", protect, async (req, res) => {
     // ✅ FIX: Manually fetch the full course with modules
     const course = await Course.findById(req.params.courseId)
       .select('title instructor duration modules certificateTemplate')
+      .populate('instructor', 'name')
       .lean();
 
     if (!course) {
