@@ -1,5 +1,5 @@
 // ============================================
-// FILE: src/pages/PaymentVerify.jsx - NEW
+// FILE: src/pages/PaymentVerify.jsx - FIXED AUTH ISSUE
 // ============================================
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -14,6 +14,7 @@ const PaymentVerify = () => {
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState('verifying'); // verifying, success, failed
   const [course, setCourse] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
   const hasVerified = useRef(false);
 
   useEffect(() => {
@@ -26,16 +27,37 @@ const PaymentVerify = () => {
       const reference = searchParams.get('reference');
 
       if (!reference) {
+        console.error('No payment reference in URL');
         toast.error('Invalid payment reference');
         setStatus('failed');
+        setErrorMessage('No payment reference found in URL');
+        return;
+      }
+
+      console.log('🔍 Verifying payment reference:', reference);
+
+      // ✅ Check if user is authenticated
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No auth token found');
+        setStatus('failed');
+        setErrorMessage('Authentication required. Please login again.');
+        toast.error('Please login to complete enrollment');
+        setTimeout(() => {
+          navigate('/login', { state: { from: window.location.pathname } });
+        }, 2000);
         return;
       }
 
       try {
+        console.log('📤 Sending verification request...');
+        
         // Call backend to verify payment
         const response = await api.post('/api/enrollments/verify', {
           reference,
         });
+
+        console.log('✅ Verification response:', response.data);
 
         if (response.data.success) {
           setStatus('success');
@@ -46,19 +68,35 @@ const PaymentVerify = () => {
 
           toast.success('🎉 Enrollment successful! Welcome to the course!');
         } else {
-          throw new Error('Verification failed');
+          throw new Error(response.data.message || 'Verification failed');
         }
       } catch (error) {
-        console.error('Payment verification error:', error);
+        console.error('❌ Payment verification error:', error);
+        
         setStatus('failed');
-        toast.error(
-          error.response?.data?.message || 'Payment verification failed'
-        );
+        
+        // Handle different error types
+        if (error.response?.status === 401) {
+          setErrorMessage('Session expired. Please login again.');
+          toast.error('Session expired. Please login again.');
+          setTimeout(() => {
+            navigate('/login', { state: { from: window.location.pathname } });
+          }, 2000);
+        } else if (error.response?.status === 404) {
+          setErrorMessage('Enrollment not found. The payment reference may be invalid.');
+          toast.error('Enrollment not found');
+        } else if (error.response?.status === 400) {
+          setErrorMessage(error.response.data.message || 'Payment verification failed');
+          toast.error(error.response.data.message || 'Payment verification failed');
+        } else {
+          setErrorMessage(error.response?.data?.message || error.message || 'Payment verification failed');
+          toast.error(error.response?.data?.message || 'Payment verification failed');
+        }
       }
     };
 
     verifyPayment();
-  }, [searchParams]);
+  }, [searchParams, navigate]);
 
   return (
     <div className="min-h-screen bg-muted/30 flex items-center justify-center p-4">
@@ -124,10 +162,10 @@ const PaymentVerify = () => {
               </div>
               <div className="space-y-2">
                 <h2 className="text-2xl font-heading font-bold">
-                  Payment Failed
+                  Payment Verification Failed
                 </h2>
-                <p className="text-muted-foreground">
-                  We couldn't verify your payment. Please try again or contact support.
+                <p className="text-muted-foreground text-sm">
+                  {errorMessage || "We couldn't verify your payment. Please try again or contact support."}
                 </p>
               </div>
               <div className="space-y-3">
