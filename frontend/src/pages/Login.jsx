@@ -135,20 +135,20 @@ const Login = () => {
             className="w-full h-full object-cover"
           />
           {/* Gradient Overlay for text readability */}
-          <div className="absolute inset-0 bg-primary-900/80"></div>
-        </div>
+         <div className="absolute inset-0 bg-gradient-to-r from-background/30 via-background/40 to-background/40"></div>
+      </div>
 
         {/* Animated background blobs */}
         <div className="absolute top-20 left-20 w-96 h-96 bg-white/10 rounded-full mix-blend-overlay filter blur-3xl animate-blob"></div>
         <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary-400/20 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000"></div>
 
-        <div className="relative z-10 max-w-lg space-y-8 text-white">
+        <div className="relative z-10 max-w-lg space-y-8 text-foreground">
           {/* Heading */}
           <div className="space-y-4 animate-slide-up animation-delay-200">
             <h1 className="text-4xl lg:text-5xl font-heading font-bold leading-tight">
               Welcome Back to Your Learning Journey
             </h1>
-            <p className="text-lg text-white/90">
+            <p className="text-lg text-foreground/90">
               Continue building your digital skills and unlock new opportunities
               in Africa's growing tech ecosystem.
             </p>
@@ -163,9 +163,9 @@ const Login = () => {
                 style={{ animationDelay: `${index * 100 + 400}ms` }}
               >
                 <div className="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
-                  <feature.icon className="w-4 h-4 text-white" />
+                  <feature.icon className="w-4 h-4 text-foreground" />
                 </div>
-                <span className="text-white/90">{feature.text}</span>
+                <span className="text-foreground/90">{feature.text}</span>
               </div>
             ))}
           </div>
@@ -174,15 +174,15 @@ const Login = () => {
           <div className="grid grid-cols-3 gap-6 pt-4 animate-fade-in-up animation-delay-800">
             <div className="text-center backdrop-blur-sm bg-white/10 rounded-lg p-3">
               <p className="text-3xl font-bold">{statsLoading ? '...' : `${studentsCount}+`}</p>
-              <p className="text-sm text-white/80 mt-1">Students</p>
+              <p className="text-sm text-foreground/80 mt-1">Students</p>
             </div>
             <div className="text-center backdrop-blur-sm bg-white/10 rounded-lg p-3">
               <p className="text-3xl font-bold">{statsLoading ? '...' : `${coursesCount}+`}</p>
-              <p className="text-sm text-white/80 mt-1">Courses</p>
+              <p className="text-sm text-foreground/80 mt-1">Courses</p>
             </div>
             <div className="text-center backdrop-blur-sm bg-white/10 rounded-lg p-3">
               <p className="text-3xl font-bold">95%</p>
-              <p className="text-sm text-white/80 mt-1">Success</p>
+              <p className="text-sm text-foreground/80 mt-1">Success</p>
             </div>
           </div>
         </div>

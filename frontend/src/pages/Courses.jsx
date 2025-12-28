@@ -117,7 +117,7 @@ const Courses = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section - Compact Blue Gradient */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20 relative overflow-hidden">
+      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-12 sm:py-20 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
           <div
@@ -240,7 +240,7 @@ const Courses = () => {
 
           {/* Courses Grid */}
           {loading ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, index) => (
                 <Card
                   key={`skeleton-${index}`}
@@ -267,7 +267,7 @@ const Courses = () => {
               ))}
             </div>
           ) : filteredCourses.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredCourses.map((course, index) => (
                 <div
                   key={course._id}
@@ -307,7 +307,7 @@ const Courses = () => {
                       </Badge>
 
                       {/* Title */}
-                      <h3 className="font-semibold text-lg line-clamp-2 group-hover:text-primary-600 transition-colors duration-300">
+                      <h3 className="font-semibold text-base sm:text-lg line-clamp-2 group-hover:text-primary-600 transition-colors duration-300">
                         {course.title}
                       </h3>
 
@@ -340,7 +340,7 @@ const Courses = () => {
 
                     <CardFooter className="p-5 pt-0 flex justify-between items-center border-t">
                       <div>
-                        <p className="text-2xl font-bold text-primary-600">
+                        <p className="text-xl sm:text-2xl font-bold text-primary-600">
                           {formatCurrency(course.price)}
                         </p>
                       </div>

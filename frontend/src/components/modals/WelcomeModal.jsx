@@ -54,7 +54,7 @@ const WelcomeModal = ({ isOpen, onClose, userName }) => {
         </div>
 
         {/* Body */}
-        <div className="p-6 space-y-4">
+        <div className="p-4 sm:p-6 space-y-4 max-h-[70vh] overflow-y-auto">
           {/* Features Grid */}
           <div className="grid md:grid-cols-3 gap-3">
             <div className="text-center p-3 rounded-lg bg-primary-50 dark:bg-primary-900/20 border border-primary-100 dark:border-primary-800">

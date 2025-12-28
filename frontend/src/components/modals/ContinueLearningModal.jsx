@@ -33,7 +33,7 @@ const ContinueLearningModal = ({ isOpen, onClose, course, userName }) => {
         </button>
 
         {/* Course Thumbnail */}
-        <div className="relative h-48 bg-gradient-to-br from-primary-500 to-secondary-500 overflow-hidden">
+        <div className="relative h-32 sm:h-48 bg-gradient-to-br from-primary-500 to-secondary-500 overflow-hidden">
           {course.thumbnail ? (
             <img
               src={course.thumbnail}
@@ -56,7 +56,7 @@ const ContinueLearningModal = ({ isOpen, onClose, course, userName }) => {
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="p-4 sm:p-6 space-y-6 max-h-[70vh] overflow-y-auto">
           {/* Greeting */}
           <div>
             <h2 className="text-2xl font-bold mb-2">
@@ -104,7 +104,7 @@ const ContinueLearningModal = ({ isOpen, onClose, course, userName }) => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Button
               size="lg"
               onClick={handleContinue}

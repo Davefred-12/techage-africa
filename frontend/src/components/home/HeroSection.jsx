@@ -46,11 +46,11 @@ const HeroSection = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <img
-          src="/images/african.jpg"
+          src="/images/african5.jpg"
           alt="Hero background"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-background/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-background/30 via-background/40 to-background/40"></div>
       </div>
 
       {/* Animated blobs */}
@@ -75,7 +75,7 @@ const HeroSection = () => {
                 Accelerate with{" "}
                 <span className="text-primary-600">TechAge</span>
               </h1>
-              <p className="text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
+              <p className="text-base md:text-lg max-w-xl leading-relaxed text-black-900">
                 Empowering Africa's future through digital skills, brand
                 visibility, and tech-driven opportunities. Learn, grow, and
                 thrive in the digital economy.
@@ -89,7 +89,8 @@ const HeroSection = () => {
                 className="group shadow-lg hover:shadow-xl transition-all"
                 onClick={() => navigate("/courses")}
               >
-                Explore Courses
+                <span className="hidden sm:inline">Explore Courses</span>
+                <span className="sm:hidden">Explore</span>
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button
@@ -98,7 +99,8 @@ const HeroSection = () => {
                 className="group backdrop-blur-sm bg-background/50 hover:bg-background/70 shadow-md"
                 onClick={() => navigate("/services")}
               >
-                Boost Your Brand
+                <span className="hidden sm:inline">Boost Your Brand</span>
+                <span className="sm:hidden">Boost Brand</span>
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
