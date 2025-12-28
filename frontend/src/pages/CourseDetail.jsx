@@ -1,5 +1,5 @@
 // ============================================
-// FILE: src/pages/CourseDetail.jsx - COMPLETE WITH VIDEO PLAYER
+// FILE: src/pages/CourseDetail.jsx - COMPLETE WITH CONDITIONAL POINTS
 // ============================================
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -41,7 +41,7 @@ const CourseDetail = () => {
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [checkingEnrollment, setCheckingEnrollment] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
-  const [showPreview, setShowPreview] = useState(false); // ✅ NEW
+  const [showPreview, setShowPreview] = useState(false);
 
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -51,7 +51,7 @@ const CourseDetail = () => {
   const [usePoints, setUsePoints] = useState(false);
   const [userPoints, setUserPoints] = useState(0);
 
-  // ✅ Fetch course data from API
+  // Fetch course data from API
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -73,7 +73,7 @@ const CourseDetail = () => {
     fetchCourse();
   }, [slug]);
 
-  // ✅ Check if user is enrolled
+  // Check if user is enrolled
   useEffect(() => {
     const checkEnrollment = async () => {
       if (!isAuthenticated || !course) {
@@ -150,6 +150,7 @@ const CourseDetail = () => {
       .toUpperCase()
       .slice(0, 2);
   };
+
   const handleEnroll = async () => {
     if (!isAuthenticated) {
       navigate("/login", { state: { from: `/courses/${slug}` } });
@@ -165,7 +166,7 @@ const CourseDetail = () => {
     try {
       const response = await api.post("/api/enrollments/initiate", {
         courseId: course._id,
-        usePoints: usePoints, // ✅ Send usePoints flag
+        usePoints: usePoints,
       });
 
       if (response.data.success) {
@@ -223,7 +224,8 @@ const CourseDetail = () => {
         </>
       );
     }
-    // ✅ Calculate final price with discount
+
+    // Calculate final price with discount
     const finalPrice = usePoints
       ? Math.max(0, course.price - Math.min(userPoints, course.price))
       : course.price;
@@ -234,6 +236,7 @@ const CourseDetail = () => {
 
     return `Enroll Now - ${formatCurrency(finalPrice)}`;
   };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-muted/30">
@@ -453,10 +456,10 @@ const CourseDetail = () => {
               <div className="lg:col-span-1">
                 <Card className="sticky top-4">
                   <CardContent className="p-0">
-                    {/* ✅ THUMBNAIL/VIDEO PLAYER */}
+                    {/* THUMBNAIL/VIDEO PLAYER */}
                     <div className="relative aspect-video bg-black overflow-hidden">
                       {showPreview && course.previewVideo ? (
-                        // ✅ Video Player
+                        // Video Player
                         <div className="relative w-full h-full bg-black">
                           <video
                             controls
@@ -480,7 +483,7 @@ const CourseDetail = () => {
                           </button>
                         </div>
                       ) : (
-                        // ✅ Thumbnail with Play Button
+                        // Thumbnail with Play Button
                         <div className="relative w-full h-full group cursor-pointer">
                           <img
                             src={course.thumbnail}
@@ -521,15 +524,17 @@ const CourseDetail = () => {
                         </p>
                       </div>
 
-                      {/* ✅ ADD POINTS DISCOUNT SECTION HERE */}
-                      {isAuthenticated && (
-                        <PointsDiscountSection
-                          coursePrice={course.price}
-                          userPoints={userPoints}
-                          onUsePoints={setUsePoints}
-                          usePoints={usePoints}
-                        />
-                      )}
+                      {/* ✅ POINTS DISCOUNT - ONLY SHOW IF NOT ENROLLED */}
+                      {isAuthenticated &&
+                        !isEnrolled &&
+                        !checkingEnrollment && (
+                          <PointsDiscountSection
+                            coursePrice={course.price}
+                            userPoints={userPoints}
+                            onUsePoints={setUsePoints}
+                            usePoints={usePoints}
+                          />
+                        )}
 
                       {/* Enroll Button */}
                       <Button
@@ -541,11 +546,13 @@ const CourseDetail = () => {
                         {getEnrollButtonContent()}
                       </Button>
 
-                      {/* Enrollment status */}
+                      {/* ✅ ENROLLMENT STATUS - ONLY SHOW IF ENROLLED */}
                       {isAuthenticated && isEnrolled && (
-                        <div className="flex items-center justify-center gap-2 text-sm text-accent-600">
-                          <CheckCircle className="w-4 h-4" />
-                          <span>You're enrolled in this course</span>
+                        <div className="flex items-center justify-center gap-2 text-sm text-accent-600 bg-accent-50 dark:bg-accent-900/20 p-3 rounded-lg border border-accent-200 dark:border-accent-800">
+                          <CheckCircle className="w-5 h-5" />
+                          <span className="font-medium">
+                            You're enrolled in this course
+                          </span>
                         </div>
                       )}
 
