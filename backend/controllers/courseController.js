@@ -1,5 +1,5 @@
 // ============================================
-// FILE: backend/controllers/courseController.js
+// FILE: backend/controllers/courseController.js - FIXED
 // ============================================
 import mongoose from 'mongoose';
 import Course from '../models/course.js';
@@ -9,7 +9,9 @@ import Course from '../models/course.js';
 // @access  Public
 export const getCourses = async (req, res) => {
   try {
-    const courses = await Course.find({ isPublished: true }).sort({ createdAt: -1 });
+    const courses = await Course.find({ isPublished: true })
+      .populate('instructor', 'name email avatar') // ✅ Populate instructor
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -31,10 +33,15 @@ export const getCourses = async (req, res) => {
 export const getCourse = async (req, res) => {
   try {
     let course;
+    
     if (mongoose.Types.ObjectId.isValid(req.params.id)) {
-      course = await Course.findById(req.params.id).populate('instructor', 'name email avatar');
+      // Search by MongoDB ID
+      course = await Course.findById(req.params.id)
+        .populate('instructor', 'name email avatar bio'); // ✅ Added bio field
     } else {
-      course = await Course.findOne({ slug: req.params.id }).populate('instructor', 'name email avatar');
+      // Search by slug
+      course = await Course.findOne({ slug: req.params.id })
+        .populate('instructor', 'name email avatar bio'); // ✅ Added bio field
     }
 
     if (!course) {
@@ -43,6 +50,10 @@ export const getCourse = async (req, res) => {
         message: 'Course not found',
       });
     }
+
+    // ✅ ADD LOGGING TO DEBUG
+    console.log('📚 Course found:', course.title);
+    console.log('👨‍🏫 Instructor data:', course.instructor);
 
     res.status(200).json({
       success: true,

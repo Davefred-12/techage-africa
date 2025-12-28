@@ -13,28 +13,13 @@ import {
   nairaToKobo,
 } from "../utils/paystack.js";
 
-// @desc    Initiate course enrollment payment
-// @route   POST /api/enrollments/initiate
-// @access  Private (logged-in users only)
 export const initiateEnrollment = async (req, res) => {
   try {
-    const { courseId, pointsUsed = 0 } = req.body;
-    const userId = req.user.id;
+    const { courseId, usePoints } = req.body;
+    const userId = req.user._id;
 
-    if (!courseId) {
-      return res.status(400).json({
-        success: false,
-        message: "Course ID is required",
-      });
-    }
-
-    // Check if course exists
-    let course;
-    if (mongoose.Types.ObjectId.isValid(courseId)) {
-      course = await Course.findById(courseId);
-    } else {
-      course = await Course.findOne({ slug: courseId });
-    }
+    // Validate course
+    const course = await Course.findById(courseId);
     if (!course) {
       return res.status(404).json({
         success: false,
@@ -42,86 +27,148 @@ export const initiateEnrollment = async (req, res) => {
       });
     }
 
-    // Check if user already has ANY enrollment (pending or completed)
+    // Check if already enrolled
     const existingEnrollment = await Enrollment.findOne({
       user: userId,
-      course: course._id,
+      course: courseId,
+      paymentStatus: "completed",
     });
 
     if (existingEnrollment) {
-      // If already completed enrollment, don't allow re-enrollment
-      if (existingEnrollment.paymentStatus === "completed") {
-        return res.status(400).json({
-          success: false,
-          message: "You are already enrolled in this course",
-        });
-      }
-
-      // If payment is pending, return existing payment link
-      if (existingEnrollment.paymentStatus === "pending") {
-        const paymentData = await initializePayment({
-          email: req.user.email,
-          amount: nairaToKobo(course.price),
-          reference: existingEnrollment.paystackReference,
-          callback_url: `${process.env.CLIENT_URL}/payment/verify?reference=${existingEnrollment.paystackReference}`,
-          metadata: {
-            userId: userId,
-            courseId: course._id.toString(),
-            enrollmentId: existingEnrollment._id.toString(),
-          },
-        });
-
-        return res.status(200).json({
-          success: true,
-          message: "Payment re-initiated successfully",
-          data: {
-            authorization_url: paymentData.data.authorization_url,
-            reference: existingEnrollment.paystackReference,
-            amount: course.price,
-          },
-        });
-      }
+      return res.status(400).json({
+        success: false,
+        message: "You are already enrolled in this course",
+      });
     }
 
-    // Generate payment reference
-    const reference = generateReference();
+    // Get user's points
+    const user = await User.findById(userId);
 
-    // Create pending enrollment
-    const enrollment = await Enrollment.create({
+    // ✅ Calculate final price with points discount
+    let finalPrice = course.price;
+    let pointsUsed = 0;
+
+    if (usePoints && user.points > 0) {
+      pointsUsed = Math.min(user.points, course.price);
+      finalPrice = course.price - pointsUsed;
+    }
+
+    console.log(
+      `💰 Enrollment: Original=${course.price}, Points=${pointsUsed}, Final=${finalPrice}`
+    );
+
+    // ✅ If fully covered by points, enroll directly (no payment needed)
+    if (finalPrice === 0) {
+      // Deduct points
+      user.points -= pointsUsed;
+      await user.save();
+
+      // Create completed enrollment
+      const enrollment = await Enrollment.create({
+        user: userId,
+        course: courseId,
+        paymentStatus: "completed",
+        paymentMethod: "points",
+        paystackReference: `POINTS-${Date.now()}`,
+        amount: course.price,
+        discountedAmount: 0,
+        pointsUsed,
+        paidAt: Date.now(),
+      });
+
+      // Award purchase bonus (500 points)
+      user.points += 500;
+      await user.save();
+
+      // Create notification
+      await Notification.create({
+        title: "Course Enrollment Successful",
+        message: `You've successfully enrolled in ${course.title} using ${pointsUsed} points!`,
+        type: "enrollment",
+        recipient: userId,
+      });
+
+      console.log(
+        `✅ Enrolled using points only: ${user.name} -> ${course.title}`
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Enrolled successfully using points!",
+        data: {
+          enrollment,
+          pointsUsed,
+          pointsEarned: 500,
+          remainingPoints: user.points,
+        },
+      });
+    }
+
+    // ✅ Initialize Paystack payment with discounted price
+    const paystackResponse = await axios.post(
+      "https://api.paystack.co/transaction/initialize",
+      {
+        email: user.email,
+        amount: finalPrice * 100, // Convert to kobo
+        currency: "NGN",
+        callback_url: `${process.env.FRONTEND_URL}/payment/verify`,
+        metadata: {
+          userId: userId.toString(),
+          courseId: courseId.toString(),
+          courseName: course.title,
+          originalAmount: course.price,
+          pointsUsed,
+          finalPrice,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!paystackResponse.data.status) {
+      return res.status(500).json({
+        success: false,
+        message: "Payment initialization failed",
+      });
+    }
+
+    const { authorization_url, reference } = paystackResponse.data.data;
+
+    // Create pending enrollment with discount info
+    await Enrollment.create({
       user: userId,
       course: courseId,
+      paymentStatus: "pending",
+      paymentMethod: "paystack",
       paystackReference: reference,
       amount: course.price,
-      paymentStatus: "pending",
+      discountedAmount: finalPrice,
+      pointsUsed,
     });
 
-    // Initialize Paystack payment
-    const paymentData = await initializePayment({
-      email: req.user.email,
-      amount: nairaToKobo(course.price),
-      reference: reference,
-      callback_url: `${process.env.CLIENT_URL}/payment/verify?reference=${reference}`,
-      metadata: {
-        userId: userId,
-        courseId: courseId,
-        enrollmentId: enrollment._id.toString(),
-      },
-    });
+    console.log(
+      `💳 Paystack initiated: Reference=${reference}, Amount=₦${finalPrice}`
+    );
 
     res.status(200).json({
       success: true,
-      message: "Payment initialized successfully",
       data: {
-        authorization_url: paymentData.data.authorization_url,
-        reference: reference,
-        amount: course.price,
+        authorization_url,
+        reference,
+        amount: finalPrice,
+        originalAmount: course.price,
+        pointsUsed,
       },
     });
   } catch (error) {
     console.error("Initiate enrollment error:", error);
     res.status(500).json({
       success: false,
-      message: error.message || "Failed to initiate enrollment",
+      message: error.response?.data?.message || "Failed to initiate enrollment",
     });
   }
 };
@@ -140,10 +187,29 @@ export const verifyEnrollment = async (req, res) => {
       });
     }
 
-    // Find enrollment by reference FIRST
+    // Verify payment with Paystack
+    const paystackResponse = await axios.get(
+      `https://api.paystack.co/transaction/verify/${reference}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+        },
+      }
+    );
+
+    const { status, data } = paystackResponse.data;
+
+    if (!status || data.status !== "success") {
+      return res.status(400).json({
+        success: false,
+        message: "Payment verification failed",
+      });
+    }
+
+    // Find enrollment
     const enrollment = await Enrollment.findOne({
       paystackReference: reference,
-    }).populate('course');
+    });
 
     if (!enrollment) {
       return res.status(404).json({
@@ -152,144 +218,72 @@ export const verifyEnrollment = async (req, res) => {
       });
     }
 
-    // ✅ Check if already completed BEFORE doing anything else
     if (enrollment.paymentStatus === "completed") {
-      console.log('⚠️ Payment already verified for this enrollment');
-      return res.status(200).json({
-        success: true,
-        message: "Enrollment already completed",
-        data: {
-          enrollment,
-          course: enrollment.course,
-        },
-      });
-    }
-
-    // Verify payment with Paystack
-    const verification = await verifyPayment(reference);
-
-    if (!verification.status || verification.data.status !== "success") {
       return res.status(400).json({
         success: false,
-        message: "Payment verification failed",
+        message: "Enrollment already completed",
       });
     }
 
-    // ✅ Update enrollment status
-    enrollment.paymentStatus = "completed";
-    enrollment.paidAt = new Date();
-    await enrollment.save();
-
-    // ✅ Increment enrolled students count ONLY ONCE
-    await Course.findByIdAndUpdate(enrollment.course._id, {
-      $inc: { enrolledStudents: 1 },
-    });
-
-    console.log('✅ Enrollment completed, student count incremented by 1');
-
-    // ✅ Get user details
+    // ✅ Deduct points if used
     const user = await User.findById(enrollment.user);
-    
-    // ✅ Add course to user's enrolledCourses (check if not already added)
-    const alreadyInUserCourses = user.enrolledCourses.some(
-      (ec) => ec.course.toString() === enrollment.course._id.toString()
-    );
 
-    if (!alreadyInUserCourses) {
-      await User.findByIdAndUpdate(enrollment.user, {
-        $push: {
-          enrolledCourses: {
-            course: enrollment.course._id,
-            enrolledAt: new Date(),
-          },
-        },
-      });
-      console.log('✅ Course added to user enrolledCourses');
+    if (enrollment.pointsUsed > 0) {
+      user.points -= enrollment.pointsUsed;
+      console.log(
+        `🎯 Deducted ${enrollment.pointsUsed} points from ${user.name}`
+      );
     }
 
-    // ✅ Award 500 points for course purchase
+    // Award purchase bonus (500 points)
     user.points += 500;
     await user.save();
 
-    // ✅ Create notification for points earned
+    // Update enrollment
+    enrollment.paymentStatus = "completed";
+    enrollment.paidAt = Date.now();
+    await enrollment.save();
+
+    // ✅ Handle referral rewards
+    if (user.referredBy) {
+      const referrer = await User.findById(user.referredBy);
+      if (referrer) {
+        referrer.points += 500;
+        referrer.referrals.push({
+          user: user._id,
+          pointsEarned: 500,
+        });
+        await referrer.save();
+        console.log(`🎁 Referral bonus: ${referrer.name} earned 500 points`);
+      }
+    }
+
+    // Create notification
+    const course = await Course.findById(enrollment.course);
     await Notification.create({
-      title: "Points Earned!",
-      message: `Congratulations! You earned 500 points for purchasing "${enrollment.course.title}".`,
-      type: "system",
-      recipient: enrollment.user,
+      title: "Course Enrollment Successful",
+      message: `You've successfully enrolled in ${course.title}! You earned 500 points.`,
+      type: "enrollment",
+      recipient: user._id,
     });
 
-    // ✅ FIXED: Check if user was referred and award points to referrer
-    if (user.referredBy) {
-      console.log(`🎯 User was referred by: ${user.referredBy}`);
-      
-      const referrer = await User.findById(user.referredBy);
-      
-      if (referrer) {
-        // ✅ Check if this is the FIRST purchase by the referred user
-        const previousPurchases = await Enrollment.countDocuments({
-          user: user._id,
-          paymentStatus: "completed",
-        });
-
-        // Only award referral points for the FIRST purchase
-        if (previousPurchases === 1) { // This is their first completed purchase
-          // ✅ Award 500 points to referrer
-          referrer.points += 500;
-
-          // ✅ Find the referral entry and update pointsEarned
-          const referralIndex = referrer.referrals.findIndex(
-            (ref) => ref.user.toString() === user._id.toString()
-          );
-
-          if (referralIndex !== -1) {
-            // Update existing referral entry
-            referrer.referrals[referralIndex].pointsEarned = 500;
-            referrer.referrals[referralIndex].earnedAt = new Date();
-          } else {
-            // If somehow not in array, add it (fallback)
-            referrer.referrals.push({
-              user: user._id,
-              pointsEarned: 500,
-              earnedAt: new Date(),
-            });
-          }
-
-          await referrer.save();
-
-          console.log(`✅ Referrer ${referrer.name} awarded 500 points!`);
-
-          // ✅ Notify referrer
-          await Notification.create({
-            title: "Referral Reward! 🎉",
-            message: `Great news! ${user.name} purchased "${enrollment.course.title}" using your referral link. You earned 500 points!`,
-            type: "referral_reward",
-            recipient: referrer._id,
-          });
-        } else {
-          console.log(`⚠️ User ${user.name} already had ${previousPurchases - 1} previous purchase(s). No referral points awarded.`);
-        }
-      } else {
-        console.log('⚠️ Referrer not found');
-      }
-    } else {
-      console.log('ℹ️ User was not referred by anyone');
-    }
+    console.log(`✅ Enrollment verified: ${user.name} -> ${course.title}`);
 
     res.status(200).json({
       success: true,
-      message: "Enrollment completed successfully! 🎉",
+      message: "Enrollment completed successfully",
       data: {
         enrollment,
-        course: enrollment.course,
+        pointsDeducted: enrollment.pointsUsed,
         pointsEarned: 500,
+        totalPoints: user.points,
       },
     });
   } catch (error) {
     console.error("Verify enrollment error:", error);
     res.status(500).json({
       success: false,
-      message: error.message || "Failed to verify enrollment",
+      message: "Failed to verify enrollment",
     });
   }
 };
@@ -409,7 +403,7 @@ export const updateProgress = async (req, res) => {
       _id: id,
       user: userId,
       paymentStatus: "completed",
-    }).populate('course');
+    }).populate("course");
 
     if (!enrollment) {
       return res.status(404).json({
@@ -461,7 +455,9 @@ export const updateProgress = async (req, res) => {
         recipient: userId,
       });
 
-      console.log(`🎓 User ${user.name} completed course "${enrollment.course.title}" - awarded 1000 points`);
+      console.log(
+        `🎓 User ${user.name} completed course "${enrollment.course.title}" - awarded 1000 points`
+      );
     }
 
     res.status(200).json({
