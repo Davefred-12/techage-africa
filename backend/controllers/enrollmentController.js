@@ -2,16 +2,11 @@
 // FILE: backend/controllers/enrollmentController.js - FIXED
 // ============================================
 import mongoose from "mongoose";
+import axios from "axios"; // ✅ ADD THIS IMPORT
 import Enrollment from "../models/Enrollment.js";
 import Course from "../models/course.js";
 import User from "../models/User.js";
 import Notification from "../models/Notification.js";
-import {
-  initializePayment,
-  verifyPayment,
-  generateReference,
-  nairaToKobo,
-} from "../utils/paystack.js";
 
 export const initiateEnrollment = async (req, res) => {
   try {
@@ -111,7 +106,7 @@ export const initiateEnrollment = async (req, res) => {
         email: user.email,
         amount: finalPrice * 100, // Convert to kobo
         currency: "NGN",
-        callback_url: `${process.env.FRONTEND_URL}/payment/verify`,
+        callback_url: `${process.env.CLIENT_URL}/payment/verify`,
         metadata: {
           userId: userId.toString(),
           courseId: courseId.toString(),
@@ -165,7 +160,7 @@ export const initiateEnrollment = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Initiate enrollment error:", error);
+    console.error("❌ Initiate enrollment error:", error);
     res.status(500).json({
       success: false,
       message: error.response?.data?.message || "Failed to initiate enrollment",
@@ -280,7 +275,7 @@ export const verifyEnrollment = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Verify enrollment error:", error);
+    console.error("❌ Verify enrollment error:", error);
     res.status(500).json({
       success: false,
       message: "Failed to verify enrollment",
@@ -323,7 +318,7 @@ export const checkEnrollment = async (req, res) => {
       enrollment: enrollment || null,
     });
   } catch (error) {
-    console.error("Check enrollment error:", error);
+    console.error("❌ Check enrollment error:", error);
     res.status(500).json({
       success: false,
       message: "Failed to check enrollment status",
@@ -349,7 +344,7 @@ export const getMyEnrollments = async (req, res) => {
       data: enrollments,
     });
   } catch (error) {
-    console.error("Get my enrollments error:", error);
+    console.error("❌ Get my enrollments error:", error);
     res.status(500).json({
       success: false,
       message: "Failed to fetch enrollments",
@@ -382,7 +377,7 @@ export const getEnrollment = async (req, res) => {
       data: enrollment,
     });
   } catch (error) {
-    console.error("Get enrollment error:", error);
+    console.error("❌ Get enrollment error:", error);
     res.status(500).json({
       success: false,
       message: "Failed to fetch enrollment",
@@ -470,7 +465,7 @@ export const updateProgress = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Update progress error:", error);
+    console.error("❌ Update progress error:", error);
     res.status(500).json({
       success: false,
       message: "Failed to update progress",
