@@ -82,26 +82,26 @@ const HeroSection = () => {
               </p>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 animate-slide-up animation-delay-200">
+            {/* CTA Buttons - Compact on mobile, full width on sm+ */}
+            <div className="flex flex-row gap-2 sm:gap-3 animate-slide-up animation-delay-200">
               <Button
                 size="lg"
-                className="group shadow-lg hover:shadow-xl transition-all"
+                className="group shadow-lg hover:shadow-xl transition-all flex-1 sm:flex-none sm:px-8"
                 onClick={() => navigate("/courses")}
               >
+                <span className="sm:hidden text-sm">Courses</span>
                 <span className="hidden sm:inline">Explore Courses</span>
-                <span className="sm:hidden">Explore</span>
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                className="group backdrop-blur-sm bg-background/50 hover:bg-background/70 shadow-md"
+                className="group backdrop-blur-sm bg-background/50 hover:bg-background/70 shadow-md flex-1 sm:flex-none sm:px-8"
                 onClick={() => navigate("/services")}
               >
+                <span className="sm:hidden text-sm">Services</span>
                 <span className="hidden sm:inline">Boost Your Brand</span>
-                <span className="sm:hidden">Boost Brand</span>
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
 
@@ -176,9 +176,7 @@ const HeroSection = () => {
                   <p className="font-bold text-sm text-foreground">
                     Get Certified
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    On completion
-                  </p>
+                  <p className="text-xs text-muted-foreground">On completion</p>
                 </div>
               </div>
             </div>
