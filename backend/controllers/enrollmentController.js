@@ -38,17 +38,17 @@ export const initiateEnrollment = async (req, res) => {
           message: "You are already enrolled in this course",
         });
       }
-      
+
       // If pending, delete old pending enrollment and create new one
       if (existingEnrollment.paymentStatus === "pending") {
-        console.log('🗑️ Deleting old pending enrollment');
+        console.log("🗑️ Deleting old pending enrollment");
         await Enrollment.deleteOne({ _id: existingEnrollment._id });
       }
     }
 
     // Get user's points
     const user = await User.findById(userId);
-    
+
     // ✅ Calculate final price with points discount
     let finalPrice = course.price;
     let pointsUsed = 0;
@@ -58,7 +58,9 @@ export const initiateEnrollment = async (req, res) => {
       finalPrice = course.price - pointsUsed;
     }
 
-    console.log(`💰 Enrollment: Original=${course.price}, Points=${pointsUsed}, Final=${finalPrice}`);
+    console.log(
+      `💰 Enrollment: Original=${course.price}, Points=${pointsUsed}, Final=${finalPrice}`
+    );
 
     // ✅ If fully covered by points, enroll directly (no payment needed)
     if (finalPrice === 0) {
@@ -86,7 +88,9 @@ export const initiateEnrollment = async (req, res) => {
       // ✅ Increment course enrolledStudents count
       course.enrolledStudents = (course.enrolledStudents || 0) + 1;
       await course.save();
-      console.log(`📈 Course student count increased to ${course.enrolledStudents}`);
+      console.log(
+        `📈 Course student count increased to ${course.enrolledStudents}`
+      );
 
       // Create notification
       await Notification.create({
@@ -96,7 +100,9 @@ export const initiateEnrollment = async (req, res) => {
         recipient: userId,
       });
 
-      console.log(`✅ Enrolled using points only: ${user.name} -> ${course.title}`);
+      console.log(
+        `✅ Enrolled using points only: ${user.name} -> ${course.title}`
+      );
 
       return res.status(200).json({
         success: true,
@@ -117,7 +123,7 @@ export const initiateEnrollment = async (req, res) => {
         email: user.email,
         amount: finalPrice * 100, // Convert to kobo
         currency: "NGN",
-        callback_url: `${process.env.FRONTEND_URL}/payment/verify`,
+        callback_url: `${process.env.CLIENT_URL}/payment/verify`,
         metadata: {
           userId: userId.toString(),
           courseId: courseId.toString(),
@@ -156,7 +162,9 @@ export const initiateEnrollment = async (req, res) => {
       pointsUsed,
     });
 
-    console.log(`💳 Paystack initiated: Reference=${reference}, Amount=₦${finalPrice}`);
+    console.log(
+      `💳 Paystack initiated: Reference=${reference}, Amount=₦${finalPrice}`
+    );
 
     res.status(200).json({
       success: true,
@@ -234,11 +242,13 @@ export const verifyEnrollment = async (req, res) => {
     // Get user and course
     const user = await User.findById(enrollment.user);
     const course = await Course.findById(enrollment.course);
-    
+
     // ✅ Deduct points if used
     if (enrollment.pointsUsed > 0) {
       user.points = (user.points || 0) - enrollment.pointsUsed;
-      console.log(`🎯 Deducted ${enrollment.pointsUsed} points from ${user.name}`);
+      console.log(
+        `🎯 Deducted ${enrollment.pointsUsed} points from ${user.name}`
+      );
     }
 
     // Award purchase bonus (500 points)
@@ -253,7 +263,9 @@ export const verifyEnrollment = async (req, res) => {
     // ✅ INCREMENT COURSE STUDENT COUNT - THIS WAS MISSING!
     course.enrolledStudents = (course.enrolledStudents || 0) + 1;
     await course.save({ validateBeforeSave: false });
-    console.log(`📈 Course student count increased to ${course.enrolledStudents}`);
+    console.log(
+      `📈 Course student count increased to ${course.enrolledStudents}`
+    );
 
     // ✅ Handle referral rewards
     if (user.referredBy) {
@@ -261,22 +273,25 @@ export const verifyEnrollment = async (req, res) => {
         const referrer = await User.findById(user.referredBy);
         if (referrer) {
           referrer.points = (referrer.points || 0) + 500;
-          
+
           if (!referrer.referrals || !Array.isArray(referrer.referrals)) {
             referrer.referrals = [];
           }
-          
+
           referrer.referrals.push({
             user: user._id,
             pointsEarned: 500,
             earnedAt: new Date(),
           });
-          
+
           await referrer.save({ validateBeforeSave: false });
           console.log(`🎁 Referral bonus: ${referrer.name} earned 500 points`);
         }
       } catch (refError) {
-        console.error('⚠️ Referral bonus error (non-critical):', refError.message);
+        console.error(
+          "⚠️ Referral bonus error (non-critical):",
+          refError.message
+        );
       }
     }
 
@@ -289,7 +304,10 @@ export const verifyEnrollment = async (req, res) => {
         recipient: user._id,
       });
     } catch (notifError) {
-      console.error('⚠️ Notification error (non-critical):', notifError.message);
+      console.error(
+        "⚠️ Notification error (non-critical):",
+        notifError.message
+      );
     }
 
     console.log(`✅ Enrollment verified: ${user.name} -> ${course.title}`);
@@ -318,7 +336,7 @@ export const verifyEnrollment = async (req, res) => {
 // @access  Private (Admin only)
 export const fixEnrollmentCounts = async (req, res) => {
   try {
-    console.log('🔧 Fixing enrollment counts...');
+    console.log("🔧 Fixing enrollment counts...");
 
     // Get all courses
     const courses = await Course.find({});
@@ -328,12 +346,14 @@ export const fixEnrollmentCounts = async (req, res) => {
       // Count actual completed enrollments
       const actualCount = await Enrollment.countDocuments({
         course: course._id,
-        paymentStatus: 'completed'
+        paymentStatus: "completed",
       });
 
       // Update if different
       if (course.enrolledStudents !== actualCount) {
-        console.log(`📊 ${course.title}: ${course.enrolledStudents} → ${actualCount}`);
+        console.log(
+          `📊 ${course.title}: ${course.enrolledStudents} → ${actualCount}`
+        );
         course.enrolledStudents = actualCount;
         await course.save({ validateBeforeSave: false });
         fixed++;
@@ -345,13 +365,13 @@ export const fixEnrollmentCounts = async (req, res) => {
     res.json({
       success: true,
       message: `Fixed enrollment counts for ${fixed} courses`,
-      totalCourses: courses.length
+      totalCourses: courses.length,
     });
   } catch (error) {
-    console.error('❌ Fix counts error:', error);
+    console.error("❌ Fix counts error:", error);
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
