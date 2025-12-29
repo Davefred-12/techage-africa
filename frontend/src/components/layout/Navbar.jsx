@@ -1,4 +1,4 @@
-// src/components/layout/Navbar.jsx
+// src/components/layout/Navbar.jsx - FIXED LOGOUT DIALOG
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
@@ -154,7 +154,7 @@ const Navbar = () => {
               )}
             </Button>
 
-            {/* --- Notification Bell (PLACED HERE) --- */}
+            {/* Notification Bell */}
             {isAuthenticated && <NotificationBell />}
 
             {/* Auth Buttons / User Menu */}
@@ -288,23 +288,31 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* Logout Dialog */}
+      {/* ✅ FIXED Logout Dialog - Now Mobile Responsive */}
       <Dialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Confirm Logout</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to log out?
+        <DialogContent className="sm:max-w-[425px] max-w-[90vw] gap-4">
+          <DialogHeader className="space-y-3">
+            <DialogTitle className="text-lg sm:text-xl">Confirm Logout</DialogTitle>
+            <DialogDescription className="text-sm sm:text-base">
+              Are you sure you want to log out of your account?
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
+          
+          {/* ✅ FIXED Footer - Responsive buttons */}
+          <DialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
             <Button
               variant="outline"
               onClick={() => setShowLogoutDialog(false)}
+              className="w-full sm:w-auto order-2 sm:order-1"
             >
               Cancel
             </Button>
-            <Button variant="destructive" onClick={handleConfirmLogout}>
+            <Button 
+              variant="destructive" 
+              onClick={handleConfirmLogout}
+              className="w-full sm:w-auto order-1 sm:order-2"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
               Logout
             </Button>
           </DialogFooter>
