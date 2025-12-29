@@ -1,5 +1,5 @@
 // ============================================
-// FILE: src/context/AuthContext.jsx - FIXED
+// FILE: src/context/AuthContext.jsx - CLEANED
 // ============================================
 import { createContext, useState, useContext, useEffect } from 'react';
 import authService from '../services/authService';
@@ -45,23 +45,15 @@ export const AuthProvider = ({ children }) => {
     fetchUserData();
   }, []);
 
-  // Login function
- // Login function
-const login = async (credentials) => {
-  const response = await authService.login(credentials);
-  setUser(response.user);
-  setIsAuthenticated(true);
-  
-  // ✅ Store modal data in sessionStorage (clears on browser close)
-  if (response.isFirstLogin !== undefined) {
-    sessionStorage.setItem('showWelcomeModal', response.isFirstLogin.toString());
-  }
-  if (response.lastAccessedCourse) {
-    sessionStorage.setItem('lastAccessedCourse', JSON.stringify(response.lastAccessedCourse));
-  }
-  
-  return response;
-};
+  // ✅ Login function - CLEANED (no sessionStorage)
+  const login = async (credentials) => {
+    const response = await authService.login(credentials);
+    setUser(response.user);
+    setIsAuthenticated(true);
+    
+    // ✅ Return full response so Login.jsx can access isFirstLogin and lastAccessedCourse
+    return response;
+  };
 
   // Register function
   const register = async (userData) => {
@@ -106,7 +98,7 @@ const login = async (credentials) => {
     register,
     logout,
     updateUser,
-    refreshUser, // ✅ Added
+    refreshUser,
     getUserInitials,
   };
 

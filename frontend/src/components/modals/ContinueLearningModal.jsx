@@ -1,154 +1,169 @@
 // ============================================
-// FILE: src/components/modals/ContinueLearningModal.jsx - NEW
+// FILE: src/components/modals/ContinueLearningModal.jsx - UPDATED
 // ============================================
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Progress } from '../ui/progress';
-import { X, PlayCircle, BookOpen, ArrowRight } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '../ui/dialog';
+import { BookOpen, TrendingUp, Award, ArrowRight } from 'lucide-react';
 
-const ContinueLearningModal = ({ isOpen, onClose, course, userName }) => {
+const ContinueLearningModal = ({ isOpen, onClose, course }) => {
   const navigate = useNavigate();
 
-  if (!isOpen || !course) return null;
+  // Handle different scenarios
+  const hasNoCourses = course?.totalCourses === 0;
+  const hasCourses = course?.totalCourses > 0;
+  const lastCourse = course?.lastCourse;
 
   const handleContinue = () => {
+    if (hasNoCourses) {
+      // No courses - go to courses page
+      navigate('/courses');
+    } else if (lastCourse) {
+      // Has courses - go to last accessed course
+      navigate(`/user/courses/${lastCourse.id}/learn`);
+    } else {
+      // Fallback - go to dashboard
+      navigate('/user');
+    }
     onClose();
-    navigate(`/user/courses/${course.id}/learn`);
   };
 
-  const handleViewCourses = () => {
+  const handleViewAll = () => {
+    navigate('/user/courses');
     onClose();
-    navigate('/user/my-courses');
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-lg bg-card rounded-2xl shadow-2xl overflow-hidden animate-scale-in">
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-background/80 hover:bg-background transition-colors"
-        >
-          <X className="w-5 h-5" />
-        </button>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-md sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="text-2xl sm:text-3xl font-heading">
+            {hasNoCourses ? '🎓 Start Your Learning Journey' : '📚 Welcome Back!'}
+          </DialogTitle>
+          <DialogDescription className="text-base">
+            {hasNoCourses 
+              ? "You haven't enrolled in any courses yet. Let's get started!"
+              : 'Ready to continue your learning journey?'}
+          </DialogDescription>
+        </DialogHeader>
 
-        {/* Course Thumbnail */}
-        <div className="relative h-32 sm:h-48 bg-gradient-to-br from-primary-500 to-secondary-500 overflow-hidden">
-          {course.thumbnail ? (
-            <img
-              src={course.thumbnail}
-              alt={course.title}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <BookOpen className="w-16 h-16 text-white/50" />
+        <div className="space-y-6 py-4">
+          {/* NO COURSES - Show Browse Courses CTA */}
+          {hasNoCourses && (
+            <div className="text-center space-y-4 py-6">
+              <div className="w-20 h-20 mx-auto bg-primary-100 rounded-full flex items-center justify-center">
+                <BookOpen className="w-10 h-10 text-primary-600" />
+              </div>
+              <p className="text-muted-foreground">
+                Explore our courses and start building your tech skills today!
+              </p>
+              <Button 
+                onClick={handleContinue}
+                size="lg"
+                className="w-full"
+              >
+                Browse Courses
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-          
-          {/* Play Icon Overlay */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/40">
-              <PlayCircle className="w-8 h-8 text-white" />
-            </div>
-          </div>
-        </div>
 
-        {/* Content */}
-        <div className="p-4 sm:p-6 space-y-6 max-h-[70vh] overflow-y-auto">
-          {/* Greeting */}
-          <div>
-            <h2 className="text-2xl font-bold mb-2">
-              Welcome back, {userName}! 👋
-            </h2>
-            <p className="text-muted-foreground">
-              Ready to continue where you left off?
-            </p>
-          </div>
-
-          {/* Course Info */}
-          <div className="space-y-3">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg mb-1">{course.title}</h3>
-                <p className="text-sm text-muted-foreground">
-                  You're {course.progress}% through this course
-                </p>
+          {/* HAS COURSES - Show Stats and Last Course */}
+          {hasCourses && (
+            <>
+              {/* Stats Grid */}
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center p-4 bg-accent rounded-lg">
+                  <BookOpen className="w-6 h-6 mx-auto mb-2 text-primary-600" />
+                  <p className="text-2xl font-bold">{course.totalCourses}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {course.totalCourses === 1 ? 'Course' : 'Courses'}
+                  </p>
+                </div>
+                <div className="text-center p-4 bg-accent rounded-lg">
+                  <TrendingUp className="w-6 h-6 mx-auto mb-2 text-secondary-600" />
+                  <p className="text-2xl font-bold">{course.inProgressCount}</p>
+                  <p className="text-xs text-muted-foreground">In Progress</p>
+                </div>
+                <div className="text-center p-4 bg-accent rounded-lg">
+                  <Award className="w-6 h-6 mx-auto mb-2 text-success-600" />
+                  <p className="text-2xl font-bold">{course.completedCount}</p>
+                  <p className="text-xs text-muted-foreground">Completed</p>
+                </div>
               </div>
-            </div>
 
-            {/* Progress Bar */}
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Progress</span>
-                <span className="font-semibold text-primary-600">
-                  {course.progress}%
-                </span>
+              {/* Last Accessed Course */}
+              {lastCourse && (
+                <div className="border rounded-lg p-4 space-y-3">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Continue where you left off:
+                  </p>
+                  <div className="flex gap-4">
+                    <img
+                      src={lastCourse.thumbnail}
+                      alt={lastCourse.title}
+                      className="w-24 h-16 object-cover rounded"
+                    />
+                    <div className="flex-1 space-y-2">
+                      <h3 className="font-semibold line-clamp-2">
+                        {lastCourse.title}
+                      </h3>
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Progress</span>
+                          <span className="font-medium">{lastCourse.progress}%</span>
+                        </div>
+                        <Progress value={lastCourse.progress} className="h-2" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="space-y-3">
+                <Button 
+                  onClick={handleContinue}
+                  size="lg"
+                  className="w-full"
+                >
+                  {lastCourse?.progress === 100 
+                    ? 'Review Course' 
+                    : lastCourse?.progress > 0 
+                      ? 'Continue Learning' 
+                      : 'Start Course'}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button 
+                  onClick={handleViewAll}
+                  variant="outline"
+                  size="lg"
+                  className="w-full"
+                >
+                  View All My Courses
+                </Button>
               </div>
-              <Progress value={course.progress} className="h-2" />
-            </div>
-          </div>
+            </>
+          )}
 
-          {/* Motivation Message */}
-          <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-4 border border-primary-100 dark:border-primary-800">
-            <p className="text-sm text-center">
-              <span className="font-semibold text-primary-700 dark:text-primary-400">
-                Keep it up! 🚀
-              </span>
-              <br />
-              <span className="text-muted-foreground">
-                You're making great progress. Just {100 - course.progress}% more to complete!
-              </span>
-            </p>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Button
-              size="lg"
-              onClick={handleContinue}
-              className="w-full group"
-            >
-              <PlayCircle className="w-5 h-5 mr-2" />
-              Continue Learning
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              onClick={handleViewCourses}
-              className="w-full"
-            >
-              View All My Courses
-            </Button>
-          </div>
+          {/* Skip Button */}
+          <Button
+            onClick={onClose}
+            variant="ghost"
+            className="w-full text-muted-foreground"
+          >
+            Skip for now
+          </Button>
         </div>
-      </div>
-
-      <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes scale-in {
-          from { 
-            opacity: 0;
-            transform: scale(0.95);
-          }
-          to { 
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.2s ease-out;
-        }
-        .animate-scale-in {
-          animation: scale-in 0.3s ease-out;
-        }
-      `}</style>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

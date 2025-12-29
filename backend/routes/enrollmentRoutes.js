@@ -1,5 +1,5 @@
 // ============================================
-// FILE: backend/routes/enrollmentRoutes.js
+// FILE: backend/routes/enrollmentRoutes.js - FIXED
 // ============================================
 import express from 'express';
 import {
@@ -9,6 +9,7 @@ import {
   getMyEnrollments,
   getEnrollment,
   updateProgress,
+  fixEnrollmentCounts, // ✅ ADD THIS
 } from '../controllers/enrollmentController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -16,6 +17,11 @@ const router = express.Router();
 
 // All enrollment routes require authentication
 router.use(protect);
+
+// @route   GET /api/enrollments/fix-counts
+// @desc    Fix enrollment counts for all courses
+// @access  Private
+router.get('/fix-counts', fixEnrollmentCounts); // ✅ No need for protect twice
 
 // @route   POST /api/enrollments/initiate
 // @desc    Initiate course enrollment payment

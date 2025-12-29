@@ -1,5 +1,5 @@
 // ============================================
-// FILE: backend/models/Course.js - UPDATED
+// FILE: backend/models/Course.js - FIXED
 // ============================================
 import mongoose from "mongoose";
 
@@ -14,7 +14,7 @@ const lessonSchema = new mongoose.Schema({
     required: [true, "Video URL is required"],
   },
   duration: {
-    type: String, // e.g., "15:30" (15 minutes 30 seconds)
+    type: String,
     required: [true, "Duration is required"],
   },
   order: {
@@ -103,53 +103,44 @@ const courseSchema = new mongoose.Schema(
       default: 0,
       min: [0, "Discount price cannot be negative"],
     },
-
     discountPercentage: {
       type: Number,
       default: 0,
       min: 0,
       max: 100,
     },
-
     isFeatured: {
       type: Boolean,
       default: false,
     },
-
     isMostPopular: {
       type: Boolean,
       default: false,
     },
-
     isNew: {
       type: Boolean,
       default: false,
     },
-
     isHotDeal: {
       type: Boolean,
       default: false,
-    },
-
-    certificateTemplate: {
-      type: String,
-      default: "",
     },
     thumbnail: {
       type: String,
       required: [true, "Thumbnail is required"],
     },
     thumbnailPublicId: {
-      type: String, // Cloudinary public ID for deletion
+      type: String,
     },
     previewVideo: {
-      type: String, // Cloudinary video URL
+      type: String,
     },
     previewVideoPublicId: {
-      type: String, // Cloudinary public ID
+      type: String,
     },
     certificateTemplate: {
-      type: String, // Cloudinary URL
+      type: String,
+      default: "",
     },
     certificatePublicId: {
       type: String,
@@ -175,7 +166,7 @@ const courseSchema = new mongoose.Schema(
       default: "English",
     },
     duration: {
-      type: String, // e.g., "6 weeks", "3 months"
+      type: String,
     },
     enrolledStudents: {
       type: Number,
@@ -211,7 +202,6 @@ courseSchema.pre("save", function (next) {
       .replace(/^-+|-+$/g, "");
   }
 
-  // ✅ Calculate discount percentage if discount price is set
   if (this.isModified("discountPrice") || this.isModified("price")) {
     if (this.discountPrice > 0 && this.discountPrice < this.price) {
       this.isDiscounted = true;
@@ -227,14 +217,8 @@ courseSchema.pre("save", function (next) {
   next();
 });
 
-// Populate instructor details when querying
-courseSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: "instructor",
-    select: "name email avatar",
-  });
-  next();
-});
+// ✅ REMOVED the automatic populate - it was causing issues with saves
+// Instead, manually populate in controllers when needed
 
 const Course = mongoose.model("Course", courseSchema);
 
