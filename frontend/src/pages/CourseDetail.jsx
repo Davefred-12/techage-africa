@@ -394,57 +394,67 @@ const CourseDetail = () => {
           </div>
         </div>
 
-        {/* Hero Section */}
+        {/* Hero Section - Mobile Responsive */}
         <div className="bg-primary-50 dark:bg-primary-900/20">
-          <div className="container-custom py-12">
-            <div className="grid lg:grid-cols-3 gap-8">
-              {/* Left Content */}
-              <div className="lg:col-span-2 space-y-6">
-                <div className="space-y-4">
+          <div className="container-custom py-8 md:py-12">
+            <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
+              {/* Left Content - Mobile Optimized */}
+              <div className="lg:col-span-2 space-y-4 md:space-y-6">
+                <div className="space-y-3 md:space-y-4">
                   <Badge className="text-xs">{course.category}</Badge>
-                  <h1 className="text-3xl md:text-4xl font-heading font-bold">
+                  {/* Responsive heading */}
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight">
                     {course.title}
                   </h1>
-                  <p className="text-lg text-muted-foreground">
+                  {/* Responsive description */}
+                  <p className="text-base md:text-lg text-muted-foreground">
                     {course.description}
                   </p>
                 </div>
 
-                {/* Stats */}
-                <div className="flex flex-wrap items-center gap-6 text-sm">
+                {/* Stats - Mobile Responsive Grid */}
+                <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-6 text-sm">
                   <div className="flex items-center gap-2">
-                    <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                    <span>{course.rating?.average?.toFixed(1) || "0.0"}</span>
-                    <span className="text-muted-foreground">
-                      ({course.totalReviews || 0} reviews)
+                    <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-yellow-400 text-yellow-400 flex-shrink-0" />
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-1">
+                      <span className="font-medium">
+                        {course.rating?.average?.toFixed(1) || "0.0"}
+                      </span>
+                      <span className="text-xs sm:text-sm text-muted-foreground">
+                        ({course.totalReviews || 0})
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Users className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0" />
+                    <span className="truncate">
+                      {course.enrolledStudents || 0} students
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Users className="w-5 h-5 text-muted-foreground" />
-                    <span>{course.enrolledStudents || 0} students</span>
+                    <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0" />
+                    <span className="truncate">{course.duration}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock className="w-5 h-5 text-muted-foreground" />
-                    <span>{course.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Globe className="w-5 h-5 text-muted-foreground" />
-                    <span>{course.language}</span>
+                    <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0" />
+                    <span className="truncate">{course.language}</span>
                   </div>
                 </div>
 
-                {/* Instructor */}
+                {/* Instructor - Mobile Responsive */}
                 {course.instructor && (
-                  <div className="flex items-center gap-4 p-4 bg-card rounded-lg border">
-                    <Avatar className="h-12 w-12">
+                  <div className="flex items-center gap-3 md:gap-4 p-3 md:p-4 bg-card rounded-lg border">
+                    <Avatar className="h-10 w-10 md:h-12 md:w-12 flex-shrink-0">
                       <AvatarImage src={course.instructor.avatar} />
-                      <AvatarFallback className="bg-primary-100 text-primary-700">
+                      <AvatarFallback className="bg-primary-100 text-primary-700 text-sm md:text-base">
                         {getInitials(course.instructor.name)}
                       </AvatarFallback>
                     </Avatar>
-                    <div>
-                      <p className="font-semibold">{course.instructor.name}</p>
-                      <p className="text-sm text-muted-foreground">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-sm md:text-base truncate">
+                        {course.instructor.name}
+                      </p>
+                      <p className="text-xs md:text-sm text-muted-foreground">
                         Course Instructor
                       </p>
                     </div>
@@ -452,14 +462,14 @@ const CourseDetail = () => {
                 )}
               </div>
 
-              {/* Right Sidebar - Course Card */}
+              {/* Right Sidebar - Mobile: Full Width, Desktop: Sticky */}
               <div className="lg:col-span-1">
-                <Card className="sticky top-4">
+                {/* Mobile: Not sticky, Desktop: Sticky */}
+                <Card className="lg:sticky lg:top-4">
                   <CardContent className="p-0">
-                    {/* THUMBNAIL/VIDEO PLAYER */}
+                    {/* Video/Thumbnail - Responsive */}
                     <div className="relative aspect-video bg-black overflow-hidden">
                       {showPreview && course.previewVideo ? (
-                        // Video Player
                         <div className="relative w-full h-full bg-black">
                           <video
                             controls
@@ -473,17 +483,15 @@ const CourseDetail = () => {
                             />
                             Your browser does not support the video tag.
                           </video>
-                          {/* Close button */}
                           <button
                             onClick={() => setShowPreview(false)}
-                            className="absolute top-3 right-3 bg-black/80 hover:bg-black text-white rounded-full p-2.5 transition-all z-50 shadow-xl"
+                            className="absolute top-2 right-2 md:top-3 md:right-3 bg-black/80 hover:bg-black text-white rounded-full p-2 md:p-2.5 transition-all z-50 shadow-xl"
                             type="button"
                           >
-                            <XCircle className="w-5 h-5" />
+                            <XCircle className="w-4 h-4 md:w-5 md:h-5" />
                           </button>
                         </div>
                       ) : (
-                        // Thumbnail with Play Button
                         <div className="relative w-full h-full group cursor-pointer">
                           <img
                             src={course.thumbnail}
@@ -495,16 +503,16 @@ const CourseDetail = () => {
                               className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center"
                               onClick={() => setShowPreview(true)}
                             >
-                              {/* Play Button */}
-                              <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-2xl">
-                                <Play className="w-10 h-10 text-primary-600 ml-1.5 fill-primary-600" />
+                              <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-2xl">
+                                <Play className="w-8 h-8 md:w-10 md:h-10 text-primary-600 ml-1 md:ml-1.5 fill-primary-600" />
                               </div>
-
-                              {/* Preview Badge */}
-                              <div className="absolute top-4 left-4">
-                                <Badge className="bg-white/55 text-foreground gap-1.5 px-3 py-1.5 text-xs font-semibold">
-                                  <Play className="w-3.5 h-3.5" />
-                                  Preview Available
+                              <div className="absolute top-3 left-3 md:top-4 md:left-4">
+                                <Badge className="bg-white/55 text-foreground gap-1 md:gap-1.5 px-2 py-1 md:px-3 md:py-1.5 text-xs font-semibold">
+                                  <Play className="w-3 h-3 md:w-3.5 md:h-3.5" />
+                                  <span className="hidden sm:inline">
+                                    Preview Available
+                                  </span>
+                                  <span className="sm:hidden">Preview</span>
                                 </Badge>
                               </div>
                             </div>
@@ -513,65 +521,70 @@ const CourseDetail = () => {
                       )}
                     </div>
 
-                    <div className="p-6 space-y-4">
-                      {/* Price */}
+                    {/* Card Content - Mobile Responsive Padding */}
+                    <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+                      {/* Price - Responsive Text */}
                       <div>
-                        <p className="text-3xl font-bold text-primary-600">
+                        <p className="text-2xl sm:text-3xl font-bold text-primary-600">
                           {formatCurrency(course.price)}
                         </p>
-                        <p className="text-sm text-muted-foreground mt-1">
+                        <p className="text-xs sm:text-sm text-muted-foreground mt-1">
                           One-time payment • Lifetime access
                         </p>
                       </div>
 
-                      {/* ✅ POINTS DISCOUNT - ONLY SHOW IF NOT ENROLLED */}
-                      {isAuthenticated && !isEnrolled && !checkingEnrollment && (
-                        <PointsDiscountSection
-                          coursePrice={course.price}
-                          userPoints={userPoints}
-                          onUsePoints={setUsePoints}
-                          usePoints={usePoints}
-                        />
-                      )}
+                      {/* Points Discount - Only if NOT enrolled */}
+                      {isAuthenticated &&
+                        !isEnrolled &&
+                        !checkingEnrollment && (
+                          <PointsDiscountSection
+                            coursePrice={course.price}
+                            userPoints={userPoints}
+                            onUsePoints={setUsePoints}
+                            usePoints={usePoints}
+                          />
+                        )}
 
-                      {/* Enroll Button */}
+                      {/* Enroll Button - Full Width on Mobile */}
                       <Button
                         size="lg"
-                        className="w-full"
+                        className="w-full h-11 sm:h-12 text-sm sm:text-base"
                         onClick={handleEnroll}
                         disabled={checkingEnrollment || enrolling}
                       >
                         {getEnrollButtonContent()}
                       </Button>
 
-                      {/* ✅ ENROLLMENT STATUS - ONLY SHOW IF ENROLLED */}
+                      {/* Enrollment Status - Only if enrolled */}
                       {isAuthenticated && isEnrolled && (
-                        <div className="flex items-center justify-center gap-2 text-sm text-accent-600 bg-accent-50 dark:bg-accent-900/20 p-3 rounded-lg border border-accent-200 dark:border-accent-800">
-                          <CheckCircle className="w-5 h-5" />
-                          <span className="font-medium">You're enrolled in this course</span>
+                        <div className="flex items-center justify-center gap-2 text-xs sm:text-sm text-accent-600 bg-accent-50 dark:bg-accent-900/20 p-2.5 sm:p-3 rounded-lg border border-accent-200 dark:border-accent-800">
+                          <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                          <span className="font-medium">You're enrolled</span>
                         </div>
                       )}
 
                       <Separator />
 
-                      {/* What's Included */}
-                      <div className="space-y-3">
-                        <p className="font-semibold">This course includes:</p>
-                        <div className="space-y-2 text-sm">
+                      {/* What's Included - Responsive */}
+                      <div className="space-y-2 sm:space-y-3">
+                        <p className="font-semibold text-sm sm:text-base">
+                          This course includes:
+                        </p>
+                        <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                           <div className="flex items-center gap-2">
-                            <CheckCircle className="w-4 h-4 text-accent-600" />
+                            <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent-600 flex-shrink-0" />
                             <span>Lifetime access</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <CheckCircle className="w-4 h-4 text-accent-600" />
+                            <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent-600 flex-shrink-0" />
                             <span>Certificate of completion</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <CheckCircle className="w-4 h-4 text-accent-600" />
+                            <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent-600 flex-shrink-0" />
                             <span>Mobile and desktop access</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <CheckCircle className="w-4 h-4 text-accent-600" />
+                            <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent-600 flex-shrink-0" />
                             <span>Downloadable Certificate</span>
                           </div>
                         </div>
@@ -584,15 +597,37 @@ const CourseDetail = () => {
           </div>
         </div>
 
-        {/* Course Content Tabs */}
-        <div className="container-custom py-12">
+        {/* Tabs - Mobile Responsive */}
+        <div className="container-custom py-8 md:py-12">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-4 mb-8">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
-              <TabsTrigger value="instructor">Instructor</TabsTrigger>
-              <TabsTrigger value="reviews">
-                Reviews ({reviews.length})
+            {/* Mobile: Scrollable tabs, Desktop: Grid */}
+            <TabsList className="w-full mb-6 md:mb-8 overflow-x-auto flex md:grid md:grid-cols-4">
+              <TabsTrigger
+                value="overview"
+                className="flex-shrink-0 text-xs sm:text-sm px-3 sm:px-4"
+              >
+                Overview
+              </TabsTrigger>
+              <TabsTrigger
+                value="curriculum"
+                className="flex-shrink-0 text-xs sm:text-sm px-3 sm:px-4"
+              >
+                Curriculum
+              </TabsTrigger>
+              <TabsTrigger
+                value="instructor"
+                className="flex-shrink-0 text-xs sm:text-sm px-3 sm:px-4"
+              >
+                Instructor
+              </TabsTrigger>
+              <TabsTrigger
+                value="reviews"
+                className="flex-shrink-0 text-xs sm:text-sm px-3 sm:px-4"
+              >
+                <span className="hidden sm:inline">
+                  Reviews ({reviews.length})
+                </span>
+                <span className="sm:hidden">Reviews</span>
               </TabsTrigger>
             </TabsList>
 
