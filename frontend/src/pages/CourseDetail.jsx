@@ -396,7 +396,7 @@ const CourseDetail = () => {
 
         {/* Hero Section */}
         <div className="bg-primary-50 dark:bg-primary-900/20">
-          <div className="container-custom py-12">
+          <div className="container-custom py-8 sm:py-12">
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Left Content */}
               <div className="lg:col-span-2 space-y-6">
@@ -513,10 +513,10 @@ const CourseDetail = () => {
                       )}
                     </div>
 
-                    <div className="p-6 space-y-4">
+                    <div className="p-4 sm:p-6 space-y-4">
                       {/* Price */}
                       <div>
-                        <p className="text-3xl font-bold text-primary-600">
+                        <p className="text-2xl sm:text-3xl font-bold text-primary-600">
                           {formatCurrency(course.price)}
                         </p>
                         <p className="text-sm text-muted-foreground mt-1">
@@ -589,9 +589,9 @@ const CourseDetail = () => {
         </div>
 
         {/* Course Content Tabs */}
-        <div className="container-custom py-12">
+        <div className="container-custom py-8 sm:py-12">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-4 mb-8">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
               <TabsTrigger value="instructor">Instructor</TabsTrigger>
@@ -774,7 +774,7 @@ const CourseDetail = () => {
               <Card>
                 <CardContent className="p-6">
                   {course.instructor ? (
-                    <div className="flex items-start gap-6">
+                    <div className="flex items-start gap-4 sm:gap-6">
                       <Avatar className="h-24 w-24">
                         <AvatarImage src={course.instructor.avatar} />
                         <AvatarFallback className="bg-primary-100 text-primary-700 text-2xl">
