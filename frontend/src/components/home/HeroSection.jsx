@@ -73,7 +73,7 @@ const HeroSection = () => {
             <div className="space-y-3 animate-slide-up">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-foreground leading-tight">
                 Accelerate with{" "}
-                <span className="text-primary-600">TechAge</span>
+                <span className="text-primary-400">TechAge</span>
               </h1>
               <p className="text-base md:text-lg max-w-xl leading-relaxed text-black-900">
                 Empowering Africa's future through digital skills, brand
