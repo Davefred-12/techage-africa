@@ -6,6 +6,7 @@ import passport from 'passport';
 import {
   register,
   login,
+  verifyOTP,
   getMe,
   forgotPassword,
   resetPassword,
@@ -23,6 +24,7 @@ const router = express.Router();
 
 // Public routes
 router.post('/register', register);
+router.post('/verify-otp', verifyOTP);
 router.post('/login', login);
 router.post('/forgot-password', forgotPassword);
 router.put('/reset-password/:token', resetPassword);

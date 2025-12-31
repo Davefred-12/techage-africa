@@ -1,13 +1,12 @@
 // ============================================
-// FILE: src/pages/Register.jsx - UPDATED
+// FILE: src/pages/Register.jsx - COMPLETE FIXED VERSION
 // ============================================
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { toast } from "sonner";  // ✅ ADD THIS
-import { useAuth } from "../context/authContext";  // ✅ ADD THIS
+import { toast } from "sonner";
 import api from '../services/api';
 import { useCountUp } from '../hooks/useCountUp';
 import { Button } from "../components/ui/button";
@@ -21,6 +20,7 @@ import {
   User,
   ArrowRight,
   CheckCircle,
+  Loader2,
 } from "lucide-react";
 
 // Validation schema
@@ -39,13 +39,16 @@ const registerSchema = z
 
 const Register = () => {
   const navigate = useNavigate();
-  const { register: registerUser } = useAuth();  // ✅ Use AuthContext
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [stats, setStats] = useState(null);
   const [statsLoading, setStatsLoading] = useState(true);
+  const [showOTPModal, setShowOTPModal] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [verifyingOTP, setVerifyingOTP] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   // Fetch real stats from backend
   useEffect(() => {
@@ -57,7 +60,6 @@ const Register = () => {
         }
       } catch (error) {
         console.error('Failed to fetch stats:', error);
-        // Fallback values
         setStats({
           students: 2000,
           courses: 12,
@@ -89,34 +91,62 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      await registerUser({
-        fullName: data.fullName,
+      const response = await api.post('/api/auth/register', {
+        name: data.fullName,
         email: data.email,
         password: data.password,
         referralCode: data.referralCode,
       });
 
-      // ✅ SUCCESS: Show toast and redirect to login
-      toast.success("🎉 Account created successfully! Please login to continue.");
-      
-      setTimeout(() => {
-        navigate("/login");
-      }, 1500);  // Small delay so user sees the toast
-      
+      if (response.data.success) {
+        setUserEmail(data.email);
+        setShowOTPModal(true);
+        toast.success("Registration initiated! Please check your email for the verification code.");
+      }
     } catch (error) {
-      setIsLoading(false);
       console.error("Registration error:", error);
-
       const errorMessage =
         error.response?.data?.message ||
         "Registration failed. Please try again.";
-      
-      // ✅ ERROR: Show error toast
       toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Social signup handlers
+  const handleVerifyOTP = async () => {
+    if (!otp || otp.length !== 6) {
+      toast.error("Please enter a valid 6-digit OTP");
+      return;
+    }
+
+    setVerifyingOTP(true);
+
+    try {
+      const response = await api.post('/api/auth/verify-otp', {
+        email: userEmail,
+        otp,
+      });
+
+      if (response.data.success) {
+        toast.success("User verified successfully! 🎉");
+        setShowOTPModal(false);
+        
+        setTimeout(() => {
+          navigate("/login", { replace: true });
+        }, 1500);
+      }
+    } catch (error) {
+      console.error("OTP verification error:", error);
+      const errorMessage =
+        error.response?.data?.message ||
+        "OTP verification failed. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      setVerifyingOTP(false);
+    }
+  };
+
   const handleGoogleSignup = () => {
     window.location.href = `${
       import.meta.env.VITE_API_URL || "http://localhost:5000"
@@ -136,7 +166,6 @@ const Register = () => {
     { icon: CheckCircle, text: "Lifetime course access" },
   ];
 
-  // Animated counters
   const studentsCount = useCountUp(stats?.students || 0, 2500);
   const coursesCount = useCountUp(stats?.courses || 0, 2500);
 
@@ -150,8 +179,8 @@ const Register = () => {
             alt="Learning"
             className="w-full h-full object-cover"
           />
-         <div className="absolute inset-0 bg-gradient-to-r from-background/30 via-background/40 to-background/40"></div>
-      </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-background/30 via-background/40 to-background/40"></div>
+        </div>
 
         <div className="absolute top-20 right-20 w-96 h-96 bg-white/10 rounded-full mix-blend-overlay filter blur-3xl animate-blob"></div>
         <div className="absolute bottom-20 left-20 w-96 h-96 bg-primary-400/20 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000"></div>
@@ -225,7 +254,7 @@ const Register = () => {
           <Card className="border-2 shadow-xl animate-scale-in animation-delay-200">
             <CardContent className="p-6 lg:p-8">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-  {/* Social Signup Buttons */}
+                {/* Social Signup Buttons */}
                 <div className="flex gap-3">
                   <Button
                     type="button"
@@ -235,22 +264,10 @@ const Register = () => {
                     onClick={handleGoogleSignup}
                   >
                     <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                      <path
-                        fill="#4285F4"
-                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                      />
-                      <path
-                        fill="#34A853"
-                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                      />
-                      <path
-                        fill="#FBBC05"
-                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                      />
-                      <path
-                        fill="#EA4335"
-                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                      />
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                     </svg>
                     <span className="hidden sm:inline">Google</span>
                     <span className="sm:hidden">Google</span>
@@ -263,18 +280,15 @@ const Register = () => {
                     className="flex-1 hover:bg-accent transition-colors"
                     onClick={handleAppleSignup}
                   >
-                    <svg
-                      className="w-5 h-5 mr-2"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                    <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
                     </svg>
                     <span className="hidden sm:inline">Apple</span>
                     <span className="sm:hidden">Apple</span>
                   </Button>
                 </div>
-                     {/* Divider */}
+
+                {/* Divider */}
                 <div className="relative my-6">
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-border"></div>
@@ -405,9 +419,7 @@ const Register = () => {
                     />
                     <button
                       type="button"
-                      onClick={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
-                      }
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {showConfirmPassword ? (
@@ -433,22 +445,13 @@ const Register = () => {
                     onChange={(e) => setAgreedToTerms(e.target.checked)}
                     className="w-4 h-4 mt-1 rounded border-gray-300 text-primary-600 focus:ring-primary-500 transition-all"
                   />
-                  <label
-                    htmlFor="terms"
-                    className="text-sm text-muted-foreground"
-                  >
+                  <label htmlFor="terms" className="text-sm text-muted-foreground">
                     I agree to the{" "}
-                    <Link
-                      to="/terms"
-                      className="text-primary-600 hover:text-primary-700 hover:underline"
-                    >
+                    <Link to="/terms" className="text-primary-600 hover:text-primary-700 hover:underline">
                       Terms and Conditions
                     </Link>{" "}
                     and{" "}
-                    <Link
-                      to="/privacy"
-                      className="text-primary-600 hover:text-primary-700 hover:underline"
-                    >
+                    <Link to="/privacy" className="text-primary-600 hover:text-primary-700 hover:underline">
                       Privacy Policy
                     </Link>
                   </label>
@@ -473,10 +476,6 @@ const Register = () => {
                     </>
                   )}
                 </Button>
-
-           
-
-              
               </form>
             </CardContent>
           </Card>
@@ -518,6 +517,72 @@ const Register = () => {
           </div>
         </div>
       </div>
+
+      {/* OTP Verification Modal */}
+      {showOTPModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-md bg-card rounded-2xl shadow-2xl overflow-hidden animate-scale-in">
+            <div className="p-6 space-y-6">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Mail className="w-8 h-8 text-primary-600" />
+                </div>
+                <h2 className="text-2xl font-bold mb-2">Verify Your Email</h2>
+                <p className="text-muted-foreground text-sm">
+                  We've sent a 6-digit verification code to
+                </p>
+                <p className="font-semibold text-foreground">{userEmail}</p>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-center">
+                    Enter Verification Code
+                  </label>
+                  <Input
+                    type="text"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                    placeholder="000000"
+                    className="text-center text-2xl tracking-widest font-mono"
+                    maxLength={6}
+                    autoFocus
+                    disabled={verifyingOTP}
+                  />
+                </div>
+
+                <Button
+                  onClick={handleVerifyOTP}
+                  disabled={verifyingOTP || otp.length !== 6}
+                  className="w-full"
+                  size="lg"
+                >
+                  {verifyingOTP ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                      Verifying...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                      Verify Email
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-xs text-muted-foreground text-center">
+                  Didn't receive the code? Check your spam folder.
+                </p>
+                <p className="text-xs text-muted-foreground text-center">
+                  The code expires in 10 minutes.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style>{`
         @keyframes fade-in-up {
@@ -613,12 +678,14 @@ const Register = () => {
         .animation-delay-200 { animation-delay: 200ms; }
         .animation-delay-300 { animation-delay: 300ms; }
         .animation-delay-400 { animation-delay: 400ms; }
+        .animation-delay-450 { animation-delay: 450ms; }
         .animation-delay-500 { animation-delay: 500ms; }
         .animation-delay-600 { animation-delay: 600ms; }
         .animation-delay-700 { animation-delay: 700ms; }
         .animation-delay-800 { animation-delay: 800ms; }
         .animation-delay-900 { animation-delay: 900ms; }
         .animation-delay-1000 { animation-delay: 1s; }
+        .animation-delay-1100 { animation-delay: 1.1s; }
         .animation-delay-2000 { animation-delay: 2s; }
       `}</style>
     </div>

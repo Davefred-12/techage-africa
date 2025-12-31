@@ -83,6 +83,10 @@ const userSchema = new mongoose.Schema(
     resetPasswordExpire: Date,
     otp: String,
     otpExpire: Date,
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
     // Referral and Points System
     referralCode: {
       type: String,

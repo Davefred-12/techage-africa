@@ -71,13 +71,20 @@ export const register = async (req, res) => {
 
     console.log('👤 Creating user with referredBy:', referrer ? referrer._id : null);
 
-    // Create user with referredBy field
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+    // Create user with referredBy field and OTP
     const user = await User.create({
       name: userName,
       email,
       password,
       provider: 'local',
       referredBy: referrer ? referrer._id : null,
+      otp,
+      otpExpire,
+      isVerified: false,
     });
 
     console.log('✅ User created successfully:');
@@ -99,7 +106,125 @@ export const register = async (req, res) => {
       console.log(`   Total referrals for ${referrer.name}: ${referrer.referrals.length}`);
     }
 
-    // Send confirmation email to user
+    // Send OTP email to user
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: 'Verify Your Email - TechAge Africa',
+        html: `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <style>
+              body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+              .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+              .header { background: linear-gradient(135deg, #0EA5E9 0%, #F59E0B 100%); padding: 30px; text-align: center; color: white; border-radius: 10px 10px 0 0; }
+              .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+              .otp-code { font-size: 32px; font-weight: bold; color: #0EA5E9; text-align: center; letter-spacing: 8px; margin: 20px 0; }
+              .footer { text-align: center; margin-top: 20px; color: #666; font-size: 12px; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <div class="header">
+                <h1>🔐 Verify Your Email</h1>
+              </div>
+              <div class="content">
+                <p>Hi ${user.name},</p>
+                <p>Thank you for registering with TechAge Africa! To complete your registration, please verify your email address.</p>
+                <p>Your verification code is:</p>
+                <div class="otp-code">${otp}</div>
+                <p><strong>This code will expire in 10 minutes.</strong></p>
+                <p>If you didn't request this, please ignore this email.</p>
+                <p>Welcome to TechAge Africa! 🚀</p>
+              </div>
+              <div class="footer">
+                <p>© ${new Date().getFullYear()} TechAge Africa. All rights reserved.</p>
+                <p>Building Africa's digital future, one learner at a time.</p>
+              </div>
+            </div>
+          </body>
+          </html>
+        `,
+      });
+    } catch (emailError) {
+      console.error('Failed to send OTP email to user:', emailError);
+    }
+
+    // Send response (no token until verified)
+    res.status(201).json({
+      success: true,
+      message: 'Registration initiated. Please check your email for verification code.',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error('❌ Register error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error. Please try again later.',
+    });
+  }
+};
+
+// @desc    Verify OTP and complete registration
+// @route   POST /api/auth/verify-otp
+// @access  Public
+export const verifyOTP = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide email and OTP',
+      });
+    }
+
+    // Find user by email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    // Check if already verified
+    if (user.isVerified) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email already verified',
+      });
+    }
+
+    // Check OTP
+    if (user.otp !== otp) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid OTP',
+      });
+    }
+
+    // Check if OTP expired
+    if (Date.now() > user.otpExpire) {
+      return res.status(400).json({
+        success: false,
+        message: 'OTP has expired. Please request a new one.',
+      });
+    }
+
+    // Verify user
+    user.isVerified = true;
+    user.otp = undefined;
+    user.otpExpire = undefined;
+    await user.save();
+
+    // Send welcome email
     try {
       await sendEmail({
         to: user.email,
@@ -124,8 +249,7 @@ export const register = async (req, res) => {
               </div>
               <div class="content">
                 <p>Hi ${user.name},</p>
-                <p>Thank you for joining TechAge Africa! Your account has been successfully created.</p>
-                ${referrer ? `<p>✨ You were referred by ${referrer.name}! When you make your first course purchase, they'll earn 500 reward points.</p>` : ''}
+                <p>Thank you for joining TechAge Africa! Your email has been successfully verified.</p>
                 <p>You can now access our platform to start your learning journey in technology and digital skills.</p>
                 <div style="text-align: center;">
                   <a href="${process.env.CLIENT_URL}/login" class="button">Login to Your Account</a>
@@ -143,63 +267,17 @@ export const register = async (req, res) => {
         `,
       });
     } catch (emailError) {
-      console.error('Failed to send confirmation email to user:', emailError);
-    }
-
-    // Send notification email to admin
-    try {
-      await sendEmail({
-        to: process.env.ADMIN_EMAIL,
-        subject: 'New User Registration - TechAge Africa',
-        html: `
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <style>
-              body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-              .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-              .header { background: linear-gradient(135deg, #0EA5E9 0%, #F59E0B 100%); padding: 30px; text-align: center; color: white; border-radius: 10px 10px 0 0; }
-              .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-              .user-info { background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #0EA5E9; }
-              .footer { text-align: center; margin-top: 20px; color: #666; font-size: 12px; }
-            </style>
-          </head>
-          <body>
-            <div class="container">
-              <div class="header">
-                <h1>👤 New User Registration</h1>
-              </div>
-              <div class="content">
-                <p>A new user has registered on TechAge Africa:</p>
-                <div class="user-info">
-                  <p><strong>Name:</strong> ${user.name}</p>
-                  <p><strong>Email:</strong> ${user.email}</p>
-                  <p><strong>Registration Date:</strong> ${new Date().toLocaleString()}</p>
-                  <p><strong>User ID:</strong> ${user._id}</p>
-                  ${referrer ? `<p><strong>Referred By:</strong> ${referrer.name} (${referrer.email})</p>` : '<p><strong>Referred By:</strong> None</p>'}
-                </div>
-                <p>Please review the user account in the admin dashboard if needed.</p>
-              </div>
-              <div class="footer">
-                <p>© ${new Date().getFullYear()} TechAge Africa. All rights reserved.</p>
-                <p>This is an automated notification.</p>
-              </div>
-            </div>
-          </body>
-          </html>
-        `,
-      });
-    } catch (emailError) {
-      console.error('Failed to send notification email to admin:', emailError);
+      console.error('Failed to send welcome email:', emailError);
     }
 
     // Generate token
     const token = generateToken(user._id);
 
-    // Send response
-    res.status(201).json({
+    console.log(`✅ User verified: ${user.email}`);
+
+    res.status(200).json({
       success: true,
-      message: 'Registration successful',
+      message: 'Email verified successfully',
       token,
       user: {
         id: user._id,
@@ -210,7 +288,7 @@ export const register = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('❌ Register error:', error);
+    console.error('❌ Verify OTP error:', error);
     res.status(500).json({
       success: false,
       message: 'Server error. Please try again later.',
@@ -251,6 +329,14 @@ export const login = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: `Please login with ${user.provider}`,
+      });
+    }
+
+    // Check if email is verified
+    if (!user.isVerified) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please verify your email before logging in. Check your email for the verification code.',
       });
     }
 
