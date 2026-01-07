@@ -13,22 +13,22 @@ const Home = () => {
       <div data-aos="fade-up">
         <HeroSection />
       </div>
-      <div data-aos="fade-left" data-aos-delay="50">
+      <div data-aos="fade-up" data-aos-delay="600">
         <Stats />
       </div>
-      <div data-aos="fade-right" data-aos-delay="100">
+      <div data-aos="fade-up" data-aos-delay="600">
         <WhyTechAge />
       </div>
-      <div data-aos="fade-left" data-aos-delay="150">
+      <div data-aos="fade-up" data-aos-delay="600">
         <FeaturedCourses />
       </div>
-      <div data-aos="fade-right" data-aos-delay="200">
+      <div data-aos="fade-up" data-aos-delay="600">
         <Testimonials />
       </div>
-      <div data-aos="fade-left" data-aos-delay="250">
+      <div data-aos="fade-up" data-aos-delay="600">
         <BrandLogos />
       </div>
-      <div data-aos="fade-right" data-aos-delay="300">
+      <div data-aos="fade-right" data-aos-delay="600">
         <Newsletter />
       </div>
     </div>

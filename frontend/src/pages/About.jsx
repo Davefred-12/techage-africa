@@ -220,8 +220,11 @@ const About = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section - Compact Blue Gradient */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20 relative overflow-hidden" data-aos="fade-up">
+      {/* Hero Section */}
+      <section
+        className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20 relative overflow-hidden"
+        data-aos="fade-down"
+      >
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
           <div
@@ -232,18 +235,37 @@ const About = () => {
 
         <div className="container-custom relative z-10">
           <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium mb-6 animate-bounce">
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium mb-6"
+              data-aos="zoom-in"
+              data-aos-delay="100"
+            >
               <Sparkles className="h-4 w-4" />
               <span>About TechAge Africa</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6">
+
+            <h1
+              className="text-4xl md:text-6xl font-heading font-bold mb-6"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
               Accelerating Africa's Tech Advantage
             </h1>
-            <p className="text-xl md:text-2xl text-primary-100 mb-8">
+
+            <p
+              className="text-xl md:text-2xl text-primary-100 mb-8"
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
               Empowering African youth with digital skills to thrive in the
               global economy
             </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
+
+            <div
+              className="flex flex-wrap justify-center gap-4 text-sm"
+              data-aos="fade-up"
+              data-aos-delay="400"
+            >
               <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
                 <CheckCircle className="h-4 w-4" />
                 <span>6+ Years Impact</span>
@@ -262,7 +284,7 @@ const About = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-muted/30" data-aos="fade-left" data-aos-delay="50">
+      <section className="py-16 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
@@ -270,35 +292,32 @@ const About = () => {
                 value: "2,000+",
                 label: "Students Trained",
                 color: "text-primary-600",
-                delay: "0",
               },
               {
                 value: "6+",
                 label: "Years of Impact",
                 color: "text-secondary-600",
-                delay: "100",
               },
               {
                 value: "12+",
                 label: "Expert Courses",
                 color: "text-accent-600",
-                delay: "200",
               },
               {
                 value: "5",
                 label: "Countries Target",
                 color: "text-primary-600",
-                delay: "300",
               },
             ].map((stat, index) => (
               <Card
                 key={index}
-                className="text-center hover:shadow-xl transition-all hover:-translate-y-2 animate-fade-in-up group"
-                style={{ animationDelay: `${stat.delay}ms` }}
+                className="text-center hover:shadow-xl transition-all hover:-translate-y-2 group"
+                data-aos={index % 2 === 0 ? "fade-right" : "fade-left"}
+                data-aos-delay={index * 100}
               >
                 <CardContent className="p-6">
                   <p
-                    className={`text-4xl md:text-5xl font-bold ${stat.color} animate-scale-in group-hover:scale-110 transition-transform`}
+                    className={`text-4xl md:text-5xl font-bold ${stat.color} group-hover:scale-110 transition-transform`}
                   >
                     {stat.value}
                   </p>
@@ -313,9 +332,12 @@ const About = () => {
       </section>
 
       {/* The Problem We're Solving */}
-      <section className="py-20 md:py-32" data-aos="fade-right" data-aos-delay="100">
+      <section className="py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
+          <div
+            className="text-center max-w-3xl mx-auto mb-16"
+            data-aos="fade-up"
+          >
             <Badge className="mb-4">The Challenge</Badge>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
               Why TechAge Africa Exists
@@ -330,8 +352,9 @@ const About = () => {
             {problems.map((problem, index) => (
               <Card
                 key={index}
-                className="hover:shadow-2xl transition-all group animate-fade-in-up hover:-translate-y-2 border-2"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="hover:shadow-2xl transition-all group hover:-translate-y-2 border-2"
+                data-aos={index % 2 === 0 ? "fade-right" : "fade-left"}
+                data-aos-delay={index * 100}
               >
                 <CardContent className="p-6 space-y-4">
                   <div className="w-14 h-14 rounded-2xl bg-red-500 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all shadow-lg">
@@ -349,9 +372,12 @@ const About = () => {
       </section>
 
       {/* Our Solution */}
-      <section className="py-20 md:py-32 bg-muted/30" data-aos="fade-left" data-aos-delay="150">
+      <section className="py-20 md:py-32 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
+          <div
+            className="text-center max-w-3xl mx-auto mb-16"
+            data-aos="fade-up"
+          >
             <Badge className="mb-4">Our Solution</Badge>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
               How We're Making a Difference
@@ -366,8 +392,9 @@ const About = () => {
             {solutions.map((solution, index) => (
               <Card
                 key={index}
-                className="hover:shadow-2xl transition-all group animate-fade-in-up hover:-translate-y-2 border-2 hover:border-primary-200"
-                style={{ animationDelay: `${index * 150}ms` }}
+                className="hover:shadow-2xl transition-all group hover:-translate-y-2 border-2 hover:border-primary-200"
+                data-aos={index % 2 === 0 ? "fade-right" : "fade-left"}
+                data-aos-delay={index * 150}
               >
                 <CardContent className="p-8 space-y-4">
                   <div className="flex items-start gap-4">
@@ -391,9 +418,9 @@ const About = () => {
       </section>
 
       {/* Our Journey - Timeline */}
-      <section className="py-20 md:py-32" data-aos="fade-right" data-aos-delay="200">
+      <section className="py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="text-center mb-16 animate-fade-in-up">
+          <div className="text-center mb-16" data-aos="fade-up">
             <Badge className="mb-4">Our Story</Badge>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
               The Journey So Far
@@ -411,14 +438,12 @@ const About = () => {
               {milestones.map((milestone, index) => (
                 <Card
                   key={index}
-                  className="relative hover:shadow-2xl transition-all group animate-fade-in-up hover:-translate-y-2"
-                  style={{ animationDelay: `${index * 150}ms` }}
+                  className="relative hover:shadow-2xl transition-all group hover:-translate-y-2"
+                  data-aos="zoom-in"
+                  data-aos-delay={index * 150}
                 >
                   <div className="hidden md:block absolute -top-8 left-1/2 transform -translate-x-1/2">
-                    <div
-                      className="w-16 h-16 rounded-full bg-primary-500 flex items-center justify-center shadow-lg group-hover:scale-125 transition-transform animate-bounce-in"
-                      style={{ animationDelay: `${index * 150}ms` }}
-                    >
+                    <div className="w-16 h-16 rounded-full bg-primary-500 flex items-center justify-center shadow-lg group-hover:scale-125 transition-transform">
                       <span className="text-2xl">{milestone.icon}</span>
                     </div>
                   </div>
@@ -440,10 +465,13 @@ const About = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 md:py-32 bg-muted/30" data-aos="fade-left" data-aos-delay="250">
+      <section className="py-20 md:py-32 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-8">
-            <Card className="border-2 hover:border-primary-300 transition-all group animate-fade-in-left hover:shadow-2xl">
+            <Card
+              className="border-2 hover:border-primary-300 transition-all group hover:shadow-2xl"
+              data-aos="fade-right"
+            >
               <CardContent className="p-8 lg:p-10 space-y-6">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-xl bg-primary-600 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all">
@@ -463,11 +491,7 @@ const About = () => {
                     "Inclusive digital economy",
                     "Scalable, sustainable solutions",
                   ].map((item, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-3 text-sm animate-fade-in-left"
-                      style={{ animationDelay: `${i * 100 + 300}ms` }}
-                    >
+                    <div key={i} className="flex items-center gap-3 text-sm">
                       <CheckCircle className="w-5 h-5 text-primary-600 flex-shrink-0" />
                       <span>{item}</span>
                     </div>
@@ -476,7 +500,10 @@ const About = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-2 hover:border-secondary-300 transition-all group animate-fade-in-right hover:shadow-2xl">
+            <Card
+              className="border-2 hover:border-secondary-300 transition-all group hover:shadow-2xl"
+              data-aos="fade-up"
+            >
               <CardContent className="p-8 lg:p-10 space-y-6">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-xl bg-secondary-600 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all">
@@ -498,11 +525,7 @@ const About = () => {
                     "Empower African businesses",
                     "Fund & mentor startups",
                   ].map((item, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-3 text-sm animate-fade-in-right"
-                      style={{ animationDelay: `${i * 100 + 300}ms` }}
-                    >
+                    <div key={i} className="flex items-center gap-3 text-sm">
                       <CheckCircle className="w-5 h-5 text-secondary-600 flex-shrink-0" />
                       <span>{item}</span>
                     </div>
@@ -515,9 +538,12 @@ const About = () => {
       </section>
 
       {/* Founder Section */}
-      <section className="py-20 md:py-32" data-aos="fade-right" data-aos-delay="300">
+      <section className="py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-          <Card className="overflow-hidden border-2 animate-fade-in-up hover:shadow-2xl transition-shadow">
+          <Card
+            className="overflow-hidden border-2 hover:shadow-2xl transition-shadow"
+            data-aos="flip-left"
+          >
             <div className="grid lg:grid-cols-2">
               <div className="relative h-64 lg:h-auto overflow-hidden group">
                 <img
@@ -528,7 +554,7 @@ const About = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent lg:bg-gradient-to-r"></div>
               </div>
 
-              <CardContent className="p-8 lg:p-12 space-y-6 animate-fade-in-right">
+              <CardContent className="p-8 lg:p-12 space-y-6">
                 <Badge className="mb-2">Meet The Founder</Badge>
                 <div>
                   <h2 className="text-3xl lg:text-4xl font-bold mb-2">
@@ -573,9 +599,12 @@ const About = () => {
       </section>
 
       {/* Core Values */}
-      <section className="py-20 md:py-32 bg-muted/30" data-aos="fade-left" data-aos-delay="350">
+      <section className="py-20 md:py-32 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
+          <div
+            className="text-center max-w-3xl mx-auto mb-12"
+            data-aos="fade-up"
+          >
             <Badge className="mb-4">Our Principles</Badge>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
               Core Values That Guide Us
@@ -590,8 +619,9 @@ const About = () => {
             {values.map((value, index) => (
               <Card
                 key={index}
-                className="hover:shadow-2xl hover:border-primary-200 transition-all group animate-fade-in-up hover:-translate-y-2 border-2"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="hover:shadow-2xl hover:border-primary-200 transition-all group hover:-translate-y-2 border-2"
+                data-aos={index % 2 === 0 ? "fade-right" : "fade-up"}
+                data-aos-delay={index * 100}
               >
                 <CardContent className="p-6 text-center space-y-4">
                   <div className="w-16 h-16 mx-auto rounded-2xl bg-primary-500 flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all shadow-lg">
@@ -609,9 +639,12 @@ const About = () => {
       </section>
 
       {/* Impact Goals 2028 */}
-      <section className="py-20 md:py-32" data-aos="fade-right" data-aos-delay="400">
+      <section className="py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
+          <div
+            className="text-center max-w-3xl mx-auto mb-12"
+            data-aos="fade-up"
+          >
             <Badge className="mb-4">Our Goals by 2028</Badge>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
               Building Africa's Digital Future
@@ -626,8 +659,9 @@ const About = () => {
             {goals.map((item, index) => (
               <Card
                 key={index}
-                className="relative overflow-hidden group hover:shadow-2xl transition-all border-2 hover:border-primary-200 animate-fade-in-up hover:-translate-y-2"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="relative overflow-hidden group hover:shadow-2xl transition-all border-2 hover:border-primary-200 hover:-translate-y-2"
+                data-aos="zoom-in"
+                data-aos-delay={index * 100}
               >
                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary-500/20 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
                 <CardContent className="p-6 relative z-10 text-center space-y-3">
@@ -648,7 +682,11 @@ const About = () => {
       </section>
 
       {/* Blog Preview Section */}
-      <section className="py-20 md:py-32 bg-blue-50 dark:bg-blue-900/20" data-aos="fade-left" data-aos-delay="450">
+      <section
+        className="py-20 md:py-32 bg-blue-50 dark:bg-blue-900/20"
+        data-aos="fade-up"
+        data-aos-delay="450"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
             <Badge className="mb-4 bg-blue-600 text-white">
@@ -724,7 +762,11 @@ const About = () => {
       </section>
 
       {/* Services Preview Section */}
-      <section className="py-20 md:py-32" data-aos="fade-right" data-aos-delay="500">
+      <section
+        className="py-20 md:py-32"
+        data-aos="fade-right"
+        data-aos-delay="500"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
             <Badge className="mb-4 bg-primary-600 text-white">
@@ -785,7 +827,11 @@ const About = () => {
       </section>
 
       {/* CTA Section - Matches Services Page */}
-      <section className="py-20 bg-gradient-to-r from-primary-600 to-primary-700 relative overflow-hidden" data-aos="zoom-in" data-aos-delay="1100">
+      <section
+        className="py-20 bg-gradient-to-r from-primary-600 to-primary-700 relative overflow-hidden"
+        data-aos="zoom-in"
+        data-aos-delay="1100"
+      >
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
           <div
