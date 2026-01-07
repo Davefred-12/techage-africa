@@ -117,7 +117,7 @@ const Courses = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section - Compact Blue Gradient */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-12 sm:py-20 relative overflow-hidden">
+      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-12 sm:py-20 relative overflow-hidden" data-aos="fade-up">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
           <div
@@ -158,7 +158,7 @@ const Courses = () => {
       </section>
 
       {/* Main Content */}
-      <div className="py-12 bg-muted/30">
+      <div className="py-12 bg-muted/30" data-aos="fade-left" data-aos-delay="50">
         <div className="container-custom">
           {/* Search and Filter - Modern compact design */}
           <div

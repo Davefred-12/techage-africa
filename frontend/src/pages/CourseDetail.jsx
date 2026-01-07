@@ -395,7 +395,7 @@ const CourseDetail = () => {
         </div>
 
         {/* Hero Section - Mobile Responsive */}
-        <div className="bg-primary-50 dark:bg-primary-900/20">
+        <div className="bg-primary-50 dark:bg-primary-900/20" data-aos="fade-up">
           <div className="container-custom py-8 md:py-12">
             <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
               {/* Left Content - Mobile Optimized */}
@@ -598,7 +598,7 @@ const CourseDetail = () => {
         </div>
 
         {/* Tabs - Mobile Responsive */}
-        <div className="container-custom py-8 md:py-12">
+        <div className="container-custom py-8 md:py-12" data-aos="fade-left" data-aos-delay="50">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             {/* Mobile: Scrollable tabs, Desktop: Grid */}
             <TabsList className="w-full mb-6 md:mb-8 overflow-x-auto flex md:grid md:grid-cols-4">

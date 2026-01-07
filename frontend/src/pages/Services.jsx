@@ -208,7 +208,7 @@ const Services = () => {
   return (
     <div className="min-h-screen bg-muted/30">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20 relative overflow-hidden">
+      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20 relative overflow-hidden" data-aos="fade-up">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
           <div
@@ -249,7 +249,7 @@ const Services = () => {
       </section>
 
       {/* Services Grid - Separated Image and Content */}
-      <section className="py-20">
+      <section className="py-20" data-aos="fade-left" data-aos-delay="50">
         <div className="container-custom">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
@@ -438,7 +438,7 @@ const Services = () => {
       </section>
 
       {/* Featured Brands Section - Redesigned */}
-      <section className="py-20 bg-gradient-to-b from-primary-50/50 to-muted/50 dark:from-primary-900/10 dark:to-muted/50">
+      <section className="py-20 bg-gradient-to-b from-primary-50/50 to-muted/50 dark:from-primary-900/10 dark:to-muted/50" data-aos="fade-right" data-aos-delay="100">
         <div className="container-custom">
           {/* Header */}
           <div className="text-center mb-16">
@@ -534,7 +534,7 @@ const Services = () => {
       </section>
 
       {/* CTA Section with Blue Gradient */}
-      <section className="py-20 bg-gradient-to-r from-primary-600 to-primary-700 relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-r from-primary-600 to-primary-700 relative overflow-hidden" data-aos="zoom-in" data-aos-delay="300">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
           <div

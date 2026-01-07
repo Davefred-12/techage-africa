@@ -221,7 +221,7 @@ const About = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section - Compact Blue Gradient */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20 relative overflow-hidden">
+      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20 relative overflow-hidden" data-aos="fade-up">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
           <div
@@ -262,7 +262,7 @@ const About = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-16 bg-muted/30" data-aos="fade-left" data-aos-delay="50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
@@ -313,7 +313,7 @@ const About = () => {
       </section>
 
       {/* The Problem We're Solving */}
-      <section className="py-20 md:py-32">
+      <section className="py-20 md:py-32" data-aos="fade-right" data-aos-delay="100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
             <Badge className="mb-4">The Challenge</Badge>
@@ -349,7 +349,7 @@ const About = () => {
       </section>
 
       {/* Our Solution */}
-      <section className="py-20 md:py-32 bg-muted/30">
+      <section className="py-20 md:py-32 bg-muted/30" data-aos="fade-left" data-aos-delay="150">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
             <Badge className="mb-4">Our Solution</Badge>
@@ -391,7 +391,7 @@ const About = () => {
       </section>
 
       {/* Our Journey - Timeline */}
-      <section className="py-20 md:py-32">
+      <section className="py-20 md:py-32" data-aos="fade-right" data-aos-delay="200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center mb-16 animate-fade-in-up">
             <Badge className="mb-4">Our Story</Badge>
@@ -440,7 +440,7 @@ const About = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 md:py-32 bg-muted/30">
+      <section className="py-20 md:py-32 bg-muted/30" data-aos="fade-left" data-aos-delay="250">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-8">
             <Card className="border-2 hover:border-primary-300 transition-all group animate-fade-in-left hover:shadow-2xl">
@@ -515,7 +515,7 @@ const About = () => {
       </section>
 
       {/* Founder Section */}
-      <section className="py-20 md:py-32">
+      <section className="py-20 md:py-32" data-aos="fade-right" data-aos-delay="300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <Card className="overflow-hidden border-2 animate-fade-in-up hover:shadow-2xl transition-shadow">
             <div className="grid lg:grid-cols-2">
@@ -573,7 +573,7 @@ const About = () => {
       </section>
 
       {/* Core Values */}
-      <section className="py-20 md:py-32 bg-muted/30">
+      <section className="py-20 md:py-32 bg-muted/30" data-aos="fade-left" data-aos-delay="350">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
             <Badge className="mb-4">Our Principles</Badge>
@@ -609,7 +609,7 @@ const About = () => {
       </section>
 
       {/* Impact Goals 2028 */}
-      <section className="py-20 md:py-32">
+      <section className="py-20 md:py-32" data-aos="fade-right" data-aos-delay="400">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
             <Badge className="mb-4">Our Goals by 2028</Badge>
@@ -648,7 +648,7 @@ const About = () => {
       </section>
 
       {/* Blog Preview Section */}
-      <section className="py-20 md:py-32 bg-blue-50 dark:bg-blue-900/20">
+      <section className="py-20 md:py-32 bg-blue-50 dark:bg-blue-900/20" data-aos="fade-left" data-aos-delay="450">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
             <Badge className="mb-4 bg-blue-600 text-white">
@@ -724,7 +724,7 @@ const About = () => {
       </section>
 
       {/* Services Preview Section */}
-      <section className="py-20 md:py-32">
+      <section className="py-20 md:py-32" data-aos="fade-right" data-aos-delay="500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
             <Badge className="mb-4 bg-primary-600 text-white">
@@ -785,7 +785,7 @@ const About = () => {
       </section>
 
       {/* CTA Section - Matches Services Page */}
-      <section className="py-20 bg-gradient-to-r from-primary-600 to-primary-700 relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-r from-primary-600 to-primary-700 relative overflow-hidden" data-aos="zoom-in" data-aos-delay="1100">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
           <div

@@ -69,7 +69,7 @@ const Contact = () => {
 
       if (response.data.success) {
         setIsSubmitted(true);
-        reset(); // ✅ THIS CLEARS THE FORM
+        reset();
         toast.success(
           "Message sent successfully! We'll respond within 24 hours."
         );
@@ -239,7 +239,7 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section - Compact Blue Gradient */}
+      {/* Hero Section - Blue Gradient with AOS */}
       <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
@@ -251,18 +251,37 @@ const Contact = () => {
 
         <div className="container-custom relative z-10">
           <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium mb-6 animate-bounce">
+            <div 
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium mb-6"
+              data-aos="fade-down"
+              data-aos-delay="100"
+            >
               <MessageSquare className="h-4 w-4" />
               <span>Get In Touch</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6">
+            
+            <h1 
+              className="text-4xl md:text-6xl font-heading font-bold mb-6"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
               Contact Us
             </h1>
-            <p className="text-xl md:text-2xl text-primary-100 mb-8">
+            
+            <p 
+              className="text-xl md:text-2xl text-primary-100 mb-8"
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
               Have questions? We're here to help you accelerate your digital
               journey
             </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
+            
+            <div 
+              className="flex flex-wrap justify-center gap-4 text-sm"
+              data-aos="fade-up"
+              data-aos-delay="400"
+            >
               <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
                 <Clock className="h-4 w-4" />
                 <span>24hr Response</span>
@@ -280,10 +299,13 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* Contact Reasons */}
+      {/* Contact Reasons - Alternating Animations */}
       <section className="py-16 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="text-center mb-12 animate-fade-in-up">
+          <div 
+            className="text-center mb-12"
+            data-aos="fade-up"
+          >
             <h2 className="text-2xl md:text-3xl font-bold mb-3">
               How Can We Help You?
             </h2>
@@ -296,9 +318,10 @@ const Contact = () => {
             {contactReasons.map((reason, index) => (
               <Card
                 key={index}
-                className="hover:shadow-xl transition-all hover:-translate-y-2 group border-2 animate-fade-in-up cursor-pointer"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="hover:shadow-xl transition-all hover:-translate-y-2 group border-2 cursor-pointer"
                 onClick={reason.action}
+                data-aos={index % 2 === 0 ? "fade-right" : "fade-left"}
+                data-aos-delay={index * 100}
               >
                 <CardContent className="p-6 text-center space-y-3">
                   <div className="w-14 h-14 mx-auto rounded-xl bg-primary-500 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all shadow-lg">
@@ -317,17 +340,21 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* Main Content - Form & Contact Info */}
+      {/* Main Content - Form & Contact Info with AOS */}
       <section className="py-20" id="contact-form">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-8">
-            {/* LEFT SIDE - Contact Form Split into Two Cards */}
+            {/* LEFT SIDE - Contact Form (slides from left) */}
             <div className="space-y-6">
               {/* Contact Form Card */}
-              <Card className="border-2 hover:shadow-xl transition-all animate-fade-in-left">
+              <Card 
+                className="border-2 hover:shadow-xl transition-all"
+                data-aos="fade-right"
+                data-aos-delay="100"
+              >
                 <CardContent className="p-6 lg:p-8">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center animate-bounce-in">
+                    <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
                       <MessageSquare className="w-5 h-5 text-primary-600" />
                     </div>
                     <div>
@@ -341,7 +368,7 @@ const Contact = () => {
                   </div>
 
                   {isSubmitted && (
-                    <div className="mb-4 p-3 bg-accent-50 dark:bg-accent-900/20 border border-accent-200 dark:border-accent-800 rounded-lg flex items-center gap-2 animate-fade-in">
+                    <div className="mb-4 p-3 bg-accent-50 dark:bg-accent-900/20 border border-accent-200 dark:border-accent-800 rounded-lg flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-accent-600 flex-shrink-0" />
                       <p className="text-xs text-accent-700 dark:text-accent-400">
                         Thank you! Your message has been sent successfully.
@@ -352,7 +379,7 @@ const Contact = () => {
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       {/* Name */}
-                      <div className="animate-fade-in-up animation-delay-200">
+                      <div>
                         <label className="block text-xs font-medium mb-1.5">
                           Full Name *
                         </label>
@@ -371,7 +398,7 @@ const Contact = () => {
                       </div>
 
                       {/* Email */}
-                      <div className="animate-fade-in-up animation-delay-300">
+                      <div>
                         <label className="block text-xs font-medium mb-1.5">
                           Email Address *
                         </label>
@@ -392,7 +419,7 @@ const Contact = () => {
                     </div>
 
                     {/* Subject */}
-                    <div className="animate-fade-in-up animation-delay-400">
+                    <div>
                       <label className="block text-xs font-medium mb-1.5">
                         Subject *
                       </label>
@@ -411,7 +438,7 @@ const Contact = () => {
                     </div>
 
                     {/* Message */}
-                    <div className="animate-fade-in-up animation-delay-500">
+                    <div>
                       <label className="block text-xs font-medium mb-1.5">
                         Your Message *
                       </label>
@@ -435,7 +462,7 @@ const Contact = () => {
                       size="lg"
                       disabled={isSubmitting}
                       onClick={handleSubmit(onSubmit)}
-                      className="w-full animate-fade-in-up animation-delay-600 hover:scale-105 transition-transform h-11"
+                      className="w-full hover:scale-105 transition-transform h-11"
                     >
                       {isSubmitting ? (
                         "Sending..."
@@ -451,7 +478,11 @@ const Contact = () => {
               </Card>
 
               {/* Response Information Card */}
-              <Card className="border-2 bg-primary-50 dark:bg-primary-900/20 hover:shadow-xl transition-all animate-fade-in-left animation-delay-400">
+              <Card 
+                className="border-2 bg-primary-50 dark:bg-primary-900/20 hover:shadow-xl transition-all"
+                data-aos="fade-right"
+                data-aos-delay="200"
+              >
                 <CardContent className="p-6 space-y-4">
                   <div className="flex items-center gap-2 mb-2">
                     <CheckCircle className="w-5 h-5 text-primary-600" />
@@ -476,8 +507,6 @@ const Contact = () => {
                         </p>
                       </div>
                     </div>
-
-                
 
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-lg bg-white dark:bg-primary-800/30 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -515,10 +544,14 @@ const Contact = () => {
               </Card>
             </div>
 
-            {/* RIGHT SIDE - Contact Information */}
+            {/* RIGHT SIDE - Contact Information (slides from right) */}
             <div className="space-y-6">
               {/* Main Contact Card */}
-              <Card className="border-2 hover:shadow-xl transition-all animate-fade-in-right">
+              <Card 
+                className="border-2 hover:shadow-xl transition-all"
+                data-aos="fade-left"
+                data-aos-delay="100"
+              >
                 <CardContent className="p-6 lg:p-8 space-y-6">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
@@ -533,8 +566,7 @@ const Contact = () => {
                     {contactInfo.map((info, index) => (
                       <div
                         key={index}
-                        className="flex items-start gap-3 group animate-fade-in-up hover:bg-muted/50 p-2.5 rounded-lg transition-all"
-                        style={{ animationDelay: `${index * 100 + 200}ms` }}
+                        className="flex items-start gap-3 group hover:bg-muted/50 p-2.5 rounded-lg transition-all"
                       >
                         <div className="w-11 h-11 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all">
                           <info.icon className="w-5 h-5 text-primary-600" />
@@ -572,8 +604,7 @@ const Contact = () => {
                           href={social.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`w-10 h-10 rounded-xl bg-muted flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg ${social.color} animate-bounce-in`}
-                          style={{ animationDelay: `${index * 100 + 600}ms` }}
+                          className={`w-10 h-10 rounded-xl bg-muted flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg ${social.color}`}
                           aria-label={social.label}
                         >
                           <social.icon className="w-4 h-4" />
@@ -585,7 +616,11 @@ const Contact = () => {
               </Card>
 
               {/* Quick Links Card */}
-              <Card className="border-2 bg-primary-50 dark:bg-primary-900/20 hover:shadow-xl transition-all animate-fade-in-right animation-delay-400">
+              <Card 
+                className="border-2 bg-primary-50 dark:bg-primary-900/20 hover:shadow-xl transition-all"
+                data-aos="fade-left"
+                data-aos-delay="200"
+              >
                 <CardContent className="p-5 space-y-3">
                   <div className="flex items-center gap-2">
                     <HelpCircle className="w-4 h-4 text-primary-600" />
@@ -627,7 +662,10 @@ const Contact = () => {
       {/* Map Section */}
       <section className="py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="text-center mb-12 animate-fade-in-up">
+          <div 
+            className="text-center mb-12"
+            data-aos="fade-up"
+          >
             <Badge className="mb-4">Our Location</Badge>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
               Find Us in Lagos
@@ -638,7 +676,11 @@ const Contact = () => {
             </p>
           </div>
 
-          <Card className="overflow-hidden border-2 hover:shadow-2xl transition-all animate-fade-in-up">
+          <Card 
+            className="overflow-hidden border-2 hover:shadow-2xl transition-all"
+            data-aos="zoom-in"
+            data-aos-delay="200"
+          >
             <div className="aspect-video w-full">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253682.62280943307!2d3.119919494725282!3d6.548055457294228!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae68280c1%3A0xdc9e87a367c3d9cb!2sLagos%2C%20Nigeria!5e0!3m2!1sen!2sng!4v1638888888888!5m2!1sen!2sng"
@@ -658,7 +700,10 @@ const Contact = () => {
       {/* FAQ Section */}
       <section id="faq" className="py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="text-center mb-12 animate-fade-in-up">
+          <div 
+            className="text-center mb-12"
+            data-aos="fade-up"
+          >
             <Badge className="mb-4">FAQ</Badge>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
               Frequently Asked Questions
@@ -669,15 +714,19 @@ const Contact = () => {
             </p>
           </div>
 
-          <Card className="hover:shadow-xl transition-shadow border-2">
+          <Card 
+            className="hover:shadow-xl transition-shadow border-2"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
             <CardContent className="p-8">
               <Accordion type="single" collapsible className="w-full">
                 {faqs.map((faq, index) => (
                   <AccordionItem
                     key={index}
                     value={`item-${index}`}
-                    className="animate-fade-in-up"
-                    style={{ animationDelay: `${index * 30}ms` }}
+                    data-aos="fade-left"
+                    data-aos-delay={index * 50}
                   >
                     <AccordionTrigger className="text-left hover:text-primary-600 text-base font-semibold py-4 hover:no-underline">
                       {faq.question}
@@ -694,7 +743,8 @@ const Contact = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-primary-600 relative overflow-hidden">
+      <section className="py-20 bg-primary-600 relative overflow-hidden"  data-aos="zoom-in"
+            data-aos-delay="200">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
           <div className="absolute w-96 h-96 bg-white rounded-full -bottom-48 -right-48 animate-pulse animation-delay-1000"></div>

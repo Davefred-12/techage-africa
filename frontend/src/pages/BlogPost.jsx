@@ -229,7 +229,7 @@ const BlogPost = () => {
       </Helmet>
 
       {/* Hero Section - Updated with Blue Gradient */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-12 md:py-16 lg:py-20 relative overflow-hidden">
+      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-12 md:py-16 lg:py-20 relative overflow-hidden" data-aos="fade-up">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-64 h-64 md:w-96 md:h-96 bg-white rounded-full -top-32 -left-32 md:-top-48 md:-left-48 animate-pulse"></div>
           <div
@@ -294,7 +294,7 @@ const BlogPost = () => {
       </section>
 
       {/* Article Content */}
-      <div className="container mx-auto px-4 py-6 md:py-8 lg:py-12">
+      <div className="container mx-auto px-4 py-6 md:py-8 lg:py-12" data-aos="fade-left" data-aos-delay="50">
         <div className="grid lg:grid-cols-4 gap-6 lg:gap-8">
 
           {/* Main Content */}

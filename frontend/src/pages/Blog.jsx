@@ -202,7 +202,7 @@ const Blog = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20 relative overflow-hidden">
+      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20 relative overflow-hidden" data-aos="fade-up">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
           <div
@@ -242,7 +242,7 @@ const Blog = () => {
       </section>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12" data-aos="fade-left" data-aos-delay="50">
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-6">

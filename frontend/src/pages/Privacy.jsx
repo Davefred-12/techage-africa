@@ -12,7 +12,7 @@ const Privacy = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-gradient-to-br from-primary-600 via-primary-500 to-primary-600 text-white">
+      <div className="bg-gradient-to-br from-primary-600 via-primary-500 to-primary-600 text-white" data-aos="fade-up">
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex items-center justify-center mb-6">
@@ -33,7 +33,7 @@ const Privacy = () => {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12" data-aos="fade-left" data-aos-delay="50">
         <div className="max-w-4xl mx-auto space-y-8">
 
           {/* Introduction */}
