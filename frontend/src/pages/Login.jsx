@@ -133,18 +133,18 @@ const Login = () => {
     }, 300);
   };
 
-  // Social login handlers
-  const handleGoogleLogin = () => {
-    window.location.href = `${
-      import.meta.env.VITE_API_URL || "http://localhost:5000"
-    }/api/auth/google`;
-  };
+  // Social login handlers - COMMENTED OUT FOR LATER
+  // const handleGoogleLogin = () => {
+  //   window.location.href = `${
+  //     import.meta.env.VITE_API_URL || "http://localhost:5000"
+  //   }/api/auth/google`;
+  // };
 
-  const handleAppleLogin = () => {
-    window.location.href = `${
-      import.meta.env.VITE_API_URL || "http://localhost:5000"
-    }/api/auth/apple`;
-  };
+  // const handleAppleLogin = () => {
+  //   window.location.href = `${
+  //     import.meta.env.VITE_API_URL || "http://localhost:5000"
+  //   }/api/auth/apple`;
+  // };
 
   const features = [
     { icon: CheckCircle, text: "Access to 12+ expert courses" },
@@ -242,7 +242,8 @@ const Login = () => {
             <Card className="border-2 shadow-xl animate-scale-in animation-delay-200">
               <CardContent className="p-8">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                  <div className="flex gap-3 mb-6">
+                  {/* COMMENTED OUT FOR LATER - Social Login Buttons */}
+                  {/* <div className="flex gap-3 mb-6">
                     <Button
                       type="button"
                       variant="outline"
@@ -273,9 +274,9 @@ const Login = () => {
                       <span className="hidden sm:inline">Apple</span>
                       <span className="sm:hidden">Apple</span>
                     </Button>
-                  </div>
+                  </div> */}
 
-                  <div className="relative my-6">
+                  {/* <div className="relative my-6">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-border"></div>
                     </div>
@@ -284,7 +285,7 @@ const Login = () => {
                         Or continue with Email
                       </span>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="animate-slide-up animation-delay-300">
                     <label className="block text-sm font-medium mb-2">

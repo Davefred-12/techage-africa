@@ -147,17 +147,18 @@ const Register = () => {
     }
   };
 
-  const handleGoogleSignup = () => {
-    window.location.href = `${
-      import.meta.env.VITE_API_URL || "http://localhost:5000"
-    }/api/auth/google`;
-  };
+  // COMMENTED OUT FOR LATER - Social Signup Handlers
+  // const handleGoogleSignup = () => {
+  //   window.location.href = `${
+  //     import.meta.env.VITE_API_URL || "http://localhost:5000"
+  //   }/api/auth/google`;
+  // };
 
-  const handleAppleSignup = () => {
-    window.location.href = `${
-      import.meta.env.VITE_API_URL || "http://localhost:5000"
-    }/api/auth/apple`;
-  };
+  // const handleAppleSignup = () => {
+  //   window.location.href = `${
+  //     import.meta.env.VITE_API_URL || "http://localhost:5000"
+  //   }/api/auth/apple`;
+  // };
 
   const benefits = [
     { icon: CheckCircle, text: "Get certified upon completion" },
@@ -254,8 +255,8 @@ const Register = () => {
           <Card className="border-2 shadow-xl animate-scale-in animation-delay-200">
             <CardContent className="p-6 lg:p-8">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                {/* Social Signup Buttons */}
-                <div className="flex gap-3">
+                {/* COMMENTED OUT FOR LATER - Social Signup Buttons */}
+                {/* <div className="flex gap-3">
                   <Button
                     type="button"
                     variant="outline"
@@ -286,10 +287,10 @@ const Register = () => {
                     <span className="hidden sm:inline">Apple</span>
                     <span className="sm:hidden">Apple</span>
                   </Button>
-                </div>
+                </div> */}
 
                 {/* Divider */}
-                <div className="relative my-6">
+                {/* <div className="relative my-6">
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-border"></div>
                   </div>
@@ -298,7 +299,7 @@ const Register = () => {
                       Or continue with Email
                     </span>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Full Name */}
                 <div className="animate-slide-up animation-delay-300">
