@@ -4,7 +4,7 @@ import WhyTechAge from "../components/home/WhyTechAge";
 import FeaturedCourses from "../components/home/FeaturedCourses";
 import Testimonials from "../components/home/Testimonials";
 import Newsletter from "../components/home/Newsletter";
-import Stats from "../components/home/Stats";
+// import Stats from "../components/home/Stats";
 import BrandLogos from "../components/home/BrandLogos";
 
 const Home = () => {
@@ -13,9 +13,9 @@ const Home = () => {
       <div data-aos="fade-up">
         <HeroSection />
       </div>
-      <div data-aos="fade-up" data-aos-delay="600">
+      {/* <div data-aos="fade-up" data-aos-delay="600">
         <Stats />
-      </div>
+      </div> */}
       <div data-aos="fade-up" data-aos-delay="600">
         <WhyTechAge />
       </div>
