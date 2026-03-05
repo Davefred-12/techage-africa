@@ -113,7 +113,7 @@ const AdminSettings = () => {
   const siteForm = useForm({
     resolver: zodResolver(siteSchema),
     defaultValues: {
-      siteName: "TechAge Africa",
+      siteName: "JobLadda",
       siteDescription:
         "Empowering Africa's future through digital skills, brand visibility, and tech-driven opportunities.",
       supportEmail: "support@techageafrica.com",
@@ -129,7 +129,7 @@ const AdminSettings = () => {
       smtpUser: "resend",
       smtpPassword: "",
       fromEmail: "noreply@techageafrica.com",
-      fromName: "TechAge Africa",
+      fromName: "JobLadda",
     },
   });
 
@@ -592,7 +592,7 @@ const AdminSettings = () => {
                       <Input
                         id="siteName"
                         {...siteForm.register("siteName")}
-                        placeholder="TechAge Africa"
+                        placeholder="JobLadda"
                       />
                       {siteForm.formState.errors.siteName && (
                         <p className="text-sm text-danger-600 mt-1">
@@ -740,7 +740,7 @@ const AdminSettings = () => {
                         <Input
                           id="fromName"
                           {...emailForm.register("fromName")}
-                          placeholder="TechAge Africa"
+                          placeholder="JobLadda"
                         />
                       </div>
                     </div>

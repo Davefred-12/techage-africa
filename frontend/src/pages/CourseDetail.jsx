@@ -355,17 +355,17 @@ const CourseDetail = () => {
   return (
     <>
       <Helmet>
-        <title>{course.title} - TechAge Africa</title>
+        <title>{course.title} - JobLadda</title>
         <meta name="description" content={course.description} />
         <meta
           name="keywords"
           content={`${course.category}, ${
             course.tags?.join(", ") || ""
-          }, online course, TechAge Africa`}
+          }, online course, JobLadda`}
         />
         <meta
           property="og:title"
-          content={`${course.title} - TechAge Africa`}
+          content={`${course.title} - JobLadda`}
         />
         <meta property="og:description" content={course.description} />
         <meta property="og:image" content={course.thumbnail} />
@@ -374,7 +374,7 @@ const CourseDetail = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content={`${course.title} - TechAge Africa`}
+          content={`${course.title} - JobLadda`}
         />
         <meta name="twitter:description" content={course.description} />
         <link rel="canonical" href={window.location.href} />

@@ -44,7 +44,7 @@ const Newsletter = () => {
   };
 
   return (
-    <section className="py-12 bg-gradient-to-r from-primary-600 to-primary-700 relative overflow-hidden">
+    <section className="py-20 bg-[#111827] relative overflow-hidden">
       {/* Animated Background Bubbles */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute w-96 h-96 bg-white rounded-full -top-48 -left-48 animate-pulse"></div>
@@ -63,11 +63,11 @@ const Newsletter = () => {
 
           {/* Heading */}
           <div className="space-y-3">
-            <h2 className="text-2xl md:text-3xl font-heading font-bold text-white">
-              Stay Updated with TechAge
+            <h2 className="text-3xl md:text-5xl font-heading font-black text-white">
+              Stay Updated with <span className="text-secondary-500">JobLadda</span>
             </h2>
-            <p className="text-base md:text-lg text-white/90 max-w-2xl mx-auto">
-              Get the latest tech insights, course updates, and exclusive opportunities delivered to your inbox. Join 5000+ subscribers!
+            <p className="text-base md:text-xl text-gray-400 max-w-2xl mx-auto font-medium">
+              Get the latest career insights, job readiness tips, and exclusive opportunities delivered to your inbox.
             </p>
           </div>
 
@@ -87,9 +87,9 @@ const Newsletter = () => {
                   type="submit" 
                   size="lg"
                   disabled={isLoading}
-                  className="bg-white text-primary-600 hover:bg-white/90"
+                  className="bg-secondary-500 text-white hover:bg-secondary-600 font-bold px-8 h-14 rounded-xl"
                 >
-                  {isLoading ? 'Subscribing...' : 'Subscribe'}
+                  {isLoading ? 'Subscribing...' : 'Join Now'}
                 </Button>
               </div>
               <p className="text-sm text-white/70 mt-3">

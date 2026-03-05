@@ -65,8 +65,8 @@ const ReferralsRewards = () => {
     try {
       const referralLink = `${window.location.origin}/register?ref=${referralData.referralCode}`;
       const shareData = {
-        title: 'Join TechAge Africa',
-        text: 'Start your tech journey with TechAge Africa! Use my referral code for exclusive benefits.',
+        title: 'Join JobLadda',
+        text: 'Start your tech journey with JobLadda! Use my referral code for exclusive benefits.',
         url: referralLink,
       };
 

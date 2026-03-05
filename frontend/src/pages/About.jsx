@@ -29,6 +29,7 @@ import {
   TrendingDown,
   AlertCircle,
   Sparkles,
+  User,
 } from "lucide-react";
 
 const About = () => {
@@ -59,57 +60,57 @@ const About = () => {
   const values = [
     {
       icon: Target,
-      title: "Africa-Focused",
+      title: "Clarity Obsessed",
       description:
-        "Built by Africans, for Africans. We understand the unique challenges and opportunities across the continent and design solutions specifically for our context.",
+        "We believe the biggest barrier to getting hired is a lack of clarity. We provide the data and insights to clear the fog.",
     },
     {
-      icon: Heart,
-      title: "Accessibility First",
+      icon: Zap,
+      title: "Action Oriented",
       description:
-        "Democratizing digital education with mobile-first, low-data optimized content. Making learning affordable and accessible to everyone, everywhere.",
+        "Information without execution is useless. Our 14-day plans are designed for immediate, measurable impact.",
     },
     {
       icon: TrendingUp,
-      title: "Excellence & Quality",
+      title: "Results Focused",
       description:
-        "Delivering high-quality, practical education taught by industry professionals. Our courses transform careers and create real economic opportunities.",
+        "We don't just train; we transform. Every assessment and action plan is geared toward one goal: landing your dream job.",
     },
     {
       icon: Users,
       title: "Community Driven",
       description:
-        "Building a supportive ecosystem of learners, instructors, mentors, and employers. Together, we're stronger and go further.",
+        "Join a tribe of ambitious professionals and veteran recruiters dedicated to mutual growth and career success.",
     },
   ];
 
   const milestones = [
     {
       year: "2019",
-      title: "The Beginning",
+      title: "The Project",
       description:
-        "Started with WhatsApp forums engaging 557 youth members in digital skills and online safety conversations.",
+        "Started as an initiative to engage youth in career readiness through mobile-first digital skill forums.",
       icon: "🌱",
     },
     {
       year: "2020-2024",
-      title: "Stealth Growth",
+      title: "Validation",
       description:
-        "Trained 2,000+ youths across Africa via WhatsApp/Telegram bootcamps. Validated demand and refined our approach.",
+        "Supported 2,000+ graduates across Africa, refining our assessment models and 14-day career paths.",
       icon: "📈",
     },
     {
       year: "2025",
-      title: "Going Public",
+      title: "JobLadda Launch",
       description:
-        "Launched full digital platform with 12+ courses, mobile app, and scaling to reach 10,000+ learners this year.",
+        "Went public with the full JobLadda platform, focusing on scientific readiness testing and actionable growth.",
       icon: "🚀",
     },
     {
       year: "2028 Vision",
-      title: "Continental Impact",
+      title: "Global Impact",
       description:
-        "Training 100,000+ Africans, launching startup accelerator, and expanding across 5+ African countries.",
+        "Aiming to help 1,000,000+ professionals find their path and land interviews with confidence.",
       icon: "✨",
     },
   ];
@@ -118,103 +119,76 @@ const About = () => {
     {
       icon: Users,
       goal: "100,000+",
-      description: "Africans trained in digital & AI skills",
+      description: "Readiness tests taken",
     },
     {
       icon: Award,
       goal: "10,000+",
-      description: "Job & internship placements facilitated",
+      description: "Successful career transitions",
     },
     {
       icon: Rocket,
-      goal: "10+",
-      description: "African startups accelerated & funded",
+      goal: "14 Days",
+      description: "To a better career positioning",
     },
     {
       icon: Globe,
       goal: "5+",
-      description: "African countries with active presence",
+      description: "African markets dominated",
     },
   ];
 
   const problems = [
     {
       icon: TrendingDown,
-      title: "High Unemployment",
+      title: "Random Applying",
       description:
-        "Africa's youth face unprecedented unemployment rates despite growing global tech industries.",
+        "Job seekers apply to hundreds of roles without understanding why they aren't getting callbacks.",
     },
     {
       icon: AlertCircle,
-      title: "Skills Gap",
+      title: "Hidden Gaps",
       description:
-        "Traditional education systems fail to equip young Africans with relevant digital skills for the future of work.",
+        "Professionals often don't know the specific technical or soft skills that recruiters in their niche are looking for.",
     },
     {
       icon: Shield,
-      title: "Rising Cybercrime",
+      title: "Broken Positioning",
       description:
-        "Lack of digital safety education leads to increased online fraud and cybercrime across the continent.",
+        "Even qualified candidates fail due to poor CV structure, weak LinkedIn profiles, and failing ATS filters.",
     },
     {
       icon: Building,
-      title: "Limited Opportunities",
+      title: "Market Mismatch",
       description:
-        "African startups and entrepreneurs struggle to access funding, mentorship, and global market connections.",
+        "There's a disconnect between what candidates think matters and what recruiters actually prioritize.",
     },
   ];
 
   const solutions = [
     {
       icon: GraduationCap,
-      title: "Digital Skills Training",
+      title: "Job Readiness Assessment",
       description:
-        "Scalable, mobile-first courses in AI, product design, cybersecurity, SEO, and remote work preparation.",
+        "Scientific testing to uncover exactly why you're not getting hired and where your real skill gaps lie.",
     },
     {
       icon: Briefcase,
-      title: "Business Growth Services",
+      title: "14-Day Action Plans",
       description:
-        "SEO optimization, content marketing, paid advertising, and brand positioning for African businesses.",
+        "Tailored, actionable steps designed to fix your career positioning and land you interviews in just two weeks.",
     },
     {
       icon: Shield,
-      title: "Cybersecurity Education",
+      title: "ATS-Optimized Resumes",
       description:
-        "Digital safety courses to combat scams, build resilience, and promote responsible online behavior.",
+        "Professional guidance on building profiles that recruiters love and that pass any automated screening system.",
     },
     {
       icon: Rocket,
-      title: "Startup Acceleration",
+      title: "Job Market Insights",
       description:
-        "Coming soon: Mentorship, non-equity grants, and market access for early-stage African tech startups.",
-    },
-  ];
-
-  const services = [
-    {
-      icon: BookOpen,
-      title: "Content Writing & Management",
-      description:
-        "Strategic content that attracts, nurtures, and converts your audience into loyal customers.",
-    },
-    {
-      icon: TrendingUp,
-      title: "Brand Marketing & PR",
-      description:
-        "Position your brand to be remembered, trusted, and preferred in your market.",
-    },
-    {
-      icon: Zap,
-      title: "SEO & Visibility Management",
-      description:
-        "Dominate search results and drive steady organic traffic that converts.",
-    },
-    {
-      icon: Code,
-      title: "Website & App Development",
-      description:
-        "High-performance digital products built for growth and optimized for conversions.",
+        "Direct access to 'sure' job openings and insider tips on what recruiters are actually looking for in your niche.",
     },
   ];
 
@@ -241,7 +215,7 @@ const About = () => {
               data-aos-delay="100"
             >
               <Sparkles className="h-4 w-4" />
-              <span>About TechAge Africa</span>
+              <span>About JobLadda</span>
             </div>
 
             <h1
@@ -249,7 +223,7 @@ const About = () => {
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              Accelerating Africa's Tech Advantage
+              Helping You Land Your Dream Job Faster
             </h1>
 
             <p
@@ -257,8 +231,7 @@ const About = () => {
               data-aos="fade-up"
               data-aos-delay="300"
             >
-              Empowering African youth with digital skills to thrive in the
-              global economy
+              We discover why you're not getting hired and give you a clear path to fix it.
             </p>
 
             <div
@@ -268,15 +241,15 @@ const About = () => {
             >
               <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
                 <CheckCircle className="h-4 w-4" />
-                <span>6+ Years Impact</span>
+                <span>Job Readiness Test</span>
               </div>
               <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
                 <Users className="h-4 w-4" />
-                <span>2,000+ Students</span>
+                <span>Thousands Helped</span>
               </div>
               <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
                 <Award className="h-4 w-4" />
-                <span>12+ Courses</span>
+                <span>14-Day Action Plans</span>
               </div>
             </div>
           </div>
@@ -289,23 +262,23 @@ const About = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               {
-                value: "2,000+",
-                label: "Students Trained",
+                value: "10,000+",
+                label: "Tests Taken",
                 color: "text-primary-600",
               },
               {
-                value: "6+",
-                label: "Years of Impact",
+                value: "14 Days",
+                label: "To Results",
                 color: "text-secondary-600",
               },
               {
-                value: "12+",
-                label: "Expert Courses",
+                value: "89%",
+                label: "Success Rate",
                 color: "text-accent-600",
               },
               {
-                value: "5",
-                label: "Countries Target",
+                value: "Thousands",
+                label: "Landed Roles",
                 color: "text-primary-600",
               },
             ].map((stat, index) => (
@@ -340,11 +313,10 @@ const About = () => {
           >
             <Badge className="mb-4">The Challenge</Badge>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-              Why TechAge Africa Exists
+              Why JobLadda Exists
             </h2>
             <p className="text-lg text-muted-foreground">
-              Africa faces critical barriers that prevent millions from
-              accessing the digital economy. We're here to change that.
+              Most job seekers focus on the wrong things. We're here to flip the script and show you what really matters to recruiters.
             </p>
           </div>
 
@@ -383,8 +355,7 @@ const About = () => {
               How We're Making a Difference
             </h2>
             <p className="text-lg text-muted-foreground">
-              TechAge Africa delivers comprehensive solutions that empower
-              individuals, businesses, and startups.
+              JobLadda delivers a structured, data-driven path to landing your next role with confidence.
             </p>
           </div>
 
@@ -426,8 +397,7 @@ const About = () => {
               The Journey So Far
             </h2>
             <p className="text-lg text-muted-foreground">
-              From humble beginnings to transforming thousands of lives across
-              Africa
+              From supporting graduates in stealth to launching the definitive career readiness platform.
             </p>
           </div>
 
@@ -480,16 +450,13 @@ const About = () => {
                   <h2 className="text-2xl lg:text-3xl font-bold">Our Vision</h2>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-base">
-                  To build a continent where Africans have the skills,
-                  resources, and opportunities to compete and thrive in the
-                  global digital economy. We envision an Africa where access to
-                  global tech innovation is borderless, inclusive, and scalable.
+                  To build a world where every job seeker has the clarity, skills, and confidence to land their dream role. We envision a future where career readiness is accessible to everyone, regardless of their background or current location.
                 </p>
                 <div className="pt-4 space-y-3">
                   {[
-                    "Borderless tech access for all",
-                    "Inclusive digital economy",
-                    "Scalable, sustainable solutions",
+                    "Clarity for every job seeker",
+                    "Accessible career readiness",
+                    "Impactful career transformations",
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-sm">
                       <CheckCircle className="w-5 h-5 text-primary-600 flex-shrink-0" />
@@ -514,16 +481,13 @@ const About = () => {
                   </h2>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-base">
-                  To democratize digital learning and provide access to digital
-                  skills, economic empowerment, and startup funding across
-                  Africa. We empower youth and professionals through simplified,
-                  localized, and practical education.
+                  To eliminate the frustration of job hunting by providing data-driven assessments and actionable 14-day improvement plans. We empower professionals to uncover their skill gaps and reach their full career potential.
                 </p>
                 <div className="pt-4 space-y-3">
                   {[
-                    "Democratize digital education",
-                    "Empower African businesses",
-                    "Fund & mentor startups",
+                    "Data-driven career assessments",
+                    "Actionable 14-day improvement plans",
+                    "Empowering professional growth",
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-sm">
                       <CheckCircle className="w-5 h-5 text-secondary-600 flex-shrink-0" />
@@ -548,7 +512,7 @@ const About = () => {
               <div className="relative h-64 lg:h-auto overflow-hidden group">
                 <img
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=800&fit=crop"
-                  alt="Clinton Nwachukwu - Founder of TechAge Africa"
+                  alt="Clinton Nwachukwu - Founder of JobLadda"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent lg:bg-gradient-to-r"></div>
@@ -561,35 +525,26 @@ const About = () => {
                     Clinton Nwachukwu
                   </h2>
                   <p className="text-lg text-muted-foreground">
-                    Founder & CEO, TechAge Africa
+                    Founder & CEO, JobLadda
                   </p>
                 </div>
 
                 <div className="relative pl-6 border-l-4 border-primary-600">
                   <Quote className="absolute -left-3 top-0 w-6 h-6 text-primary-600 bg-background" />
                   <p className="text-muted-foreground leading-relaxed italic">
-                    "I started TechAge Africa with a simple belief: that every
-                    African youth deserves access to quality digital education.
-                    What began as WhatsApp forums has grown into a movement
-                    that's transforming lives across the continent."
+                    "I started JobLadda with a simple belief: that no job seeker should have to apply randomly without knowing why they are being rejected. What began as a mission to empower youth has grown into a structured path for career success across the continent."
                   </p>
                 </div>
 
                 <div className="space-y-4 text-sm lg:text-base">
                   <p className="text-muted-foreground leading-relaxed">
                     <strong className="text-foreground">
-                      Entrepreneur, Educator, and Digital Strategist
+                      Entrepreneur, Educator, and Career Strategist
                     </strong>{" "}
-                    with over 6 years of experience training 2,000+ youths
-                    across Africa in digital skills, online safety, and career
-                    development.
+                    with over 6 years of experience helping thousands of professionals across Africa master the art of job hunting and career advancement.
                   </p>
                   <p className="text-muted-foreground leading-relaxed">
-                    Clinton's vision extends beyond training — he's building an
-                    ecosystem that connects African talent to global
-                    opportunities, empowers businesses with digital tools, and
-                    creates pathways for startups to access funding and
-                    mentorship.
+                    Clinton's vision for JobLadda is to create a borderless ecosystem where talent meets opportunity through scientific readiness testing and actionable growth plans.
                   </p>
                 </div>
               </CardContent>
@@ -647,11 +602,10 @@ const About = () => {
           >
             <Badge className="mb-4">Our Goals by 2028</Badge>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-              Building Africa's Digital Future
+              Building Africa's Career Future
             </h2>
             <p className="text-lg text-muted-foreground">
-              Measurable impact targets that will transform the African tech
-              ecosystem
+              Measurable impact targets that will transform the African career landscape.
             </p>
           </div>
 
@@ -690,15 +644,13 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
             <Badge className="mb-4 bg-blue-600 text-white">
-              Tech Updates Blog
+              Career Insights Blog
             </Badge>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-              Stay Ahead with Africa's Tech Pulse
+              Stay Ahead with JobLadda Insights
             </h2>
             <p className="text-lg text-muted-foreground">
-              Latest insights, news, and updates on emerging technologies,
-              career opportunities, and digital trends shaping Africa and the
-              world.
+              Latest career advice, job search hacks, and industry trends to help you stay ahead of the competition.
             </p>
           </div>
 
@@ -754,79 +706,14 @@ const About = () => {
               className="bg-blue-600 hover:bg-blue-700 shadow-xl hover:scale-105 transition-transform group"
               onClick={() => navigate("/blog")}
             >
-              Explore All Tech Updates
+              Explore All Insights
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Services Preview Section */}
-      <section
-        className="py-20 md:py-32"
-        data-aos="fade-right"
-        data-aos-delay="500"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
-            <Badge className="mb-4 bg-primary-600 text-white">
-              Our Services
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-              Grow Your Business with Expert Services
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              We help African brands, SMEs, and startups gain visibility,
-              optimize for growth, and build powerful digital presences that
-              drive results.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            {services.map((service, index) => (
-              <Card
-                key={index}
-                className="hover:shadow-2xl transition-all group animate-fade-in-up hover:-translate-y-2 border-2 hover:border-primary-200 cursor-pointer"
-                style={{ animationDelay: `${index * 100}ms` }}
-                onClick={() => navigate("/services")}
-              >
-                <CardContent className="p-8 space-y-4">
-                  <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-primary-500 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all shadow-lg">
-                      <service.icon className="w-7 h-7 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold mb-2 group-hover:text-primary-600 transition-colors">
-                        {service.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {service.description}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center text-sm text-primary-600 font-semibold pt-2 group-hover:gap-2 transition-all">
-                    Learn More
-                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="text-center animate-fade-in-up animation-delay-400">
-            <Button
-              size="lg"
-              className="shadow-xl hover:scale-105 transition-transform group"
-              onClick={() => navigate("/services")}
-            >
-              View All Services
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section - Matches Services Page */}
+      {/* CTA Section */}
       <section
         className="py-20 bg-gradient-to-r from-primary-600 to-primary-700 relative overflow-hidden"
         data-aos="zoom-in"
@@ -844,21 +731,19 @@ const About = () => {
           <Card className="bg-white/10 backdrop-blur-sm border-2 border-white/20 hover:shadow-2xl transition-all hover:scale-[1.02]">
             <CardContent className="p-12 text-center space-y-6 text-white">
               <h2 className="text-3xl md:text-4xl font-heading font-bold">
-                Join the Movement to Transform Africa's Tech Future
+                Join the Movement to Transform Your Tech Career
               </h2>
               <p className="text-lg text-white/90 max-w-2xl mx-auto">
-                Whether you want to learn new skills, grow your business, or
-                support our mission — there's a place for you at TechAge Africa.
-                Together, we're building the digital future of Africa.
+                Discover why you're not getting hired and get a clear path to fix it in 14 days. Together, we're building the digital future of Africa.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   size="lg"
                   variant="secondary"
                   className="hover:scale-110 transition-transform shadow-xl"
-                  onClick={() => navigate("/courses")}
+                  onClick={() => navigate("/register")}
                 >
-                  Browse Courses
+                  Take Readiness Test
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button

@@ -29,6 +29,8 @@ import {
   CheckCircle,
 } from "lucide-react";
 
+import { Helmet } from "react-helmet-async";
+
 const Courses = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -116,6 +118,11 @@ const Courses = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Career-Boosting Courses to Land Jobs Faster – JobLadda</title>
+        <meta name="description" content="Explore JobLadda’s practical career courses. From optimising LinkedIn to building AI-proof skills, gain the edge to secure interviews and advance your career." />
+      </Helmet>
+
       {/* Hero Section - Compact Blue Gradient */}
       <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-12 sm:py-20 relative overflow-hidden" data-aos="fade-up">
         <div className="absolute inset-0 opacity-20">
@@ -129,28 +136,27 @@ const Courses = () => {
         <div className="container-custom relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium mb-6 animate-bounce">
-              <Sparkles className="h-4 w-4" />
-              <span>Transform Your Career</span>
+              <Sparkles className="h-4 w-4 text-secondary-400" />
+              <span>JobLadda Career Upgrade</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6">
-              Explore Our Courses
+              Learn, Improve, Succeed
             </h1>
             <p className="text-xl md:text-2xl text-primary-100 mb-8">
-              Expert-crafted courses designed to help African learners thrive in
-              the digital economy
+              Courses designed to enhance job readiness, sharpen your professional edge, and help you compete in today’s fast-moving job market.
             </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
-                <BookOpen className="h-4 w-4" />
-                <span>12+ Courses</span>
+            <div className="flex flex-wrap justify-center gap-4 text-sm font-medium">
+              <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2 border border-white/20">
+                <CheckCircle className="h-4 w-4 text-secondary-400" />
+                <span>Practical, actionable steps</span>
               </div>
-              <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
-                <Award className="h-4 w-4" />
-                <span>Expert Instructors</span>
+              <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2 border border-white/20">
+                <Users className="h-4 w-4 text-secondary-400" />
+                <span>Expert-designed modules</span>
               </div>
-              <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
-                <CheckCircle className="h-4 w-4" />
-                <span>Certificates</span>
+              <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2 border border-white/20">
+                <Target className="h-4 w-4 text-secondary-400" />
+                <span>Real job market challenges</span>
               </div>
             </div>
           </div>

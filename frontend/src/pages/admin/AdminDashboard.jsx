@@ -255,7 +255,7 @@ const AdminDashboard = () => {
             Admin Dashboard
           </h1>
           <p className="text-muted-foreground">
-            Welcome back, {user?.name || 'Admin'}! Here's what's happening with TechAge Africa today.
+            Welcome back, {user?.name || 'Admin'}! Here's what's happening with JobLadda today.
           </p>
         </div>
 

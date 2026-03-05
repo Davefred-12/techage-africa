@@ -91,8 +91,8 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email Us",
-      details: "clinton@techageafrica.com",
-      link: "mailto:clinton@techageafrica.com",
+      details: "support@jobladda.io",
+      link: "mailto:support@jobladda.io",
       description: "Send us an email anytime",
     },
     {
@@ -107,7 +107,7 @@ const Contact = () => {
       title: "Visit Us",
       details: "Lagos, Nigeria",
       link: null,
-      description: "West Africa's tech hub",
+      description: "Africa's career readiness hub",
     },
     {
       icon: Clock,
@@ -121,62 +121,56 @@ const Contact = () => {
   const socialLinks = [
     {
       icon: FaFacebookF,
-      href: "https://facebook.com/techageafrica",
+      href: "https://facebook.com/jobladda",
       label: "Facebook",
       color: "text-blue-600 bg-sky-50",
     },
     {
       icon: FaTwitter,
-      href: "https://twitter.com/techageafrica",
+      href: "https://twitter.com/jobladda",
       label: "Twitter",
       color: "text-sky-500 bg-sky-50",
     },
     {
       icon: FaInstagram,
-      href: "https://instagram.com/techageafrica",
+      href: "https://instagram.com/jobladda",
       label: "Instagram",
       color: "text-pink-600 bg-pink-50",
     },
     {
       icon: FaLinkedinIn,
-      href: "https://linkedin.com/company/techageafrica",
+      href: "https://linkedin.com/company/jobladda",
       label: "LinkedIn",
       color: "text-blue-700 bg-sky-50",
-    },
-    {
-      icon: FaWhatsapp,
-      href: "https://wa.me/+234803650953",
-      label: "WhatsApp",
-      color: "text-green-600 bg-sky-50",
     },
   ];
 
   const contactReasons = [
     {
       icon: GraduationCap,
-      title: "Course Enrollment",
-      description: "Browse our courses, certifications, and learning paths",
-      action: () => (window.location.href = "/courses"),
-    },
-    {
-      icon: Briefcase,
-      title: "Business Services",
-      description:
-        "Explore our SEO, marketing, branding, and web development services",
-      action: () => (window.location.href = "/services"),
+      title: "Job Readiness Test",
+      description: "Questions about your assessment or report results",
+      action: () => (window.location.href = "/register"),
     },
     {
       icon: BookOpen,
-      title: "Tech Updates Blog",
-      description:
-        "Read latest insights on AI, Web3, remote work, and tech trends",
-      action: () => (window.location.href = "/blog"),
+      title: "Career Courses",
+      description: "Inquiries about our training modules and paths",
+      action: () => (window.location.href = "/courses"),
     },
     {
       icon: Users,
       title: "Partnership Inquiry",
-      description:
-        "Collaborate with us on training programs or corporate partnerships",
+      description: "Collaborate with us on job placements or training",
+      action: () =>
+        document
+          .getElementById("contact-form")
+          ?.scrollIntoView({ behavior: "smooth" }),
+    },
+    {
+      icon: Shield,
+      title: "Technical Support",
+      description: "Issues with your dashboard or accessing content",
       action: () =>
         document
           .getElementById("contact-form")
@@ -186,54 +180,34 @@ const Contact = () => {
 
   const faqs = [
     {
-      question: "How do I enroll in a course?",
+      question: "What is the Job Readiness Test?",
       answer:
-        "Browse our courses page, select the course you want, and click \"Enroll Now\". You'll need to create an account, then proceed to payment via Paystack. Once payment is confirmed, you'll get instant access to the course materials.",
+        "The Job Readiness Test is a comprehensive assessment designed to identify the specific reasons why you might not be getting hired. It evaluates your profile, skills, and application strategy to provide actionable feedback.",
+    },
+    {
+      question: "How long does it take to get my results?",
+      answer:
+        "You get your basic score and immediate feedback instantly after completing the test. A deep-dive analytical report with a 14-day action plan is available through our premium upgrade.",
     },
     {
       question: "What payment methods do you accept?",
       answer:
-        "We accept all major payment methods through Paystack, including debit cards, credit cards, bank transfers, and mobile money. All payments are secure, encrypted, and processed instantly. We also offer payment plans for some premium courses.",
+        "We accept all major payment methods through secure gateways, including debit cards, bank transfers, and mobile money. All payments are encrypted and processed instantly.",
     },
     {
-      question: "Do I get a certificate after completing a course?",
+      question: "Can I access Jobladda on my phone?",
       answer:
-        "Yes! Upon successful completion of a course and passing any required assessments, you'll receive a digital certificate that you can download, share on LinkedIn, or add to your portfolio. Our certificates are recognized by employers across Africa.",
+        "Yes! Jobladda is fully mobile-responsive. You can take the readiness test, access your reports, and take courses on any smartphone, tablet, or computer.",
     },
     {
-      question: "Can I access courses on mobile devices?",
+      question: "What happens after the 14-day plan?",
       answer:
-        "Absolutely! Our platform is fully mobile-responsive and optimized for mobile learning. You can access your courses on any device - smartphone, tablet, or computer. We also have low-data consumption features for African learners.",
+        "Our plan is designed to make you ATS-ready and interview-ready. After completing the plan, you'll have a significantly stronger profile and a clearer strategy to land your target roles.",
     },
     {
-      question: "What if I need help during a course?",
+      question: "Do you offer job placement?",
       answer:
-        "We have multiple support channels: dedicated support team via email, community forum where you can ask questions and connect with other learners, and direct access to instructors for course-related queries. We typically respond within 24 hours.",
-    },
-    {
-      question: "Are there any prerequisites for the courses?",
-      answer:
-        "Most of our beginner courses require no prerequisites - just enthusiasm to learn! For intermediate and advanced courses, we'll clearly list any requirements on the course page. We recommend starting with our beginner courses if you're new to digital skills.",
-    },
-    {
-      question: "Can I get a refund if I'm not satisfied?",
-      answer:
-        "Yes! We offer a 7-day money-back guarantee if you're not satisfied with a course. Simply contact us within 7 days of purchase with your reason, and we'll process a full refund. Your satisfaction is our priority.",
-    },
-    {
-      question: "Do you offer corporate training for organizations?",
-      answer:
-        "Yes! We provide customized corporate training solutions for organizations looking to upskill their teams. This includes tailored curriculum, dedicated support, progress tracking, and bulk enrollment options. Contact us directly to discuss your organization's needs.",
-    },
-    {
-      question: "How can I partner with TechAge Africa?",
-      answer:
-        "We're open to various partnership opportunities including corporate training, institutional partnerships, content collaborations, and affiliate programs. Send us a message via the contact form or email clinton@techageafrica.com with your partnership proposal.",
-    },
-    {
-      question: "What is the startup accelerator program?",
-      answer:
-        "Our startup accelerator (launching soon) will provide mentorship, non-equity grants, product development support, and market access for early-stage African tech startups. We'll focus on startups solving Africa's biggest problems. Stay updated by subscribing to our newsletter.",
+        "While we focus on making you 'hirable', we also have a network of partner employers. Users with high readiness scores often get recommended for openings within our network.",
     },
   ];
 
@@ -265,7 +239,7 @@ const Contact = () => {
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              Contact Us
+              Contact JobLadda
             </h1>
             
             <p 
@@ -273,8 +247,8 @@ const Contact = () => {
               data-aos="fade-up"
               data-aos-delay="300"
             >
-              Have questions? We're here to help you accelerate your digital
-              journey
+              Have questions? We're here to help you navigate your career
+              readiness journey.
             </p>
             
             <div 
@@ -690,7 +664,7 @@ const Contact = () => {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="TechAge Africa Location in Lagos, Nigeria"
+                title="JobLadda Location in Lagos, Nigeria"
               ></iframe>
             </div>
           </Card>
@@ -709,7 +683,7 @@ const Contact = () => {
               Frequently Asked Questions
             </h2>
             <p className="text-lg text-muted-foreground">
-              Find answers to common questions about TechAge Africa, our
+              Find answers to common questions about JobLadda, our
               courses, and services
             </p>
           </div>

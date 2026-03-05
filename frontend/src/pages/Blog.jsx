@@ -50,17 +50,8 @@ const Blog = () => {
   const [pagination, setPagination] = useState(null);
 
   // SEO Meta Tags
-  const seoTitle = selectedCategory
-    ? `${selectedCategory} Articles - TechAge Africa Blog`
-    : selectedTag
-    ? `${selectedTag} Posts - TechAge Africa Blog`
-    : searchTerm
-    ? `Search Results for "${searchTerm}" - TechAge Africa Blog`
-    : "TechAge Africa Blog - Insights, Tutorials & Industry News";
-
-  const seoDescription = selectedCategory
-    ? `Read the latest ${selectedCategory.toLowerCase()} articles on TechAge Africa blog. Expert insights on technology, education, and career development in Africa.`
-    : "Stay updated with the latest technology trends, educational resources, and industry insights from TechAge Africa. Expert tutorials and career advice for African tech professionals.";
+  const seoTitle = "Career Insights & Job Search Tips – JobLadda Blog";
+  const seoDescription = "Get research-backed advice on improving your job readiness. Learn about CV optimization, LinkedIn strategies, interview prep, and AI-proof career growth.";
 
   useEffect(() => {
     fetchBlogs();
@@ -169,7 +160,7 @@ const Blog = () => {
         <meta name="description" content={seoDescription} />
         <meta
           name="keywords"
-          content="TechAge Africa, technology blog, African tech, programming tutorials, career development, digital skills, tech education"
+          content="JobLadda, career insights, job search tips, CV optimization, LinkedIn strategy, interview prep, AI-proof career"
         />
         <meta property="og:title" content={seoTitle} />
         <meta property="og:description" content={seoDescription} />
@@ -186,12 +177,12 @@ const Blog = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Blog",
-            name: "TechAge Africa Blog",
+            name: "JobLadda Blog",
             description: seoDescription,
             url: window.location.origin + "/blog",
             publisher: {
               "@type": "Organization",
-              name: "TechAge Africa",
+              name: "JobLadda",
               logo: {
                 "@type": "ImageObject",
                 url: window.location.origin + "/images/logo.png",
@@ -213,16 +204,17 @@ const Blog = () => {
 
         <div className="container-custom relative z-10">
           <div className="text-center max-w-4xl mx-auto">
-            <div className="flex items-center justify-center mb-6">
-              <BookOpen className="w-16 h-16 mr-4" />
+            <div className="flex flex-col items-center justify-center mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium mb-4">
+                 <TrendingUp className="w-4 h-4 text-secondary-400" />
+                 <span>Career Momentum</span>
+              </div>
               <h1 className="text-4xl md:text-5xl font-heading font-bold">
-                TechAge Africa Blog
+                Career Insights That Actually Work
               </h1>
             </div>
             <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Insights, tutorials, and industry news to accelerate your tech
-              career in Africa. Stay updated with the latest trends and expert
-              knowledge.
+              Explore actionable tips, guides, and insights to sharpen your job search and gain a lasting professional advantage.
             </p>
             {/* Search Form */}
             <form onSubmit={handleSearch} className="max-w-md mx-auto">
@@ -233,7 +225,7 @@ const Blog = () => {
                   placeholder="Search articles..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-3 text-black bg-white/95 backdrop-blur-sm border-0 focus:ring-2 focus:ring-white/50"
+                  className="pl-10 pr-4 py-3 text-black bg-white/95 backdrop-blur-sm border-0 focus:ring-2 focus:ring-white/50 rounded-xl"
                 />
               </div>
             </form>
@@ -482,7 +474,7 @@ const Blog = () => {
                             <div className="flex items-center gap-4 text-sm text-muted-foreground">
                               <div className="flex items-center">
                                 <User className="w-4 h-4 mr-1" />
-                                {blog.author?.name || "TechAge Africa"}
+                                {blog.author?.name || "JobLadda"}
                               </div>
                               <div className="flex items-center">
                                 <Calendar className="w-4 h-4 mr-1" />

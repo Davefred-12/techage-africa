@@ -247,37 +247,72 @@ const UserDashboard = () => {
           </h1>
           <p className="text-muted-foreground">
             {stats.totalCourses > 0
-              ? "Here's what's happening with your learning journey today."
-              : "Start your learning journey by enrolling in a course!"}
+              ? "Here's the current status of your 14-day career readiness path."
+              : "Start your journey by taking the Free Job Readiness Test!"}
           </p>
         </div>
 
         {/* Stats Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {statsDisplay.map((stat, index) => (
-            <Card
-              key={index}
-              className="hover:shadow-lg transition-all hover:-translate-y-1 animate-fade-in-up"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div
-                    className={`w-12 h-12 rounded-xl ${stat.bgColor} flex items-center justify-center`}
-                  >
-                    <stat.icon className={`h-6 w-6 ${stat.color}`} />
-                  </div>
+          <Card className="hover:shadow-lg transition-all hover:-translate-y-1 animate-fade-in-up">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                  <TrendingUp className="h-6 w-6 text-primary-600" />
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-1">
-                    {stat.label}
-                  </p>
-                  <p className="text-3xl font-bold mb-2">{stat.value}</p>
-                  <p className="text-xs text-muted-foreground">{stat.change}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground mb-1"> Readiness Score </p>
+                <p className="text-3xl font-bold mb-2"> {stats.totalCourses > 0 ? "72%" : "N/A"} </p>
+                <p className="text-xs text-muted-foreground"> {stats.totalCourses > 0 ? "Above average" : "Take the test now"} </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-all hover:-translate-y-1 animate-fade-in-up" style={{ animationDelay: "100ms" }}>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 rounded-xl bg-secondary-100 dark:bg-secondary-900/30 flex items-center justify-center">
+                  <Clock className="h-6 w-6 text-secondary-600" />
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground mb-1"> 14-Day Path </p>
+                <p className="text-3xl font-bold mb-2"> Day 4 </p>
+                <p className="text-xs text-muted-foreground"> 10 days remaining </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-all hover:-translate-y-1 animate-fade-in-up" style={{ animationDelay: "200ms" }}>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 rounded-xl bg-accent-100 dark:bg-accent-900/30 flex items-center justify-center">
+                  <CheckCircle className="h-6 w-6 text-accent-600" />
+                </div>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground mb-1"> Tasks Completed </p>
+                <p className="text-3xl font-bold mb-2"> {stats.completed} </p>
+                <p className="text-xs text-muted-foreground"> {stats.inProgress} tasks pending </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-all hover:-translate-y-1 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                  <Award className="h-6 w-6 text-primary-600" />
+                </div>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground mb-1"> Success Probability </p>
+                <p className="text-3xl font-bold mb-2"> 85% </p>
+                <p className="text-xs text-muted-foreground"> Based on your profile </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Current Courses */}
@@ -285,16 +320,16 @@ const UserDashboard = () => {
           <div className="animate-fade-in-up animation-delay-400">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-2xl font-bold">Continue Learning</h2>
+                <h2 className="text-2xl font-bold">Target Skills & Action Plan</h2>
                 <p className="text-muted-foreground text-sm">
-                  Pick up where you left off
+                  Focus on these to improve your readiness score
                 </p>
               </div>
               <Button
                 variant="outline"
                 onClick={() => navigate("/user/my-courses")}
               >
-                View All
+                View Plan
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -315,7 +350,7 @@ const UserDashboard = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     <Badge className="absolute top-3 left-3 bg-white/90 text-foreground">
-                      In Progress
+                      {course.progress > 0 ? "Improving" : "Start Now"}
                     </Badge>
                     <div className="absolute bottom-3 right-3">
                       <Button size="sm" className="rounded-full h-10 w-10 p-0">
@@ -331,29 +366,25 @@ const UserDashboard = () => {
                       </h3>
                       <p className="text-sm text-muted-foreground mb-4">
                         <Clock className="inline h-3 w-3 mr-1" />
-                        Last accessed {course.lastAccessed}
+                        Last active {course.lastAccessed}
                       </p>
                     </div>
 
                     {/* Progress */}
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Progress</span>
+                        <span className="text-muted-foreground">Action Plan Progress</span>
                         <span className="font-semibold">
                           {course.progress}%
                         </span>
                       </div>
                       <Progress value={course.progress} className="h-2" />
-                      <p className="text-xs text-muted-foreground">
-                        {course.completedLessons} of {course.totalLessons}{" "}
-                        lessons completed
-                      </p>
                     </div>
 
                     {/* Next Lesson */}
                     <div className="pt-3 border-t">
                       <p className="text-xs text-muted-foreground mb-1">
-                        Next up:
+                        Next Action:
                       </p>
                       <p className="text-sm font-medium">{course.nextLesson}</p>
                     </div>
@@ -369,20 +400,16 @@ const UserDashboard = () => {
           <Card className="animate-fade-in-up animation-delay-400">
             <CardContent className="p-12 text-center">
               <div className="w-16 h-16 mx-auto rounded-full bg-muted flex items-center justify-center mb-4">
-                <BookOpen className="h-8 w-8 text-muted-foreground" />
+                <CheckCircle className="h-8 w-8 text-muted-foreground" />
               </div>
               <h3 className="text-xl font-semibold mb-2">
-                {stats.totalCourses === 0
-                  ? "No courses yet"
-                  : "All courses completed!"}
+                Ready to get hired?
               </h3>
               <p className="text-muted-foreground mb-6">
-                {stats.totalCourses === 0
-                  ? "Start your learning journey today!"
-                  : "Browse more courses to continue learning."}
+                Take the Job Readiness Test to identify your skill gaps and get a 14-day action plan.
               </p>
-              <Button onClick={() => navigate("/courses")}>
-                Browse Courses
+              <Button onClick={() => navigate("/register")}>
+                Take Free Readiness Test
               </Button>
             </CardContent>
           </Card>
@@ -420,7 +447,7 @@ const UserDashboard = () => {
                           <CheckCircle className="h-5 w-5 text-accent-600" />
                         )}
                         {activity.type === "enrolled" && (
-                          <BookOpen className="h-5 w-5 text-primary-600" />
+                          <CheckCircle className="h-5 w-5 text-primary-600" />
                         )}
                         {activity.type === "certificate" && (
                           <Award className="h-5 w-5 text-secondary-600" />
@@ -453,10 +480,18 @@ const UserDashboard = () => {
               <Button
                 variant="outline"
                 className="w-full justify-start"
+                onClick={() => navigate("/register")}
+              >
+                <TrendingUp className="mr-2 h-4 w-4" />
+                Take Readiness Test
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full justify-start"
                 onClick={() => navigate("/courses")}
               >
                 <BookOpen className="mr-2 h-4 w-4" />
-                Browse Courses
+                Career Courses
               </Button>
               {stats.totalCourses > 0 && (
                 <>
@@ -466,15 +501,7 @@ const UserDashboard = () => {
                     onClick={() => navigate("/user/progress")}
                   >
                     <TrendingUp className="mr-2 h-4 w-4" />
-                    View Progress
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start"
-                    onClick={() => navigate("/user/my-courses")}
-                  >
-                    <BookOpen className="mr-2 h-4 w-4" />
-                    My Courses
+                    My Readiness Stats
                   </Button>
                 </>
               )}
@@ -483,7 +510,7 @@ const UserDashboard = () => {
                 className="w-full justify-start"
                 onClick={() => navigate("/user/settings")}
               >
-                <Award className="mr-2 h-4 w-4" />
+                <User className="mr-2 h-4 w-4" />
                 Update Profile
               </Button>
             </CardContent>

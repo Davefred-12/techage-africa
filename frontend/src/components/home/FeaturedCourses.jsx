@@ -45,7 +45,7 @@ const FeaturedCourses = () => {
       <div className="container-custom">
         {/* Section Header */}
         <div className="text-center mb-10">
-          <Badge className="mb-4">Featured Courses</Badge>
+          <Badge className="mb-4 bg-secondary-500 text-white hover:bg-secondary-600">Featured Courses</Badge>
           <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
             Start Learning Today
           </h2>
@@ -120,11 +120,11 @@ const FeaturedCourses = () => {
 
                   <CardFooter className="p-5 pt-0 flex justify-between items-center">
                     <div>
-                      <p className="text-2xl font-bold text-primary-600">
+                      <p className="text-2xl font-black text-[#111827]">
                         {formatCurrency(course.price)}
                       </p>
                     </div>
-                    <Button size="sm" className="group-hover:bg-primary-700">
+                    <Button size="sm" className="bg-secondary-500 hover:bg-secondary-600 font-bold">
                       View Details
                     </Button>
                   </CardFooter>
@@ -141,7 +141,7 @@ const FeaturedCourses = () => {
                 className="gap-2"
               >
                 View All Courses
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 text-secondary-500" />
               </Button>
             </div>
           </>

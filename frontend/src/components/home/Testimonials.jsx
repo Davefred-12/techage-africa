@@ -23,7 +23,7 @@ const Testimonials = () => {
       company: 'Lagos, Nigeria',
       image: '',
       rating: 5,
-      text: 'TechAge Africa transformed my career! I went from zero knowledge to landing my first remote job in 3 months. The instructors are amazing and the community is so supportive.',
+      text: 'JobLadda transformed my career! I went from zero knowledge to landing my first remote job in 3 months. The instructors are amazing and the community is so supportive.',
     },
     {
       id: 2,
@@ -68,20 +68,23 @@ const Testimonials = () => {
       company: 'Kano, Nigeria',
       image: '',
       rating: 5,
-      text: 'TechAge Africa doesn\'t just teach you skills, they prepare you for the global market. I\'m now working with clients from 3 different countries!',
+      text: 'JobLadda doesn\'t just teach you skills, they prepare you for the global market. I\'m now working with clients from 3 different countries!',
     },
   ];
 
   return (
     <section className="py-20 md:py-32">
       <div className="container-custom">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-            What Our Students Say
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary-500/10 text-secondary-600 text-sm font-bold mb-4">
+             <Star className="w-4 h-4 fill-secondary-500 text-secondary-500" />
+            <span>Success Stories</span>
+          </div>
+          <h2 className="text-3xl md:text-5xl font-heading font-black text-[#111827] mb-4">
+            Hear from Career Successes
           </h2>
-          <p className="text-lg text-muted-foreground">
-            Join thousands of Africans who have transformed their careers with TechAge Africa
+          <p className="text-xl text-gray-500 font-medium">
+            Join thousands of professionals who have transformed their careers with JobLadda
           </p>
         </div>
 
@@ -98,7 +101,7 @@ const Testimonials = () => {
                 {/* Rating */}
                 <div className="flex gap-1">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <Star key={i} className="w-4 h-4 fill-orange-500 text-orange-500" />
                   ))}
                 </div>
 
@@ -128,23 +131,25 @@ const Testimonials = () => {
         </div>
 
         {/* Bottom Stats */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 p-6 md:p-8 rounded-2xl bg-primary-50 dark:bg-primary-900/20">
-          <div className="text-center">
-            <p className="text-3xl font-bold text-foreground">4.9/5</p>
-            <p className="text-sm text-muted-foreground mt-1">Average Rating</p>
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 p-10 rounded-3xl bg-[#111827] text-white overflow-hidden relative">
+          <div className="text-center relative z-10">
+            <p className="text-4xl font-black text-white">4.9/5</p>
+            <p className="text-sm text-gray-400 font-bold mt-1 uppercase tracking-wider">Average Rating</p>
           </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-foreground">2000+</p>
-            <p className="text-sm text-muted-foreground mt-1">Happy Students</p>
+          <div className="text-center relative z-10">
+            <p className="text-4xl font-black text-white">2000+</p>
+            <p className="text-sm text-gray-400 font-bold mt-1 uppercase tracking-wider">Happy Successes</p>
           </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-foreground">95%</p>
-            <p className="text-sm text-muted-foreground mt-1">Success Rate</p>
+          <div className="text-center relative z-10">
+            <p className="text-4xl font-black text-white">95%</p>
+            <p className="text-sm text-gray-400 font-bold mt-1 uppercase tracking-wider">Success Rate</p>
           </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-foreground">500+</p>
-            <p className="text-sm text-muted-foreground mt-1">Job Placements</p>
+          <div className="text-center relative z-10">
+            <p className="text-4xl font-black text-white">500+</p>
+            <p className="text-sm text-gray-400 font-bold mt-1 uppercase tracking-wider">Job Placements</p>
           </div>
+          {/* Decorative */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-secondary-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
         </div>
       </div>
     </section>

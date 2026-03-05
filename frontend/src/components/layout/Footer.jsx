@@ -21,10 +21,10 @@ const Footer = () => {
       { name: "Blog", path: "/blog" },
     ],
     programs: [
-      { name: "Digital Skills Training", path: "/courses" },
-      { name: "Business Services", path: "/services" },
-      { name: "Career Accelerator", path: "/services" },
-      { name: "Startup News", path: "/blog" },
+      { name: "Job Readiness Masterclass", path: "/courses" },
+      { name: "LinkedIn Optimisation", path: "/courses" },
+      { name: "Career Resilience", path: "/courses" },
+      { name: "Career Insights", path: "/blog" },
     ],
     support: [
       { name: "Help Center", path: "/contact", key: "help-center" },
@@ -37,22 +37,22 @@ const Footer = () => {
   const socialLinks = [
     {
       icon: FaFacebookF,
-      href: "https://facebook.com/techageafrica",
+      href: "https://facebook.com/jobladda",
       label: "Facebook",
     },
     {
       icon: FaTwitter,
-      href: "https://twitter.com/techageafrica",
+      href: "https://twitter.com/jobladda",
       label: "Twitter",
     },
     {
       icon: FaInstagram,
-      href: "https://instagram.com/techageafrica",
+      href: "https://instagram.com/jobladda",
       label: "Instagram",
     },
     {
       icon: FaLinkedinIn,
-      href: "https://linkedin.com/company/techageafrica",
+      href: "https://linkedin.com/company/jobladda",
       label: "LinkedIn",
     },
   ];
@@ -64,16 +64,16 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center space-x-2 mb-3">
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700">
-                <span className="text-white font-bold text-xl">T</span>
+              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-secondary-400 to-secondary-600">
+                <span className="text-white font-bold text-xl">J</span>
               </div>
               <span className="font-heading font-bold text-xl text-white">
-                TechAge Africa
+                Jobladda
               </span>
             </Link>
             <p className="text-sm text-blue-50 mb-3 max-w-sm">
-              Empowering Africa's future through digital skills, brand
-              visibility, and tech-driven opportunities.
+              Stop wondering why you’re not getting hired. Jobladda helps you
+              discover the truth and gives you a clear path to fix it.
             </p>
 
             {/* Contact Info */}
@@ -81,15 +81,15 @@ const Footer = () => {
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
                 <a
-                  href="mailto:clinton@techageafrica.com"
+                  href="mailto:support@jobladda.io"
                   className="hover:text-white transition-colors"
                 >
-                  clinton@techageafrica.com
+                  support@jobladda.io
                 </a>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>+234 803 650 9531</span>
+                <span>+234 XXX XXX XXXX</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4" />
@@ -155,7 +155,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
             {/* Copyright */}
             <p className="text-sm text-blue-500">
-              © {currentYear} TechAge Africa. All rights reserved.
+              © {currentYear} Jobladda. All rights reserved.
             </p>
 
             {/* Social Links */}

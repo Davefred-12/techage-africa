@@ -46,7 +46,7 @@ const Privacy = () => {
             </CardHeader>
             <CardContent className="prose prose-gray dark:prose-invert max-w-none">
               <p className="text-muted-foreground leading-relaxed">
-                TechAge Africa ("we," "our," or "us") is committed to protecting your privacy and ensuring the security of your personal information.
+                JobLadda ("we," "our," or "us") is committed to protecting your privacy and ensuring the security of your personal information.
                 This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, use our services,
                 or interact with our platform.
               </p>
@@ -436,7 +436,7 @@ const Privacy = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground">
-                TechAge Africa is based in Nigeria, and your information may be transferred to, processed, and stored in countries other than your own.
+                JobLadda is based in Nigeria, and your information may be transferred to, processed, and stored in countries other than your own.
                 We ensure that such transfers comply with applicable data protection laws.
               </p>
 
@@ -549,7 +549,7 @@ const Privacy = () => {
                     <span className="font-semibold">Address:</span>
                   </div>
                   <address className="text-muted-foreground ml-6 not-italic">
-                    TechAge Africa<br />
+                    JobLadda<br />
                     123 Innovation Drive<br />
                     Lagos, Nigeria<br />
                     100001
@@ -576,7 +576,7 @@ const Privacy = () => {
               in the future, which will be in effect immediately after being posted on this page.
             </p>
             <p className="mt-2">
-              TechAge Africa is committed to protecting your privacy and ensuring transparency in our data practices.
+              JobLadda is committed to protecting your privacy and ensuring transparency in our data practices.
             </p>
           </div>
         </div>

@@ -164,7 +164,7 @@ const BlogPost = () => {
     );
   }
 
-  const seoTitle = blog.seoTitle || `${blog.title} - TechAge Africa Blog`;
+  const seoTitle = blog.seoTitle || `${blog.title} - JobLadda Blog`;
   const seoDescription = blog.seoDescription || blog.excerpt;
   const canonicalUrl = `${window.location.origin}/blog/${blog.slug}`;
 
@@ -174,16 +174,16 @@ const BlogPost = () => {
         <title>{seoTitle}</title>
         <meta name="description" content={seoDescription} />
         <meta name="keywords" content={blog.seoKeywords?.join(', ') || blog.tags?.join(', ')} />
-        <meta name="author" content={blog.author?.name || 'TechAge Africa'} />
+        <meta name="author" content={blog.author?.name || 'JobLadda'} />
         <meta name="robots" content="index, follow" />
         <meta property="og:title" content={seoTitle} />
         <meta property="og:description" content={seoDescription} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:image" content={blog.featuredImage || '/images/blog-default.jpg'} />
-        <meta property="og:site_name" content="TechAge Africa" />
+        <meta property="og:site_name" content="JobLadda" />
         <meta property="article:published_time" content={blog.publishedAt} />
-        <meta property="article:author" content={blog.author?.name || 'TechAge Africa'} />
+        <meta property="article:author" content={blog.author?.name || 'JobLadda'} />
         <meta property="article:section" content={blog.category} />
         {blog.tags?.map(tag => (
           <meta key={tag} property="article:tag" content={tag} />
@@ -205,12 +205,12 @@ const BlogPost = () => {
             "dateModified": blog.updatedAt,
             "author": {
               "@type": "Person",
-              "name": blog.author?.name || 'TechAge Africa',
+              "name": blog.author?.name || 'JobLadda',
               "image": blog.author?.avatar
             },
             "publisher": {
               "@type": "Organization",
-              "name": "TechAge Africa",
+              "name": "JobLadda",
               "logo": {
                 "@type": "ImageObject",
                 "url": window.location.origin + "/images/logo.png"
@@ -266,7 +266,7 @@ const BlogPost = () => {
                   <AvatarFallback>{getUserInitials(blog.author?.name)}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <div className="font-semibold text-sm md:text-base">{blog.author?.name || 'TechAge Africa'}</div>
+                  <div className="font-semibold text-sm md:text-base">{blog.author?.name || 'JobLadda'}</div>
                   <div className="text-xs md:text-sm">Author</div>
                 </div>
               </div>
@@ -450,7 +450,7 @@ const BlogPost = () => {
                     <AvatarFallback>{getUserInitials(blog.author?.name)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <div className="font-semibold text-sm md:text-base">{blog.author?.name || 'TechAge Africa'}</div>
+                    <div className="font-semibold text-sm md:text-base">{blog.author?.name || 'JobLadda'}</div>
                     <div className="text-xs md:text-sm text-muted-foreground">Author</div>
                   </div>
                 </div>

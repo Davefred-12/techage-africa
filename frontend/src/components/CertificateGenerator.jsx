@@ -117,7 +117,7 @@ const CertificateGenerator = ({ certificateData }) => {
               </p>
             </div>
             <p className="text-xs sm:text-sm text-gray-500 text-center px-2">
-              at TechAge Africa
+              at JobLadda
             </p>
 
             {/* Footer Section */}
